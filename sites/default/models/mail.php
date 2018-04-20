@@ -88,7 +88,7 @@ class Mail_Model extends Bl_Model
      }
 
      $siteInfo = Bl_Config::get('siteInfo', array());
-     $siteInfo['siteurl'] = "http://m.shirleysdress.com/";
+     $siteInfo['siteurl'] = "http://m.cheap-lingerie.net/";
      $contactWay = Bl_Config::get('contactWay', array());
      
      $usertokens = array('name', 'email');
