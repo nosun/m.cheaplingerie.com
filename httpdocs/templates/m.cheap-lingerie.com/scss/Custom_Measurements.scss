@@ -1,0 +1,57 @@
+.Custom_Measurements{
+  .Custom_Measurements_h{
+    font: 1.7rem 'arial';
+    color:#000000;
+    margin-top:1rem;
+    padding-left:4.5%;
+  }
+  .looking {
+    font-family: 'arial';
+    padding: 0 4.5%;
+    font-size: 1.3rem;
+    line-height: 1.6rem;
+    margin-top:5px;
+  }
+  .measure_img{
+    width:100%;
+    img{
+      width:100%;
+    }
+  }
+  .select_content{
+    padding:0 5%;
+    td{
+      vertical-align:middle;
+      padding:5px 0;
+    }
+    .row{
+      margin-top:3%;
+    }
+    .left_word{
+      width:45%;
+      font:1.6rem/2rem 'arial';
+    }
+    .select{
+      width:80%;
+      margin-left:20%;
+      position:relative;
+      height:2rem;
+      border:1px solid #a5a5a5;
+      select{
+        width:100%;
+        -webkit-appearance: none;
+        font:1.2rem/1.8rem 'arial';
+        color:#a5a5a5;
+      }
+      span{
+        display: block;
+        position: absolute;
+        background: transparent url("../images/select.png") left top no-repeat;
+        width: 16px;
+        height: 8px;
+        right: 10px;
+        top: 10px;
+      }
+    }
+  }
+}

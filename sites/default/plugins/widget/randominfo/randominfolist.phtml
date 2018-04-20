@@ -1,0 +1,59 @@
+<?php
+  $this->assign('menuItem', 'site_widget');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+
+<div class="import clear">
+  <ul>
+    <li><span class="check"><a href="<?php echo url('admin/site/widgetlist') ?>">插件列表</a></span></li>
+    <li><span class="check">页面随机信息列表</span></li>
+  </ul>
+</div>
+<div class="clear left_photo" id="tabs">
+      <div class="clear tab_ul">
+      <ul>
+        <li><a href="#list"><?php echo t('List') ?></a></li>
+        <li><a href="#filter"><?php echo t('Filter') ?></a></li>
+      </ul>
+      </div>
+      <div class="main_right" style="margin-left:10px;margin-top:5px;" id="list">
+        <?php echo themeMessages() ?>
+        <table>
+        <?php if (isset($uri)) : ?>
+          <tr><td width="80%"><strong>当前过滤条件（<a href="<?php echo url('admin/site/widgetedit/randominfo/getrandomlist')?>">清除</a>）</strong>：<?php echo $uri?></td><td width="10%"></td></tr>
+        <?php endif;?>
+          <tr class="nohover">
+            <td width="80%">页面路径</td>
+            <td width="10%">管理</td>
+          </tr>
+      <?php
+      if ($randomList):
+        foreach ($randomList as $k => $v):
+      ?>
+          <tr>
+            <td><a href="<?php echo url($v->uri)?>"><?php echo (isset($v->uri) && $v->uri) ? $v->uri : '首页';?></a></td>
+            <td><a href="<?php echo url('admin/site/widgetedit/randominfo/editRandomInfo/' . $v->path)?>">编辑</a>
+            <a href="<?php echo url('admin/site/widgetedit/randominfo/deleteRandomInfo/' . $v->path)?>">删除</a></td>
+          </tr>
+      <?php endforeach;?>
+      <?php endif;?>
+      </table>
+      <div class="pagination" style="margin-left:10px;clear:both;"><?php echo $pagination;?></div>
+	      <div style="margin:15px 0px 0px 30px;float:left;"><a href="<?php echo url('admin/site/widgetedit/randominfo/clearallrandom')?>">清空随机信息</a></div>
+	
+      </div>
+      <div id="filter" class="box_Product main_right">
+      <form action="<?php echo url('admin/site/widgetedit/randominfo/getrandomlist/');?>" method="post" enctype="multipart/form-data">
+        <table>
+          <tr><td width="10%">url:</td><td width="90%"><input name="uri" class="medium_txt"></td></tr>
+          <tr><td colspan="2"><input type="submit"  class="btn1" value="搜索"></td></tr>
+        </table>
+      </form>
+      </div>
+</div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

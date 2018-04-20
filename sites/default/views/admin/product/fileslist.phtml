@@ -1,0 +1,56 @@
+<?php
+  $this->assign('menuItem', 'product_typelist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+  <div class="main_right">
+    <form id="form1" action="index.php" method="post" enctype="multipart/form-data">
+      <input type="hidden" id="fids" name="fids" value="">
+      <input type="hidden" id="session_id" name="session_id" value="<?php echo session_id(); ?>">
+      <div class="main_title">评论管理</div>
+      <table>
+        <tr class="subhead">
+          <td width="20%">图片</td>
+          <td width="20%">初始文件名</td>
+          <td width="20%">名称</td>
+          <td width="20%">ALT</td>
+          <td width="5%">管理</td>
+        </tr>
+      </table>
+      <table id="listData">
+<?php
+  if(is_array($filesList)):
+    foreach($filesList as $key => $dl):
+?>
+        <tr>
+          <td width="20%"><a href="<?php echo url('images/'.$dl->filepath); ?>" target="_blank"><img src="<?php echo url('images/'.$dl->filepath); ?>" class="file_list_img" /></a></td>
+          <td width="20%"><?php echo $dl->filename; ?></td>
+          <td width="20%"><?php echo $dl->filepath; ?></td>
+          <td width="20%"><input class="file_list_txt" value="<?php echo $dl->alt; ?>" name="alt[<?php echo $dl->fid; ?>]"/></td>
+          <td width="5%"><a href="###" class="btn_confirm" rel="确认删除该附件吗?">删除</a></td>
+        </tr>
+<?php
+    endforeach;
+  endif;
+?>
+      </table>
+      <div class="btnarea">
+        <div id="swfupload-control">
+          <input type="button" id="button" />
+          <input type="button" value="Start Upload" id="btnstartupload"  style="margin-left: 2px; font-size: 12px; height: 22px;" />
+          <div id="divStatus">0 File Uploaded</div>
+          <div id="fsUploadProgress"></div>
+        </div>
+      </div>
+    </form>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>
+
+
+
+
+

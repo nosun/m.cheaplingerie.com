@@ -1,0 +1,76 @@
+<?php
+  $this->assign('menuItem', 'site_siteinfo');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="basic"><a href="<?php echo url('admin/site/siteinfosetting') ?>">站点信息</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="POST">
+
+    <table>
+      <tr class="nohover"><td class="bold" colspan="2" >站点名称</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt"  name="sitename" value="<?php echo isset($siteInfo['sitename']) ? $siteInfo['sitename'] :null?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+ 
+      <tr class="nohover"><td class="bold" colspan="2">logo设置</td></tr>
+      <tr>
+        <td>
+          <input class="txt" name="logo" value="<?php echo isset($siteInfo['logo']) ? $siteInfo['logo'] :null?>"/>
+        </td>
+        <td></td>
+      </tr>
+      
+      <tr class="nohover"><td class="bold" colspan="2">邮箱</td></tr>
+      <tr>
+        <td>
+          <input class="txt" name="email" value="<?php echo isset($siteInfo['email']) ? $siteInfo['email'] :null?>"/>
+        </td>
+        <td></td>
+      </tr>
+      
+      <tr class="nohover"><td class="bold" colspan="2">网址</td></tr>
+      <tr>
+        <td>
+          <input class="txt" name="siteurl" value="<?php echo isset($siteInfo['siteurl']) && $siteInfo['siteurl'] ? $siteInfo['siteurl'] : 'http://'?>"/>
+        </td>
+        <td></td>
+      </tr>
+      
+      <tr class="nohover"><td class="bold" colspan="2">备案</td></tr>
+      <tr>
+        <td>
+          <input class="txt" name="record" value="<?php echo isset($siteInfo['record']) ? $siteInfo['record'] :null?>"/>
+        </td>
+        <td></td>
+      </tr>
+      
+      <tr class="nohover"><td class="bold" colspan="2">版权信息</td></tr>
+      <tr>
+        <td colspan="2">
+          <textarea rows="6" cols="" class="normalXheditor" name="copyright"><?php echo isset($siteInfo['copyright']) ? stripslashes($siteInfo['copyright']) :null?></textarea>
+        </td>
+      </tr>
+    </table>
+    
+    <div class="main_bottom_deal">
+      <input type="submit" value="保存" class="btn">
+    </div>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

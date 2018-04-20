@@ -1,0 +1,46 @@
+<?php
+  $this->assign('menuItem', 'site_integral');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="basic"><a href="<?php echo url('admin/site/integralsetting') ?>">积分设置</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="POST">
+
+    <table>
+      <tr class="nohover"><td class="bold" colspan="2">结算时积分兑换比率</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="settlementRate" value="<?php echo isset($integralInfo['settlementRate']) ? $integralInfo['settlementRate'] : null?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+ 
+      <tr class="nohover"><td class="bold" colspan="2">支付后积分兑换比率</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="exchangeRate" value="<?php echo isset($integralInfo['exchangeRate']) ? $integralInfo['exchangeRate'] : null?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+    </table>
+    
+    <div class="main_bottom_deal">
+      <input type="submit" value="保存" class="btn">
+    </div>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>
+

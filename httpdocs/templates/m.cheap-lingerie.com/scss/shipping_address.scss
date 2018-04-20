@@ -1,0 +1,153 @@
+.shipping_address{
+  .xiaoming_address {
+    margin: 3% 6%;
+    padding:10px 3px;
+    border: 1px solid #000000;
+    table{
+      td{
+        vertical-align:middle;
+      }
+      .left_td{
+        .ming{
+          display: none;
+        }
+        .ming_label{
+          margin-left: 1rem;
+          display: block;
+          width:12px;
+          height:12px;
+          border-radius: 8px;
+          border:2px solid #929394;
+
+        }
+        input[type=radio]:checked+label {
+          background-image: -wekbit-radial-gradient(#c01920 50%,white 58%);
+          background-image: radial-gradient(#c01920 50%,white 58%);
+        }
+      }
+      .right_td{
+        padding-left: 10px;
+        label{
+          font:1.2rem/1.8rem 'arial';
+          span{
+            font-weight: bold;
+          }
+        }
+      }
+    }
+    .btn-ship{
+      width: 100%;
+      height: 3rem;
+      font:1.2rem/3rem 'arial';
+      border-radius: 3px;
+      border: 1px solid #929394;
+      text-align: center;
+      color: #333;
+      background-image:linear-gradient(to top,#d6d6d6, #fbfbfb);
+    }
+  }
+  .another{
+    border:#cb262d 1px solid;
+  }
+}
+
+#pay_method{
+  padding: 5% 4.5%;
+  font-family: 'arial';
+  display: none;
+  .pay_title{
+    font-size: 1.6rem;
+    margin-bottom:1.5rem;
+  }
+  .method-list{
+    margin-top: 25px;
+    li{
+      height: 45px;
+      border: 1px solid #929394;
+      margin-bottom: 25px;
+      line-height: 45px;
+      .circ{
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        vertical-align:middle;
+        margin: 0 1.2rem;
+        background-image:url('../images/circ.png');
+        background-size: cover;
+      }
+      .method-word{
+        font-size: 1.5rem;
+        vertical-align:middle;
+        margin-right: 1rem;
+      }
+      img{
+        width: 56px;
+        height:35px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 0.5rem;
+      }
+    }
+    .active{
+      border-color: #c01920;
+      .circ{
+        background-image:url('../images/circ-red.png');
+      }
+    }
+  }
+}
+
+#shipping_method{
+  padding: 5% 4.5%;
+  font-family: 'arial';
+  display: none;
+  .shipping_title{
+    font-size: 1.6rem;
+    margin-bottom:1.5rem;
+  }
+  .method-list2{
+    margin-top: 25px;
+    li{
+      height: 45px;
+      border: 1px solid #929394;
+      margin-top:25px;
+      line-height: 45px;
+      .circ{
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        vertical-align:middle;
+        margin: 0 1.2rem;
+        background-image:url('../images/circ.png');
+        background-size: cover;
+      }
+      .method-word{
+        font-size: 1.3rem;
+        vertical-align:middle;
+        margin-right: 1rem;
+      }
+      img{
+        width: 56px;
+        height:35px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 0.5rem;
+      }
+    }
+    .shipping-information{
+      margin-top:5px;
+      font:1.2rem/1.8rem 'arial';
+      color:#032b03;
+      .through{
+        color:#c01920;
+        font-weight: bold;
+      }
+    }
+    .active{
+      border-color: #c01920;
+      .circ{
+        background-image:url('../images/circ-red.png');
+      }
+    }
+  }
+}

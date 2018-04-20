@@ -1,0 +1,61 @@
+<?php
+  $this->assign('menuItem', 'product_productslist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/product/list') ?>">商品列表</a></span></li>
+		<li><span class="basic"><?php echo t('Batch Add Tag') ?></span></li>
+	</ul>
+</div>
+
+<div>
+    <?php echo themeMessages() ?>
+    <form action="" method="post" id="form_batch_add_tag">
+    <div class="clear left_photo" id="tabs">
+    	<div class="clear tab_ul">
+	      	<ul>
+	        	<li><a href="#base"><?php echo t('Base information') ?></a></li>
+	      	</ul>
+      	</div>
+      	<div id="base" class="box_Product main_right">
+	      	<table>
+	        	<tr class="nohover"><td class="bold" colspan="2">产品Sn(一行一个产品):</td></tr>
+	        	<tr>
+	          		<td colspan="2"><textarea name="product_sn_list" rows="20" cols="10"></textarea></td>
+	        	</tr>
+	        	<tr>
+	        		<td class="bold" colspan="2">所有tag:</td>
+	        	</tr>
+	        	<tr>
+	        		<td colspan="2"><?php $tagGroups = array();
+                    foreach ($tagList as $tid => $tag) {
+                        if (!key_exists($tag->name_cn, $tagGroups)) {
+                            $tagGroups[$tag->name_cn] = array();
+                        }
+                        $tagGroups[$tag->name_cn][] = $tag;
+                    }
+                    foreach ($tagGroups as $groupName => $taglist):?>
+                        <div style="clear:both"><b><?php echo $groupName;?></b></div>
+                        <?php foreach ($taglist as $tag): ?>
+                            <div style="float:left; margin-left:15px;">
+                                <input type="checkbox" value="<?php echo $tag->tid ?>" name="tag_list[]" ><?php echo plain($tag->name) ?>
+                            </div>
+                        <?php endforeach;?>
+                    <?php endforeach;?>
+              		</td>
+	        	</tr>
+	      	</table>
+		</div> 
+    	<div class="attribute" style="margin-top:10px; margin-left:30px; margin-bottom:30px;">
+      		<input type="submit" value="保存" class="Buttom_1 but" />
+      		<a href="<?php echo url('admin/product/list') ?>" class="Buttom_back but">返回商品列表</a>
+    	</div>
+    </div>
+    </form>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

@@ -1,0 +1,204 @@
+<?php
+  $this->assign('menuItem', 'product_productslist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/product/firstlist') ?>">商品管理</a></span></li>
+		<?php if(access('edit product')): ?>
+		<li><span class="new"><a href="<?php echo url('admin/product/edit') ?>"><?php echo t('New Product');?></a></span></li>
+		<li><span class="check"><a href="<?php echo url('admin/batchjobs/batchEditProducts') ?>">批量管理</a></span></li>
+		<?php endif; ?>
+		<?php if(access('import product')): ?>
+		<li><span class="import_1"><a href="<?php echo url('admin/batchjobs/showBatchExportProduct/') ?>"><?php echo t('Lead');?></a></span></li>
+		<?php endif; ?>
+		<?php if(access('export product')): ?>
+<!--		<li><span class="export"><a href="###" onclick="javascript:$('#form1').submit();"><?php echo t('Extend');?></a></span></li>-->
+		<?php endif; ?>
+	</ul>
+</div>
+
+<div id="products_list_page">
+    <?php echo themeMessages() ?>
+    <div class="clear left_photo" id="tabs">
+      <div class="clear tab_ul">
+      <ul>
+        <li><a href="#list"><?php echo t('List') ?></a></li>
+        <li><a href="#filter"><?php echo t('Filter') ?></a></li>
+      </ul>
+      </div>
+
+      <div id="list"  class="box_Product main_right">
+        <form id="form1" action ="<?php echo url('admin/batchjobs/post') ?>" method="post">
+          <div><?php echo $selectHtml;?></div>
+          <table id="products_list">
+          <tr class="subhead">
+            <td width="5%">ID</td>
+            <td width="7%"><?php echo t('SN') ?></td>
+            <td width="7%"><?php echo t('Product Number') ?></td>
+            <td width="*"><?php echo t('Product Name') ?></td>
+            <td width="8%"><?php echo t('Directory') ?></td>
+            <td width="6%"><?php echo t('Price') ?></td>
+            <td width="5%"><?php echo t('Inventory') ?></td>
+            <td width="5%"><?php echo t('Status') ?></td>
+            <td width="5%"><?php echo t('Brand') ?></td>
+            <td width="3%"><?php echo t('Weight') ?></td>
+            <td width="7%"><?php echo t('Type') ?></td>
+            <td width="*"><?php echo t('Options') ?></td>
+          </tr>
+<?php
+  if(access('edit product'))$ce='ce';else $ce='';
+  foreach($productsList as $pid => $product):
+?>
+          <tr class="i<?php echo $pid ?>">
+            <td><?php echo plain($product->pid) ?></td>
+            <td class="<?php echo $ce;?> sn"><?php echo plain($product->sn) ?></td>
+            <td class="<?php echo $ce;?> nu"><?php echo plain($product->number) ?></td>
+            <td class="<?php echo $ce;?> na"><?php echo plain($product->name) ?></td>
+            <td class="<?php echo $ce;?> dt<?php if (isset($product->directory_tid)) echo ' ' . $product->directory_tid ?>"><?php echo isset($directoryTermsList[$product->directory_tid]) ? plain($directoryTermsList[$product->directory_tid]->name) : '-' ?></td>
+            <td class="<?php echo $ce;?> sp"><?php echo c($product->sell_price, Bl_Config::get('currency'), false) ?></td>
+            <td class="<?php echo $ce;?> st"><?php echo $product->stock ?></td>
+            <td class="<?php echo $ce;?> sa<?php if (isset($product->status)) echo ' ' . ($product->status ? 2 : 1) ?>"><?php echo $product->status == Product_Model::STATUS_PUBLISHED ? t('Published') : t('Unpublished') ?></td>
+            <td class="<?php echo $ce;?> bt<?php if (isset($product->brand_tid)) echo ' ' . $product->brand_tid ?>"><?php echo isset($brandList[$product->brand_tid]) ? plain($brandList[$product->brand_tid]->name) : '-' ?></td>
+            <td class="wt"><?php echo number_format($product->weight) ?></td>
+            <td><?php echo isset($typeList[$product->type]) ? plain($typeList[$product->type]->name) : '-'?></td>
+            <td>
+              <a href="<?php echo url($product->url) ?>" target="_blank"><?php echo t('View') ?></a>
+<?php if(access('edit product')): ?>
+              <a href="<?php echo url('admin/product/edit/' . $pid) ?>"><?php echo t('Edit') ?></a>
+<?php endif; ?>
+<?php //if(access('copy product')): ?>
+			  <!-- <a href="<?php echo url('admin/product/copy/' . $pid) ?>"><?php echo t('Copy') ?></a> -->
+<?php //endif; ?>
+<?php if(access('manage comment')): ?>
+              <a href="<?php echo url('admin/comment/insert/' . $pid) ?>">添加评论</a>
+<?php endif; ?>
+<?php if (access('delete product')): ?>
+              <a href="<?php echo url('admin/product/delete/' . $pid ) ?>" class="btn_confirm" rel="确认删除该商品吗?"><?php echo t('Delete') ?></a>
+<?php endif ?>
+<?php if (access('delete product image cache')): ?>
+              <a href="<?php echo url('admin/product/deletecache/' . $pid ) ?>" class="btn_confirm" rel="确认删除缓存吗?">清空缓存图片</a>
+<?php endif ?>
+            </td>
+          </tr>
+<?php
+  endforeach;
+?>
+          </table>
+          <div></div>
+          <div class="pagination" style="margin-left:10px"><?php echo $pagination ?></div>
+          <div style="clear:both; margin-bottom:10px;" ></div>
+        </form>
+      </div>
+      <div id="filter" class="box_Product main_right">
+      <form id="form_productinfo" action="" method="post">
+        <input type="hidden" id="directory_tree_list" value='<?php echo strtr(json_encode($directoryTreeList), "'", "\'")?>'>
+        <input type="hidden" id="brand_list" value='<?php echo strtr(json_encode($brandTreeList), "'", "\'") ?>'>
+        <input type="hidden" id="status_list" value='<?php echo json_encode(array('1' => t('Unpublished'), '2' => t('Published'))) ?>'>
+        <input type="hidden" id="directory_list" value='<?php echo strtr(json_encode($directoryList), "'", "\'") ?>'>
+          <table style="margin-bottom:10px">
+            <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Product Name');?></td></tr>
+            <tr>
+              <td width="50%" id="sc1">
+                  <input class="txt" name="name"/>
+              </td>
+              <td width="40%"></td>
+            </tr>
+            <tr class="nohover"><td class="bold" colspan="2">商品 ID</td></tr>
+            <tr>
+              <td width="50%" id="sc1">
+                  <input class="txt" name="pid"/>
+              </td>
+              <td width="40%"></td>
+            </tr>
+            <tr class="nohover"><td class="bold" colspan="2"><?php echo t('SN');?></td></tr>
+            <tr>
+              <td width="50%" id="sc1">
+                  <input class="txt" name="sn"/>
+              </td>
+              <td width="40%"></td>
+            </tr>
+            <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Product Number');?></td></tr>
+            <tr>
+              <td width="50%" id="sc1">
+                  <input class="txt" name="number"/>
+              </td>
+              <td width="40%"></td>
+            </tr>
+            <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Product Type');?></td></tr>
+            <tr>
+              <td width="50%" id="sc1">
+                <select name="type">
+                    <option value=""></option>
+<?php foreach ($typeList as $key => $type): ?>
+                    <option value="<?php echo $key ?>"><?php echo t($type->name) ?></option>
+<?php endforeach ?>
+                  </select>
+              </td>
+              <td width="40%"></td>
+            </tr>
+
+            <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Product Dir');?></td></tr>
+            <tr><td colspan="2"><select name="directory_tid1" onchange="selectChange(this)" class="directory_tid1">
+            <option value="0">-- 请选择一级商品目录 --</option>
+<?php foreach ($directoryList as $tid1 => $term1): ?>
+            <option value="<?php echo $tid1 ?>"><?php echo t($term1->name) ?></option>
+<?php endforeach ?>
+          </select>
+          <select name="directory_tid2" onchange="selectChange(this)" class="directory_tid2">
+            <option value="0">-- 请选择二级商品目录 --</option>
+          </select>
+          <select name="directory_tid3" onchange="selectChange(this)" class="directory_tid3">
+            <option value="0">-- 请选择三级级商品目录 --</option>
+          </select>
+          <select name="directory_tid4" onchange="selectChange(this)" class="directory_tid4">
+            <option value="0">-- 请选择四级商品目录 --</option>
+          </select>
+          </td></tr>
+
+            <tr class="nohover"><td class="bold" colspan="2">品牌</td></tr>
+            <tr>
+              <td width="50%" id="sc1">
+                  <select name="brand_tid">
+                    <option value="0">-- 请选择商品品牌 --</option>
+                    <?php foreach($brandList as $v) :?>
+                    <option value="<?php echo $v->tid?>"><?php echo $v->name?></option>
+                    <?php endforeach;?>
+                  </select>
+              </td>
+              <td width="40%"></td>
+            </tr>
+
+             <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Product Price');?></td></tr>
+             <tr>
+               <td width="50%" id="sc1">
+                 <input class="littletxt" name="lowprice" width="100"/> - <input name="highprice" class="littletxt" width="100"/>
+               </td>
+               <td width="40%"></td>
+             </tr>
+
+             <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Product Status');?></td></tr>
+             <tr>
+               <td width="50%" id="sc1">
+                 <select name="status"><option value=""></option>
+                 <option value="1"><?php echo t('Published');?></option>
+                 <option value="0"><?php echo t('Unpublish');?></option>
+                 </select>
+               </td>
+               <td width="40%"></td>
+             </tr>
+
+             <tr class="nohover"><td class="bold" colspan="2"><input type="submit" value="<?php echo t('Sure');?>" class="btn"/>
+             <!-- <input type="submit" value="<?php echo t('Cancel');?>" class="btn btn_cancel"/> -->
+             </td></tr>
+           </table>
+      </form>
+      </div>
+    </div>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

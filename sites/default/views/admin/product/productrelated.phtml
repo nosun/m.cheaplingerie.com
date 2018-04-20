@@ -1,0 +1,39 @@
+<div id="related" class="box_Product main_right">
+  <div id="tabs1" style=" margin-bottom:10px;">
+    <ul style="height:28px;margin-top:10px;">
+      <li><a href="###" id="btn_list"><?php echo t('List');?></a></li>
+      <li><a href="####" id="btn_add"><?php echo t('Add');?></a></li>
+      <li><a href="###" id="btn_select"><?php echo t('Filter');?></a></li>
+    </ul>
+    <div id="list">
+            <table  id="datalist">
+              <tr class="subhead">
+                <td width="8%"><?php echo t('SN') ?></td>
+                <td width="30%"><?php echo t('Product Name') ?></td>
+                <td width="40%"></td>
+              </tr>
+  <?php
+  if(is_array($productsRelatedList) && !$isnew):
+    foreach($productsRelatedList as $key => $product):
+  ?>
+            <tr class="i<?php echo $key ?>">
+              <td><a href="javascript:;" class="related_cancel" id="a_cancel_<?php echo $product->pid ;?>" rel="<?php echo $product->pid ;?>" >&nbsp;&nbsp;&nbsp;&nbsp;</a></td>
+              <td><?php echo plain($product->name) ?></td>
+              <td>
+                <input class="isbothway" id="el-c9631-e855c" type="radio" name="isall_<?php echo $product->pid;?>" value="0" title="<?php echo $product->pid;?>" <?php if(!$product->isbothway) echo "checked";  ?> /> 单向关联&nbsp;
+                <input class="isbothway" id="el-c9631-e855b" type="radio" name="isall_<?php echo $product->pid;?>" value="1" title="<?php echo $product->pid;?>" <?php if($product->isbothway==1) echo "checked";  ?>/> 双向关联
+              </td>
+            </tr>
+  <?php
+    endforeach;
+    endif;
+  ?>
+            </table>
+    </div>
+    <div id="add" style="display:none"  style="clear:both;">
+          <iframe id="ifr_add" width="100%" height=480 name="main" id="main" frameborder="0" scrolling=no src="<?php echo url('admin/productrelated/addlist');?>"></iframe>
+    </div>
+  </div>
+</div>
+
+

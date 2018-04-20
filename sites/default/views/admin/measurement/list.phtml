@@ -1,0 +1,48 @@
+<?php
+  $this->assign('menuItem', 'product_typelist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/measurement/list') ?>">Measurement列表</a></span></li>
+		<?php if (access('measurement manage')): ?>
+		<li><span class="new"><a href="<?php echo url('admin/measurement/add') ?>">新建Measurement</a></span></li>
+		<?php endif;?>
+	</ul>
+</div>
+
+<div class="main_right">
+    <?php echo themeMessages() ?>
+    <table>
+    <tr class="subhead">
+      <td width="30%">Measurement名称</td>
+      <td width="35%">类型名称</td>
+      <td width="35%"><?php if (access(array('edit measurement', 'delete measurement'), 'or')): ?>选项<?php endif ?></td>
+    </tr>
+    <?php if (isset($measurementList)): ?>
+		<?php foreach($measurementList as $key => $measurement): ?>
+		    <tr>
+		      <td>
+		      		<?php if (access('edit measurement')): ?><a href="<?php echo url('admin/measurement/update/' . $measurement->id) ?>"><?php endif;?>
+		      		<?php echo plain($measurement->name) ?><?php if (access('edit measurement')): ?></a><?php endif;?></td>
+		      <td>
+		      		<?php if (access('edit measurement')): ?><a href="<?php echo url('admin/measurement/update/' . $measurement->id) ?>"><?php endif;?>
+		      		<?php echo plain($measurement->product_type) ?><?php if (access('edit measurement')): ?></a><?php endif;?></td>
+		      <td>
+		        <?php if (access('edit measurement')): ?>
+		        	<a href="<?php echo url('admin/measurement/update/' . $measurement->id) ?>">编辑</a>
+		        <?php endif;?>
+		        <?php if (access('delete measurement')): ?>
+		        	<a href="<?php echo url('admin/measurement/delete/' . $measurement->id) ?>" class="btn_confirm" rel="确认删除该类型吗?">删除</a>
+		        <?php endif;?>
+		      </td>
+		    </tr>
+		<?php endforeach; ?>
+	<?php endif;?>
+    </table>
+</div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

@@ -1,0 +1,68 @@
+<?php
+  $this->assign('menuItem', 'product_typelist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="basic">商品类型属性管理 - <?php echo $isnew ? t('New') : plain($type->type) ?></span></li>
+	</ul>
+</div>
+
+<div class="main_right">
+    <?php echo themeMessages() ?>
+    <form action="" method="post">
+    <table class="attribute">
+      <tr class="nohover"><td class="bold" colspan="2">类型标识 : <?php echo plain($type->type) ?></td></tr>
+      <tr class="nohover"><td class="bold" colspan="2">属性标识</td></tr>
+      <tr>
+        <td width="50%"><input name="field_name" value="<?php if (isset($field)) echo plain($field->field_name) ?>" class="txt" /> <span style="color:red">*</span></td>
+        <td width="45%">属性标识，首字符必须是字母，其余由字母或数字组成，3-32 个字符，新建后不可修改</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">属性名称</td></tr>
+      <tr>
+        <td><input name="name" value="<?php if (isset($field)) echo plain($field->name) ?>" class="txt" /> <span style="color:red">*</span></td>
+        <td>属性名称</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">属性类型</td></tr>
+      <tr>
+        <td><select name="field_type">
+<?php foreach ($fieldType as $key => $name): ?>
+          <option value="<?php echo $key ?>"<?php if (isset($field) && $field->field_type == $key) echo ' selected="selected"' ?>><?php echo t($name) ?></option>
+<?php endforeach ?>
+        </select></td>
+        <td>属性字段类型，新建后不可修改</td>
+      </tr>
+      <tr>
+        <td class="bold"><label style="color:#333"><input type="checkbox" name="required"<?php if (isset($field) && isset($field->required) && $field->required) echo ' checked="checked"' ?> /> 必填</label></td>
+        <td>必填属性</td>
+      </tr>
+      <tr>
+        <td class="bold"><label style="color:#333"><input type="checkbox" name="indexed"<?php if (isset($field) && isset($field->indexed) && $field->indexed) echo ' checked="checked"' ?> /> 索引</label></td>
+        <td>是否索引属性</td>
+      </tr>
+      <tr>
+        <td class="bold"><label style="color:#333"><input type="checkbox" name="multiple"<?php if (isset($field) && isset($field->multiple) && $field->multiple) echo ' checked="checked"' ?> /> 包含多值</label></td>
+        <td>设置该属性是否包含多个值，新建后不可修改</td>
+      </tr>
+      <tr>
+        <td class="bold"><label style="color:#333"><input type="checkbox" name="valued"<?php if (isset($field) && isset($field->valued) && $field->valued) echo ' checked="checked"' ?> /> 包含价格</label></td>
+        <td>属性值是否包含价格设置，新建后不可修改</td>
+      </tr>
+      <tr>
+        <td class="bold"><label style="color:#333"><input type="checkbox" name="is_spec"<?php if (isset($field) && isset($field->is_spec) && $field->is_spec) echo ' checked="checked"' ?> /> Specification</label></td>
+        <td>是否为Specification属性，如果为是将出现在产品的Specifications介绍中</td>
+      </tr>
+      <tr class="noborder nohover" style="border-bottom:0px solid red;">
+        <td colspan="2">
+          <input type="submit" value="提交" class="Buttom_3 but" />
+          <a href="<?php echo url('admin/product/typeedit/' . $type->type) ?>" class="Buttom_4b">返回</a>
+        </td>
+      </tr>
+    </table>
+    </form>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

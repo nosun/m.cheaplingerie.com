@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<?php $this->render('parts/before_body.phtml'); ?>
+<body>
+<?php global $user; ?>
+<?php $this->render('parts/top_bar.phtml');?>
+<div class="container">
+<?php $this->render('parts/header.phtml'); ?>
+<div class="main-content">
+<div class="general article">
+
+<div class="main-block2">
+
+<div class="widget">
+<div class="w-head">
+<h2>503 Service Unavailable</h2>
+</div>
+<div class="w-content">
+
+
+<?php if ($debug): ?>
+    <p><?php echo $ex->getMessage();?></p>
+<?php
+  $query = $ex->getQuery();
+  if (!empty($query)):
+?>
+    <p><label>SQL</label> : <?php echo plain($query) ?></p>
+  <?php endif;?>
+<?php else:
+	if(startsWith($ex->getMessage(), 'Access denied for user ') &&(!isset($_SESSION['no_repeat']) || $_SESSION['no_repeat'] == false)):
+		$_SESSION['no_repeat'] = true;
+		gotoUrl($ex->getUri());
+	else:
+		$_SESSION['no_repeat'] = false;
+	endif;
+endif;?>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<div id="copyright">
+<span class="floatleft">
+           	<?php $siteInfo = Bl_Config::get('siteInfo');echo $siteInfo['copyright'];?>
+        </span>
+</div>
+</div>
+</body>
+<?php echo $this->render('parts/after_body.phtml'); ?>
+</html>

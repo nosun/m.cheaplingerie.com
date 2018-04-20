@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+	<div class="head">
+		<?php echo $this->render("parts/header.phtml"); ?>
+	</div>
+
+	<h2 class="classh2">My Account</h2>
+	<div class="col-box" style="margin-top:0">
+		<h3 class="classh3">Orders</h3>
+		<ul class="no-collapse-btn-grp no-collapse-light">
+			<li class="grp-item">
+				<a href="<?php echo url('user/myorders'); ?>" class="title">My Orders</a>
+				<span class="p-arrow"></span>
+			</li>
+		</ul>
+		
+		<h3 class="classh3">Wish List</h3>
+		<ul class="no-collapse-btn-grp no-collapse-light">
+			<li class="grp-item">
+				<a href="<?php echo url('user/wishlist'); ?>" class="title">My Wish List</a>
+				<span class="p-arrow"></span>
+			</li>
+		</ul>
+		
+		<h3 class="classh3">Account Settings</h3>
+		<ul class="no-collapse-btn-grp no-collapse-light">
+			<li class="grp-item">
+				<a href="<?php echo url('user/userinfoedit'); ?>" class="title">Personal Information</a>
+				<span class="p-arrow"></span>
+			</li>
+			
+			<li class="grp-item">
+				<a href="<?php echo url('user/myaddressbook'); ?>" class="title">Manage Address Book</a>
+				<span class="p-arrow"></span>
+			</li>
+			
+			<li class="grp-item">
+				<a href="<?php echo url('user/changepwd'); ?>" class="title">Change Password</a>
+				<span class="p-arrow"></span>
+			</li>
+		</ul>
+	</div>
+	<a class="back_to_top" href="#">
+		<span></span><br/>TOP OF PAGE
+	</a>
+	<div class="foot">
+		<?php echo $this->render('parts/footer.phtml'); ?>
+	</div>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

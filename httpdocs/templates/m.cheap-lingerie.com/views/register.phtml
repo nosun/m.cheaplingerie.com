@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+	<div class="sign_regist_head"><a href="/"><img src="<?php echo $tpldir; ?>/images/ad_head.png"></a></div>
+	<?php echo themeMessages(); ?>
+		<div class="sign_regist">
+            <div class="new">
+                <div class="messages" style="display:none">
+            </div>
+                <form action="<?php echo url('user/register');?>" method="post" autocomplete="off" name="regForm" onsubmit="javascript:return checkRegister()" class="FormCreate">
+                <h1>Register</h1>
+				<h2 class="sign_regist_h2">User Name<span>*</span>:</h2>
+                <input type="text"  name="username"<?php if (isset($_POST['username'])) echo ' value="' . $_POST['username'] . '"' ?> class="sign_regist_input"/>
+                <h2 class="sign_regist_h2">E-mail<span>*</span></h2> 
+                <input type="text" name="email"<?php if (isset($_POST['email'])) echo ' value="' . $_POST['email'] . '"' ?> class="sign_regist_input"/>
+				<h2 class="sign_regist_h2">Password<span>*</span></h2>
+				<input name="password"  class="sign_regist_input" type="password"/>
+				<h2 class="sign_regist_h2">Confirm Password<span>*</span>:</h2>
+				<input name="confirm_password" class="sign_regist_input" type="password"/>
+                <button type="submit" class="regist_button" value="" onclick="return checkRegister();">Register</button>
+                </form>
+                </div>
+		<div class="foot">
+		<div class="di"><p class="ditu">CopyRight © Cheap-Lingerie.com</p></div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$('.sign_regist_input').click(function(){
+			$('input').removeClass('aaa');
+			$(this).addClass('aaa');
+		});
+   </script>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

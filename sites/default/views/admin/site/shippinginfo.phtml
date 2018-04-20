@@ -1,0 +1,32 @@
+<?php
+  $this->assign('menuItem', 'site_shipping');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/site/shippingList') ?>"> 配送方式表</a></span></li>
+		<li><span class="basic">编辑配送方式</span></li>
+	</ul>
+</div>
+
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <div class="main_title">配送管理</div>
+    <?php echo themeMessages() ?>
+    <form action="" method="post">
+	    <table>
+	      <tr><td width="20%">配送名称（前台显示）</td><td width="70%"><input name="name_f" value="<?php echo isset($config['name_f']) ? $config['name_f'] : null ?>"></td></tr>
+	      <tr><td>配送描述（前台显示）</td><td><textarea name="descripe_f" class="normalXheditor"><?php echo isset($config['descripe_f']) ? stripslashes($config['descripe_f']) : null ?></textarea></td></tr>
+	      <tr><td>排序</td><td width="70%"><input name="weight" value="<?php echo isset($config['weight']) ? $config['weight'] : 0; ?>">&nbsp;从大到小</td></tr>
+	      <tr><td colspan="2"><input type="submit" value="保存"></td></tr>
+	    </table>
+    </form>
+  </div>
+   
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>
+  

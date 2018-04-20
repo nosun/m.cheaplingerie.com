@@ -1,0 +1,68 @@
+<div class="lmr" item-id="<?php echo $product->upid; ?>">
+				<div class="amy_left"><img src="<?php echo urlimg('210x320', $product->filepath); ?>"></div>
+				<div class="amy_middle">
+					<a href="<?php echo url(($product->path_alias !== '' ? $product->path_alias : $product->pid).'-p'.$product->sn . '.html'); ?>">
+						<p><?php echo $product->name; ?></p>
+						<p><span><?php echo c($product->sell_price); ?></span></p>
+						<?php $data = unserialize($product->data); ?>
+						<?php if(isset($data['Color'])): ?>
+							<?php if(strstr($data['Color'], "As Picture")): ?>
+								<p>Color:<?php echo substr($data['Color'], 0, strpos($data['Color'], ':')); ?></p>
+								<p class="my_hui"><img src="<?php echo urlimg('210x320', substr($data['Color'], strpos($data['Color'], ':') + 1))?>" /></p>
+							<?php else: ?>
+								<p>Color:<?php echo $data['Color']; ?></p>
+							<?php endif; ?>
+						<?php endif; ?>
+						<?php if( (isset($data['Size'])) && ($data['Size'] == 'custom')): ?>
+							<p>Size:Custom Measurements</p>
+							<p class="my_hui">Bust (Inch): <?php echo $data['Bust (Inch)']; ?> inch</p>
+							<p class="my_hui">Waist (Inch): <?php echo $data['Waist (Inch)']; ?> inch</p>
+							<p class="my_hui">Hips (Inch): <?php echo $data['Hips (Inch)']; ?> inch</p>
+							<p class="my_hui">Hollow to Floor (Inch): <?php echo $data['Hollow to Floor (Inch)']; ?> inch</p>
+							<p class="my_hui">Height (Inch): <?php echo $data['Height (Inch)']; ?> inch</p>
+						<?php else: ?>
+							<p>Size:<?php echo $data['Size']; ?></p>
+						<?php endif; ?>
+						<?php if(isset($data['Belt Color'])): ?>
+							<p>Belt Color:<?php echo $data['Belt Color']; ?></p>
+						<?php endif; ?>
+						<?php if($product->inCart): ?>
+							<p>
+								<img src="<?php echo $tpldir; ?>/images/my-dui.png" />
+								<font>Added to Cart</font>
+							</p>
+						<?php endif; ?>
+					</a>
+	            </div>
+	            <div class="amy_right">
+	            	<a href="<?php echo url(($product->path_alias !== '' ? $product->path_alias : $product->pid).'-p'.$product->sn . '.html'); ?>">
+	            		<img src="<?php echo $tpldir; ?>/images/arrow-r.png">
+	            	</a>
+	            </div>
+	            <div class="clear"></div>
+	            <div class="my_dea">
+	            	<input type="tel" class="text-default" style="display: none" />
+	                <button class="btn-default btn-num" style="float: left">
+	                    <span class="num"><?php echo $product->qty; ?></span>
+	                    <img src="<?php echo $tpldir; ?>/images/up-down.png" alt="">
+	                </button>
+	                <a href="<?php echo url('user/deletefromwishlist/'.$product->pid); ?>">
+	                	<button class="btn-default" style="width:29%;">Delete</button>
+	                </a>
+	                <?php if($product->inCart): ?>
+	                	<a href="<?php echo url('cart/mobilecheckout/' . $cart_items); ?>"><button class="btn-red btn-red-high"">Proceed to Pay</button></a>
+	                <?php else: ?>
+	                	<button class="btn-red btn-red-high" type="button" id="addtocart<?php echo $product->upid; ?>" wishid="<?php echo $product->upid; ?>">Add to Cart</button>
+	                	<form action="<?php echo url('user/movewishtocart'); ?>" method="post" id="addtocartform<?php echo $product->upid; ?>">
+	                		<input type="hidden" name="wishid" value="<?php echo $product->upid; ?>" />
+	                		<input type="hidden" name="qty" value="<?php echo $product->qty; ?>" id="qty<?php echo $product->upid; ?>" />
+	                	</form>	
+	                	<script>
+		                	$("button[id^='addtocart']").click(function(){
+								var wishid = $(this).attr('wishid');
+								$("#addtocartform" + wishid).submit();
+							});
+	                	</script>
+	                <?php endif; ?>
+	            </div>
+	        </div>

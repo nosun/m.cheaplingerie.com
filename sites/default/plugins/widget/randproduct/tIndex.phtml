@@ -1,0 +1,40 @@
+<?php
+$this->assign('menuItem', 'site_widget');
+$this->render('admin/before_body.phtml');
+$this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+<ul>
+	<li><span class="check"><a href="<?php echo url('admin/site/widgetlist') ?>">插件列表</a></span></li>
+	<li><span class="check"><a href="<?php echo url('admin/site/widgetedit/randproduct/index') ?>">商品随机上下架</a></span></li>
+	<li><span class="check"><a href="<?php echo url('admin/site/widgetedit/randproduct/auto') ?>">自动随机上下架</a></span></li>
+</ul>
+
+</div>
+<div class="main_right" style="margin-left: 10px; margin-top: 5px;"><?php echo themeMessages() ?>
+<form action="" method="post">
+<table id="mailSubscribe">
+	<tr class="nohover">
+		<td colspan="2"><br>
+
+			要上架或下架的商品条数：
+			<input name="op_num" type="text" value="5" size="5">
+			<input type="radio" name="todo" value="up" checked="checked">上架
+			<input type="radio" name="todo" value="down">下架
+			<input type="submit" class="btn1" value="确定">
+		<br><br></td>
+	</tr>
+
+	<tr class="nohover">
+		<td>
+			<input type="button" class="btn1" value="查看历史">
+		</td>
+	</tr>
+</table>
+</form>
+</div>
+<?php
+$this->render('admin/footer.phtml');
+$this->render('admin/after_body.phtml');
+?>

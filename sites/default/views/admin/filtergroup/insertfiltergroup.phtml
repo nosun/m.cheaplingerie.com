@@ -1,0 +1,32 @@
+<?php
+  $this->assign('menuItem', 'product_typelist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/filtergroup/getlist') ?>">过滤选项组管理</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right">
+    <?php echo themeMessages() ?>
+    <form action="" method="post">
+    <table class="attribute">
+      <tr class="nohover"><td class="bold" colspan="2">过滤选项组名称 :</td></tr>
+      <tr class="nohover">
+          <td colspan="2"><input name="filter_group_name" id="filter_group_name"></td>
+      </tr>
+      <tr class="noborder nohover" style="border-bottom:0px solid red;">
+        <td colspan="2">
+          <input type="submit" value="新建" class="Buttom_3 but" />
+          <a href="<?php echo url('admin/filtergroup/getlist') ?>" class="Buttom_4b">返回列表</a>
+        </td>
+      </tr>
+    </table>
+    </form>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

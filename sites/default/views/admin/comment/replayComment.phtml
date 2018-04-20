@@ -1,0 +1,57 @@
+<?php
+  $this->assign('menuItem', 'comment_commonadd');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+  <ul>
+    <li><span class="check"><a href="<?php echo url('admin/comment/getList') ?>">评论管理</a></span></li>
+    <li><span class="basic"><?php echo $commentInfo->subject; ?> - 回复评论</span></li>
+  </ul>
+</div>
+
+ <div class="main_right" style="margin-top:5px; margin-left:5px;">
+   <?php echo themeMessages() ?>
+    <form action="<?php  echo url('admin/comment/replay/'.$cid); ?>" method="POST">
+    <table>
+
+      <tr class="nohover"><td class="bold" colspan="2">回复标题</td></tr>
+      <tr>
+        <td width="50%">
+<?php if (isset($replay->subject)): ?>
+          <input name="subject" value="<?php echo $replay->subject;?>" size="60" /> <span style="color: #FF0000;">*</span>
+<?php else: ?>
+          <input name="subject" value="<?php echo 'RE: '.$commentInfo->subject;?>" size="60" /> <span style="color: #FF0000;">*</span>
+<?php endif; ?>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">回复内容</td></tr>
+      <tr>
+        <td width="50%">
+<?php if (isset($replay->comment)): ?>
+          <textarea name="comment" cols="100" rows="5"/><?php echo $replay->comment; ?></textarea>
+<?php else: ?>
+          <textarea name="comment" cols="100" rows="5"/></textarea>
+<?php endif; ?>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="noborder nohover">
+        <td class="noborder" colspan="2" style="border:0px;">
+          <input type="submit" value="回复" class="btn">
+          <input type="button" class="Buttom_4 btn btn_cancel" value="取消">
+        </td>
+      </tr>
+
+    </table>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

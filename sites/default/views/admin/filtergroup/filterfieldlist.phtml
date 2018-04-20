@@ -1,0 +1,113 @@
+<?php
+  $this->assign('menuItem', 'product_typelist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/filtergroup/getlist') ?>">过滤选项组管理</a></span></li>
+		<li><span class="basic"><a href="<?php echo url('admin/filtergroup/insert/'); ?>">新建过滤选项组</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right">
+    <?php echo themeMessages() ?>
+    <table class="attribute">
+      <tr class="nohover"><td class="bold" colspan="2">过滤选项组名称 : <?php echo $filterGroup->name ?></td></tr>
+      <tr class="nohover"><td class="bold" colspan="2">过滤属性列表</td></tr>
+      <tr class="nohover">
+          <td colspan="2">
+      	      <table>
+      	          <tr class="subhead">
+      	              <td width="10%">属性标识</td>
+                      <td width="15%">属性名称</td>
+                      <td width="15%">属性类型</td>
+                      <td width="15%">属性值类型</td>
+                      <td width="20%">属性值</td>
+                      <td width="25%">选项</td>
+      	          </tr>
+      	          <?php if (isset($filterGroup->filter_fields)) :?>
+      	             <?php foreach ($filterGroup->filter_fields as $filter_field) :?>
+      	                 <tr>
+      	                     <td><a href="<?php echo url('admin/filtergroup/editfilterfield/' . $filter_field->id); ?>"><?php echo plain($filter_field->attr_name); ?></a></td>
+      	                     <td><a href="<?php echo url('admin/filtergroup/editfilterfield/' . $filter_field->id); ?>"><?php echo plain($filter_field->name); ?></a></td>
+      	                     <td>
+      	                         <?php
+      	                             /**
+      	                              * @todo 这个将来需要放到数据库里面去管理
+      	                              */
+      	                             switch ($filter_field->attr_type)
+      	                             {
+      	                             	case TypeFilterField_Model::ATTR_TYPE_SELF:
+      	                             		echo "基本属性";
+      	                             		break;
+      	                             	case TypeFilterField_Model::ATTR_TYPE_MULTI:
+      	                             		echo "扩展属性";
+      	                             		break;
+      	                             	case TypeFilterField_Model::ATTR_TYPE_TAG:
+      	                             		echo "Tag Terms";
+      	                             		break;
+      	                             	case TypeFilterField_Model::ATTR_TYPE_RECOMMENED:
+      	                             		echo "Recommend Terms";
+      	                             		break;
+      	                             	case TypeFilterField_Model::ATRR_TYPE_BRAND:
+      	                             	    echo "Brand";
+      	                             	    break;
+      	                             	default:
+      	                             		break;
+      	                             }
+      	                         ?>
+      	                     </td>
+      	                     <td>
+      	                         <?php
+	      	                         switch ($filter_field->value_type)
+	      	                         {
+	      	                         	case TypeFilterField_Model::ATTR_VALUE_TYPE_SCALAR:
+	      	                         		echo "数值";
+	      	                         		break;
+	      	                         	case TypeFilterField_Model::ATTR_VALUE_TYPE_ENUM:
+	      	                         		echo "枚举";
+	      	                         		break;
+	      	                         	default:
+	      	                         		break;
+	      	                         } 
+      	                         ?>
+      	                     </td>
+      	                     <td>
+      	                         <?php
+      	                             $values = unserialize($filter_field->values);
+      	                             foreach ($values as $key => $value)
+      	                             {
+      	                             	if (!is_int($key))
+      	                             	{
+      	                             	   echo $key . ':' . $value . '<br/>';
+      	                             	}
+      	                             	else
+      	                             	{
+      	                             		echo $value . '<br/>';
+      	                             	}
+      	                             } 
+      	                         ?>
+      	                     </td>
+      	                     <td>
+      	                         <a href="<?php echo url('admin/filtergroup/editfilterfield/' . $filter_field->id); ?>">编辑属性</a>
+      	                         <a href="<?php echo url('admin/filtergroup/deletefilterfield/' . $filter_field->id); ?>" onclick="javascript:return confirm('确定要删除过滤属性<?php echo $filter_field->name?>吗?');">删除属性</a>
+      	                     </td>
+      	                 </tr>
+      	             <?php endforeach; ?>
+      	          <?php endif; ?>
+      	      </table>
+      	      <div><a href="<?php echo url('admin/filtergroup/addfilterfield/' . $filterGroup->id); ?>">新建过滤选项</a></div>
+      	  </td>
+      </tr>
+      <tr class="noborder nohover" style="border-bottom:0px solid red;">
+        <td colspan="2">
+          <a href="<?php echo url('admin/filtergroup/getlist') ?>" class="Buttom_4b">返回</a>
+        </td>
+      </tr>
+    </table>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

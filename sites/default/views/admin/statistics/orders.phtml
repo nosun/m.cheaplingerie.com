@@ -1,0 +1,35 @@
+<?php
+  $this->assign('menuItem', 'statistics_customers');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+  <ul>
+    <li><span class="basic"><a href="">订单统计</a></span></li>
+  </ul>
+</div>
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="POST">
+    <table class="allborder">
+      <tr>
+        <td>开始时间 <input class=" datetimepicker" name="startTime" value="<?php if ($startTime) echo date('Y-m-d H:i:s', $startTime)?>"> 
+        结束时间 <input class=" datetimepicker" name="endTime" value="<?php if ($endTime) echo date('Y-m-d H:i:s', $endTime)?>"><input type="submit"></td>
+      </tr>
+      <tr><td >
+                订单总数：<?php echo isset($orders[0]) ? $orders[0] : 0?></td></tr>
+        <tr><td > 订单总金额：<?php echo isset($amount[0]) ? $amount[0] : 0?></td></tr>
+         <tr><td >匿名会员订单总金额：<?php echo isset($amount[1]) ? $amount[1] : 0?></td></tr>
+        <tr><td >支付成功订单总金额：<?php echo isset($amount[2]) ? $amount[2] : 0?></td></tr>
+    </table>
+    </form>
+    <br>
+
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

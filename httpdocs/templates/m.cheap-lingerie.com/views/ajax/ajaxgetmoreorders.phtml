@@ -1,0 +1,36 @@
+<?php if($ordersList): ?>
+	<?php foreach($ordersList as $k => $v): ?>
+		<?php if($v->status > -1): ?>
+			<div class="my_order" <?php if($isfirst){echo 'style="margin-top: 0;"';}?>>
+				<div class="my_adr">
+					<div class="my_head">
+						<span class="adr_num"><?php echo isset($v->number)? $v->number : null;?> (<?php echo count($v->items); ?> items)</span>
+						<?php $tstatus = ""; ?>
+						<?php if($v->status==0): $tstatus = 'Pending';
+							  elseif($v->status==1): $tstatus = 'Processing';
+							  elseif($v->status==2): $tstatus = 'Completed';
+							  elseif($v->status==-1): $tstatus = 'Cancelled';
+							  elseif($v->status==-2): $tstatus = 'Cancelled';
+							  endif;?>
+						<span class="red_span"><?php echo $tstatus; ?></span>
+					</div>
+					<?php foreach($v->items as $item): ?>
+						<div class="lmr">
+							<div class="adr_left"><img src="<?php echo urlimg("118x178", $item->filepath)?>"></div>
+							<div class="my_right"><?php echo strwidth($item->name, 40); ?></div>
+						</div>
+					<?php endforeach; ?>
+					<div class="col-box">
+						<a href="<?php echo url('order/remove/' . $v->oid); ?>">
+							<button class="btn-default">Delete</button>
+						</a>
+						<a href="<?php echo url('order/info').$v->oid; ?>">
+							<button class="btn-default">View</button>
+						</a>
+					</div>
+				</div>
+			</div>
+			<?php $isfirst = false; ?>
+		<?php endif; ?>
+	<?php endforeach; ?>
+<?php endif; ?>

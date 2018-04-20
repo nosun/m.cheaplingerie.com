@@ -1,0 +1,81 @@
+<?php
+  $this->assign('menuItem', 'site_mailsetting');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="basic"><a href="<?php echo url('admin/site/mailsetting') ?>">邮件设置</a></span></li>
+	</ul>
+</div>
+
+
+<div class="main_right" style="margin-left:10px;margin-top:10px;">
+    <div class="main_title">邮件设置</div>
+    <?php echo themeMessages() ?>
+    <form action="" method="POST">
+
+    <table>
+      <tr><td colspan="2">
+        <select id="settingName" name="settingName" class="select ispost">
+          <option value="userRegisterEmail" <?php if ($settingName == 'userRegisterEmail') echo 'selected'?>>用户注册邮件</option>
+          <option value="orderTradingEmail" <?php if ($settingName == 'orderTradingEmail') echo 'selected'?>>新订单提醒邮件</option>
+          <option value="orderTailoringEmail" <?php if ($settingName == 'orderTailoringEmail') echo 'selected'?>>订单开始裁剪邮件</option> 
+          <option value="orderCancelEmail" <?php if ($settingName == 'orderCancelEmail') echo 'selected'?>>订单取消邮件</option>
+          <option value="deliverGoodsEmail" <?php if ($settingName == 'deliverGoodsEmail') echo 'selected'?>>发货通知邮件</option>
+          <option value="orderPayEmail" <?php if ($settingName == 'orderPayEmail') echo 'selected'?>>支付通知邮件</option>
+          <option value="getPasswordEmail" <?php if ($settingName == 'getPasswordEmail') echo 'selected'?>>找回密码邮件</option>
+          <option value="orderShippingNoEmail" <?php if($settingName == 'orderShippingNoEmail') echo 'selected'?>>物流单号通知邮件</option>
+        </select>
+      </td></tr>
+      <tr>
+        <td width="50%">
+          <input id="el-c9631-e855c" type="radio" name="status" value="1" <?php if($emailSetting['status'] == 1) echo "checked";  ?>/> <label for="el-c9631-e855c">开启</label>
+          <input id="el-c9631-e855b" type="radio" name="status" value="0" <?php if($emailSetting['status'] == 0) echo "checked";  ?>/> <label for="el-c9631-e855b">关闭</label>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+<!-- added by pzzhang: adding settings for mail forwarding -->
+      <tr>
+        <td width="50%">
+          <input id="mailforward1" type="radio" name="ccadmin" value="1" <?php if($emailSetting['ccadmin'] == 1) echo "checked";  ?>/> <label for="mailforward1">抄送管理员</label>
+          <input id="mailforward2" type="radio" name="ccadmin" value="0" <?php if($emailSetting['ccadmin'] == 0) echo "checked";  ?>/> <label for="mailforward2">不抄送管理员</label>
+        </td>
+        <td width="40%"></td>
+      </tr>
+<!-- end of added by pzzhang. -->
+      
+      
+      <tr class="nohover"><td class="bold" colspan="2">邮件标题</td></tr>
+      <tr>
+        <td width="50%">
+          <input type="text" name="title" class="txt" value="<?php echo $emailSetting['title']?>" />
+        </td>
+        <td width="40%"></td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">内容格式</td></tr>
+      <tr>
+        <td width="50%">
+          <input id="el-c9631-e855e" type="radio" name="type" value="html" <?php if($emailSetting['type'] == 'html') echo "checked";  ?>/> <label for="el-c9631-e855e">html</label>
+          <input id="el-c9631-e855f" type="radio" name="type" value="txt" <?php if($emailSetting['type'] == 'txt') echo "checked";  ?>/> <label for="el-c9631-e855f">txt</label>
+        </td>
+        <td width="40%"></td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">邮件内容</td></tr>
+      <tr>
+        <td colspan="2"><textarea name="content" class="xheditor" rows="20"><?php if (isset($emailSetting)) echo stripslashes($emailSetting['content']) ?></textarea></td>
+      </tr>
+    </table>
+
+    <div class="main_bottom_deal">
+      <input type="submit" value="保存" class="btn">
+    </div>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

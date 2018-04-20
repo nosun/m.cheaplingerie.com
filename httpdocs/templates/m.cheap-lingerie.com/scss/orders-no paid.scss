@@ -1,0 +1,85 @@
+.no_paid{
+  width:91%;
+  padding:0 4.5%;
+ .adr{
+   margin-top:1rem;
+   border:1px solid #929394;
+   border-radius: 5px;
+   .adr_head{
+     font:1.2rem/2rem 'arial';
+     color:#333333;
+     padding:1rem;
+     background: #f1f1f1;
+     border-top-left-radius: 5px;
+     border-top-right-radius: 5px;
+     .red_span{
+       color:#c01920;
+       display: inline-block;
+       float: right;
+     }
+   }
+   .lmr{
+     width:100%;
+     margin-top:1rem;
+     padding-bottom: 5px;
+     border-bottom: 1px solid #dddddd;
+     .adr_left{
+       float: left;
+       width:16%;
+       margin-left:0.5rem;
+       border:1px solid #989999;
+       img{
+         width:100%;
+       }
+     }
+     .adr_middle{
+       float:left;
+       width:56%;
+       font:1rem/1.3rem 'arial';
+       margin-left:1rem;
+       .cus_mea{
+         color:#666666;
+         margin-left:2.2rem;
+       }
+       .picture{
+         margin-top:0.5rem;
+         margin-left:2.8rem;
+         width:20%;
+         img{
+           width:100%;
+         }
+       }
+     }
+     .adr_right{
+       float:left;
+       font:1.3rem 'arial';
+       text-align: right;
+       .price{
+         font:1.3rem 'arial';
+         font-weight: bold;
+
+       }
+     }
+   }
+   .address_content{
+     padding:1rem;
+     font:1.3rem/2rem 'arial';
+     .address_name{
+       font-weight: bold;
+     }
+   }
+ }
+}
+.xian{
+  border-bottom:1px solid #dddddd;
+  width:100%;
+  margin-top:1rem;
+}
+.cart_shipping_total{
+  padding:2% 6% 0;
+  font:1.3rem/2rem 'arial';
+  text-align: right;
+  span{
+    color:red;
+  }
+}

@@ -1,0 +1,47 @@
+<?php
+  $this->assign('menuItem', 'product_productslist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/product/list') ?>">商品列表</a></span></li>
+		<li><span class="basic"><?php echo t('Batch Add Tag') ?></span></li>
+	</ul>
+</div>
+
+<div>
+    <?php echo themeMessages() ?>
+    
+    <div class="clear left_photo" id="tabs">
+    	<div class="clear tab_ul">
+	      	<ul>
+	        	<li><a href="#base"><?php echo t('Base information') ?></a></li>
+	      	</ul>
+      	</div>
+      	<div id="base" class="box_Product main_right">
+	      	<table>
+	        	<tr class="nohover">
+	        		<td class="bold" style="width:80px">Terms Name:</td>
+	        		<td>
+	        			<form action="" method="post">
+	        				<input name="terms_name" style="display:inline-block;width:200px;">
+	        				<div class="attribute" style="margin-left:30px;display:inline;">
+	        					<input type="submit" value="Search" class="Buttom_1 but" />
+	        				</div>
+	        			</form>
+	        		</td>
+	        	</tr>
+	        	<tr>
+	          		<td colspan="2">
+	          		<textarea name="product_sn_list" rows="20" cols="10"><?php if(!empty($productSnList)){echo trim(implode("\n", array_keys($productSnList)));}?></textarea>
+	          		</td>
+	        	</tr>
+	      	</table>
+		</div>
+    </div>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

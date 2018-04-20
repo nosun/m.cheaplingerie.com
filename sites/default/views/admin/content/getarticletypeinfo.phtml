@@ -1,0 +1,96 @@
+<?php
+  $this->assign('menuItem', 'content_article_type');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/content/getArticleTypeList') ?>">文章分类管理</a></span></li>
+		<li><span class="basic"> <?php if (isset($articleTypeInfo->atid)) echo '编辑分类词 - '.plain($articleTypeInfo->name); else echo '新增分类词'; ?> </span></li>
+	</ul>
+</div>
+<div id="article_type">
+	<div class="clear left_photo" id="tabs">
+		<?php echo themeMessages() ?>
+	      <div class="clear tab_ul">
+		      <ul>
+		        <li><a href="#base">基本信息</a></li>
+		        <li><a href="#pagevariables">页面信息</a></li>
+		      </ul>
+	      </div>
+	      
+	  <form action="" method="POST" enctype="multipart/form-data"> 
+		<div id="base" class="box_Product main_right">
+	    <input type="hidden" name="atid" value="<?php echo isset($articleTypeInfo->atid) ? $articleTypeInfo->atid : 0; ?>"/>
+	    <table>
+	      <tr class="nohover"><td class="bold" colspan="2">分类名称</td></tr>
+	      <tr><td width="50%"><input value="<?php echo isset($articleTypeInfo->name) ? $articleTypeInfo->name : null; ?>" name="name" id="page_title" maxlength="32" class="txt non-empty" title="分类名称不能为空" /> <span style="color:red;">*</span></td>
+	      <td width="40%"></td></tr>
+	      
+	      <tr class="nohover"><td class="bold" colspan="2">上级分类</td></tr>
+	      <tr><td width="50%">
+	      <select name="parent" id="article_category">
+	                  <option value="0"></option>
+	<?php foreach ($articletypes as $k => $v):?>
+	<?php if ($v->parent == 0 && $v->atid != $articleTypeInfo->atid) :?>
+	                  <option value="<?php echo isset($v->atid) ? $v->atid : 0?>"<?php if($v->atid == $parent) echo 'selected'?>><?php echo isset($v->allname) ? $v->allname : null?></option>
+	<?php endif;?>
+	<?php endforeach;?>
+	      </select>
+	      </td>
+	      <td width="40%"></td></tr>
+	      
+	      <tr class="nohover"><td class="bold" colspan="2">分类标识</td></tr>
+	      <tr><td width="50%"><input value="<?php echo isset($articleTypeInfo->type_id) ? $articleTypeInfo->type_id : null; ?>" id="article_type_id"  name="type_id" maxlength="32" class="txt non-empty" title="分类标识不能为空" /> <span style="color:red;">*</span></td>
+	      <td width="40%"></td></tr>
+	      
+	      <tr class="nohover"><td class="bold" colspan="2">页面别名</td></tr>
+	      <tr><td width="50%"><input value="<?php echo isset($articleTypeInfo->path_alias) ? $articleTypeInfo->path_alias : null; ?>"  id="path_alias"  name="path_alias" maxlength="32" class="txt non-empty" title="页面别名不能为空" /> <span style="color:red;">*</span></td>
+	      <td width="40%"></td></tr>
+	      
+	<?php if (isset($articleTypeInfo->parent) && !$articleTypeInfo->parent) :?>
+	      <tr class="nohover"><td class="bold" colspan="2">
+	                   下级分类词数目
+	      </td></tr>
+	      <tr>
+	        <td width="50%"><input value="<?php echo isset($articleTypeInfo->typecount) ? $articleTypeInfo->typecount : 0; ?>" disabled="disabled" class="txt" /></td>
+	        <td width="40%">该分类的下级分类的数目</td>
+	      </tr>
+	<?php endif;?>
+	      
+	      <tr class="nohover"><td class="bold" colspan="2">
+	                  文章数目
+	      </td></tr>
+	      <tr>
+	        <td width="50%"><input value="<?php echo isset($articleTypeInfo->count) ? $articleTypeInfo->count : 0; ?>" disabled="disabled" class="txt" /></td>
+	        <td width="40%">该分类以及下级分类下的文章数目</td>
+	      </tr>
+	    </table>
+	    
+	  </div>
+		<div id="pagevariables" class="box_Product main_right">
+			<table  style="margin-bottom:10px">
+				<?php echo $this->render('admin/site/page_variables.phtml');?>
+			</table>
+		</div>
+		<div class="div_btn_bottom">
+			<table width="100%" cellpadding="0" cellspacing="0" border="0" class="attribute" style="margin-top:10px;">
+                  <tr>
+                    <td>
+                       <input type="hidden" name="terms_json" id="terms_json" value='<?php echo isset($articletypes) ? strtr(json_encode($articletypes), "'", "\'") : '{}'; ?>'>
+			          <input type="submit" value="提交" class="btn" />&nbsp;
+			          <input type="button" value="取消" class="btn btn_cancel" />
+                    </td>
+                  </tr>
+                </table>
+    	</div>
+	  </form>	
+	</div>
+</div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>
+  

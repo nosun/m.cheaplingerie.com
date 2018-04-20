@@ -1,0 +1,57 @@
+<!--change languate-->
+<div class="col-box">
+	<span class="change">Change Language</span>
+	<div class="common-select">
+		<select>
+			<option value="">English</option>
+		</select>
+		<span class="se-arrow"></span>
+	</div>
+</div>
+
+<div class="col-box">
+	<span class="change">Change Currency</span>
+	<div class="common-select">
+		<select>
+			<option value="">US Dollar</option>
+		</select>
+		<span class="se-arrow"></span>
+	</div>
+</div>
+
+<div class="col-box">
+	<ul class="no-collapse-btn-grp">
+		<?php global $user; ?>
+		<?php if($user->uid): ?>
+			<li class="grp-item">
+				<a href="<?php echo url('user/logout'); ?>" class="title">Log out</a>
+				<span class="p-arrow"></span>
+			</li>
+			<li class="grp-item">
+				<a href="<?php echo url('user/wishlist'); ?>" class="title">My Wish List</a>
+				<span class="p-arrow"></span>
+			</li>
+		<?php else: ?>
+			<li class="grp-item">
+				<a href="<?php echo url('user/login'); ?>" class="title">Sign In or Register</a>
+				<span class="p-arrow"></span>
+			</li>
+			<li class="grp-item">
+				<a href="<?php echo url('articletype/customer-service.html'); ?>" class="title">Customer Support</a>
+				<span class="p-arrow"></span>
+			</li>		
+		<?php endif; ?>
+	</ul>
+</div>
+
+<div class="di">
+	<a rel="nofollow" href="<?php echo url(''); ?>">Home</a>
+	|
+	<a rel="nofollow" href="<?php echo url('articletype/company-info.html'); ?>">Company Info</a>
+	|
+	<a rel="nofollow" href="<?php echo url('articletype/customer-service.html'); ?>">Customer Service</a><br>
+	<a rel="nofollow" href="<?php echo url('articletype/payment-shipping.html'); ?>">Payment &amp; Shipping</a>
+	|
+	<a rel="nofollow" href="<?php echo url('articletype/company-policies.html'); ?>">Company Policies</a><br>
+	<p class="ditu">CopyRight © Cheap-Lingerie.com</p>
+</div>

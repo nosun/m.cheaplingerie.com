@@ -1,0 +1,44 @@
+<?php
+  $this->assign('menuItem', 'statistics_sales');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+  <ul>
+    <li><span class="basic"><a href="">商品销售排行</a></span></li>
+  </ul>
+</div>
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <table>
+      <tr class="subhead">
+        <td width="5%">排行 </td>
+        <td width="25%">商品名称</td>
+        <td width="25%">货号</td>
+        <td width="5%">销售量</td>
+        <td width="5%">销售额</td>
+        <td width="5%">均价</td>
+      </tr>
+<?php if($list) :
+  $i=1; 
+  foreach($list as $k => $v) : 
+?>      
+      <tr>
+        <td><?php echo $pageRows * ($page-1) + $i?></td>
+        <td><?php echo $v->name?></td>
+        <td><?php echo $v->sn?></td>
+        <td><?php echo $v->num?></td>
+        <td><?php echo $v->pay_price?></td>
+        <td><?php echo round(($v->pay_price / $v->num), 2)?></td>
+      </tr>
+<?php $i++;endforeach;endif;?>      
+    </table>
+  <div class="pagination"><?php echo $pagination ?></div>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

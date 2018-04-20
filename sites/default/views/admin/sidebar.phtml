@@ -1,0 +1,156 @@
+<?php
+//左边菜单显示所需权限
+$leftSideBarArray = array(
+  'category'    => array('list vocabulary', 'list term', 'list filtergroup' ),                                                  // 分类管理 0
+  'product'     => array('list type', 'list product', 'batch edit product', 'search product', 'batch uplode', 'setting', 'list promotions', 'list productdirectory',),     // 商品管理 1
+  'comment'     => array('manage comment', 'manage guestbook', 'setting', ),                                                     // 评论管理 2
+  'order'       => array('list order', 'order setting' ),                                                                    // 订单管理 3
+  'user'        => array('manage user', 'manage rank', 'manage permissions',),                  // 用户管理 4
+  'site'        => array('manage templateedit', 'manage currency', 'manage payment', 'manage shipping', 'manage widget', 'pagevariablestheme', 'setting', 'manage robots', 'manage update'),               // 系统设置 6
+  'siteMail'    => array('setting' ),                                                                       // 邮件设置 7
+  'siteAdphoto' => array('manage adphoto', 'manage carousel photo' ),                                       // 综合管理 8
+  'article'     => array('list articletype', 'list article', 'list page' ),                                 // 文章管理 9
+  'statistics'  => array('customers statistics', 'order statistics', 'sales statistics', 'members statistics', 'buy banner statistics', ),                                                                    // 统计报表 10
+	'database'    => array('manage database'),
+);
+?>
+
+<?php if ($primaryItem === 'product' || $primaryItem === 'comment'): ?>
+
+<?php if (access($leftSideBarArray['category'], 'or')):?>
+      <div class="title"><strong>分类管理</strong></div>
+      <ul>
+          <?php if (access('list vocabulary')): ?><li><a href="<?php echo url('admin/vocabulary/getList'); ?>">商品分类管理</a></li><?php endif ?>
+          <?php if (access('list term')): ?><li><a href="<?php echo url('admin/terms/getList/directory'); ?>">商品目录管理</a></li><?php endif ?>
+          <?php if (access('list term')): ?><li><a href="<?php echo url('admin/terms/getList/brand'); ?>">品牌管理</a></li><?php endif ?>
+          <?php if (access('list filtergroup')): ?><li><a href="<?php echo url('admin/filtergroup/getList'); ?>">过滤选项管理</a></li><?php endif ?>
+      </ul>
+<?php endif; ?>
+
+<?php if (access($leftSideBarArray['product'], 'or')): ?>
+      <div class="title"><strong>商品管理</strong></div>
+        <ul>
+            <?php if (access('list type')): ?><li><a href="<?php echo url('admin/product/typelist') ?>">商品类型管理</a></li><?php endif ?>
+            <?php if (access('list product', 'or')): ?><li><a href="<?php echo url('admin/product/list') ?>">商品管理</a></li><?php endif ?>
+            <?php if (access('list productdirectory', 'or')): ?><li><a href="<?php echo url('admin/product/productdirectorylists') ?>">商品目录权重管理</a></li><?php endif ?>
+            <?php if (access('batch add directory')): ?><li><a href="<?php echo url('admin/product/batchadddirectory') ?>">批量加入目录</a></li><?php endif;?>
+            <?php if (access('batch add tag')): ?><li><a href="<?php echo url('admin/product/batchaddtag') ?>">批量添加产品tag</a><?php endif;?>
+            <?php if (access('search product')): ?><li><a href="<?php echo url('admin/product/searchtermsproducts') ?>">商品查找</a></li><?php endif ?>
+            <?php if (access('batch edit product')): ?><li><a href="<?php echo url('admin/batchjobs/batchEditProducts') ?>">商品批量修改</a></li><?php endif ?>
+            <?php if (access('batch uplode')): ?><li><a href="<?php echo url('admin/product/batchupload') ?>">商品批量上传</a></li><?php endif ?>
+            <?php if (access('setting')): ?><li><a href="<?php echo url('admin/product/setting') ?>">商品设置</a></li><?php endif ?>
+            <?php if (access('list promotions')): ?><li><a href="<?php echo url('admin/product/promotionslist') ?>">促销活动管理</a></li><?php endif ?>
+        	<?php if (access('size chart manage')): ?><li><a href="<?php echo url('admin/sizechart/list') ?>">Size Chart管理</a></li><?php endif ?>
+        	<?php if (access('measurement manage')): ?><li><a href="<?php echo url('admin/measurement/list') ?>">Measurement管理</a></li><?php endif ?>
+        </ul>
+<?php endif; ?>
+
+<?php if (access($leftSideBarArray['comment'], 'or')): ?>
+      <div class="title"><strong>评论管理</strong></div>
+        <ul>
+            <?php if (access('manage comment')): ?><li><a href="<?php echo url('admin/comment/getList') ?>">评论列表</a></li><?php endif ?>
+            <?php if (access('manage guestbook')): ?><li><a href="<?php echo url('admin/comment/messageList') ?>">留言管理</a></li><?php endif ?>
+            <?php if (access(array('manage comment', 'setting'), 'and')): ?><li><a href="<?php echo url('admin/comment/setting') ?>">评论设置</a></li><?php endif ?>
+        </ul>
+<?php endif; ?>
+
+<?php elseif ($primaryItem === 'order' || $primaryItem === 'user'): ?>
+
+<?php if (access($leftSideBarArray['order'], 'or')): ?>
+      <div class="title"><strong>订单管理</strong></div>
+        <ul>
+            <?php if (access('list order')): ?><li><a href="<?php echo url('admin/order/getList')?>">订单管理</a></li><?php endif ?>
+        		<?php if (access('order setting')): ?><li><a href="<?php echo url('admin/order/setting') ?>">订单设置</a></li><?php endif ?>
+        </ul>
+<?php endif; ?>
+
+<?php if (access($leftSideBarArray['user'], 'or')): ?>
+      <div class="title"><strong>用户管理</strong></div>
+        <ul>
+            <?php if (access('manage user')): ?><li><a href="<?php echo url('admin/user/list') ?>">用户管理</a></li><?php endif ?>
+            <?php if (access('manage rank')): ?><li><a href="<?php echo url('admin/user/ranks') ?>">会员等级管理</a></li><?php endif ?>
+            <?php if (access('manage permissions')): ?><li><a href="<?php echo url('admin/user/roles') ?>">角色管理</a></li><?php endif ?>
+            <?php if (access('manage permissions')): ?><li><a href="<?php echo url('admin/user/permissions') ?>">权限管理</a></li><?php endif ?>
+        </ul>
+<?php endif; ?>
+
+<?php elseif ($primaryItem === 'site' || $primaryItem === 'content'): ?>
+
+<?php if (access('super') || access('manage templateedit')): ?>
+      <div class="title"><strong><?php echo t('Templates') ?></strong></div>
+        <ul>
+            <?php if (access('super')): ?><li><a href="<?php echo url('admin/site/templates') ?>"><?php echo t('Templates list')?></a></li><?php endif ?>
+            <?php if (access('manage templateedit')): ?><li><a href="<?php echo url('admin/site/templateedit') ?>"><?php echo t('Edit template') ?></a></li><?php endif ?>
+        </ul>
+<?php endif; ?>
+
+<?php if (access($leftSideBarArray['site'], 'or')): ?>
+      <div class="title"><strong>系统设置</strong></div>
+        <ul>
+            <?php if (access('manage currency')): ?><li><a href="<?php echo url('admin/site/getCurrencyList') ?>">货币管理</a></li><?php endif ?>
+            <?php if (access('manage payment')): ?><li><a href="<?php echo url('admin/site/paymentlist') ?>">支付管理</a></li><?php endif ?>
+            <?php if (access('manage shipping')): ?><li><a href="<?php echo url('admin/site/shippingList') ?>">配送管理</a></li><?php endif ?>
+            <?php if (access('manage widget')): ?><li><a href="<?php echo url('admin/site/widgetlist') ?>">插件管理</a></li><?php endif ?>
+            <?php if (access('setting')): ?><li><a href="<?php echo url('admin/site/siteinfosetting') ?>">站点信息</a></li><?php endif ?>
+            <?php if (access('pagevariablestheme')): ?><li><a href="<?php echo url('admin/site/pagevariablestheme') ?>">页面信息模板</a></li><?php endif ?>
+            <?php if (access('setting')): ?><li><a href="<?php echo url('admin/site/contactwaysetting') ?>">联系信息</a></li><?php endif ?>
+            <?php if (access('setting')): ?><li><a href="<?php echo url('admin/site/displaysetting') ?>">显示设置</a></li><?php endif ?>
+            <?php if (access('setting')): ?><li><a href="<?php echo url('admin/site/marketpricesetting') ?>">市场价设置</a></li><?php endif ?>
+            <?php if (access('setting')): ?><li><a href="<?php echo url('admin/site/stockchecksetting') ?>">库存检查</a></li><?php endif ?>
+            <?php if (access('setting')): ?><li><a href="<?php echo url('admin/site/blacklistsetting') ?>">黑名单设置</a></li><?php endif ?>
+            <?php if (access('setting')): ?><li><a href="<?php echo url('admin/site/attachmentsetting') ?>">附件设置</a></li><?php endif ?>
+            <?php if (access('manage robots')): ?><li><a href="<?php echo url('admin/site/robotssetting') ?>">Robots设置</a></li><?php endif ?>
+            <?php if (access('manage update')): ?><li><a href="<?php echo url('admin/site/update') ?>">系统更新</a></li><?php endif ?>
+        </ul>
+<?php endif; ?>
+
+
+
+<?php if (access($leftSideBarArray['siteMail'], 'or')): ?>
+      <div class="title"><strong>邮件设置</strong></div>
+        <ul>
+            <?php if (access('setting')): ?><li><a href="<?php echo url('admin/site/stmpsetting') ?>">邮件服务器设置</a></li><?php endif ?>
+            <?php if (access('setting')): ?><li><a href="<?php echo url('admin/site/mailsetting') ?>">邮件设置</a></li><?php endif ?>
+        </ul>
+<?php endif; ?>
+
+<?php if (access($leftSideBarArray['siteAdphoto'], 'or')): ?>
+      <div class="title"><strong>综合管理</strong></div>
+        <ul>
+            <?php if (access('manage adphoto')): ?><li><a href="<?php echo url('admin/site/getadphotolist') ?>">广告管理</a></li><?php endif ?>
+            <?php if (access('manage carousel photo')): ?><li><a href="<?php echo url('admin/site/getcarouselphotolist') ?>">轮播图片</a></li><?php endif ?>
+        </ul>
+<?php endif; ?>
+
+<?php if (access($leftSideBarArray['article'], 'or')): ?>
+      <div class="title"><strong>文章管理</strong></div>
+        <ul>
+          <?php if (access('list articletype')): ?><li><a href="<?php echo url('admin/content/getarticletypelist') ?>">文章分类管理</a></li><?php endif ?>
+          <?php if (access('list article')): ?><li><a href="<?php echo url('admin/content') ?>">文章管理</a></li><?php endif ?>
+          <?php if (access('list page')): ?><li><a href="<?php echo url('admin/content/getpagelist') ?>">页面管理</a></li><?php endif ?>
+        </ul>
+<?php endif; ?>
+
+<?php if (access($leftSideBarArray['database'], 'or')): ?>
+      <div class="title"><strong>数据库管理</strong></div>
+        <ul>
+          <?php if (access('manage database')): ?><li><a href="<?php echo url('admin/database') ?>">备份数据库</a></li><?php endif ?>
+          <?php if (access('manage database')): ?><li><a href="<?php echo url('admin/database/optimize') ?>">数据表优化</a></li><?php endif ?>
+          <?php if (access('manage database')): ?><li><a href="<?php echo url('admin/database/iframe') ?>">SQL查询</a></li><?php endif ?>
+        </ul>
+<?php endif; ?>
+
+<?php elseif ($primaryItem === 'statistics'): ?>
+
+<?php if (access($leftSideBarArray['statistics'], 'or')): ?>
+      <div class="title"><strong>统计报表</strong></div>
+        <ul>
+            <?php if (access('customers statistics')): ?><li><a href="<?php echo url('admin/statistics/customers') ?>">客户统计</a></li><?php endif ?>
+            <?php if (access('orders statistics')): ?><li><a href="<?php echo url('admin/statistics/orders') ?>">订单统计</a></li><?php endif ?>
+            <?php if (access('sales statistics')): ?><li><a href="<?php echo url('admin/statistics/sales') ?>">销售统计</a></li><?php endif ?>
+            <?php if (access('members statistics')): ?><li><a href="<?php echo url('admin/statistics/members') ?>">会员统计</a></li><?php endif ?>
+            <?php if (access('buy banner statistics')): ?><li><a href="<?php echo url('admin/statistics/buybanner') ?>">访问购买率</a></li><?php endif ?>
+        </ul>
+<?php endif; ?>
+
+<?php endif ?>

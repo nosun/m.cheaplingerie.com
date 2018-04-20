@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+	<div class="back_head">
+		<a class="back" href="<?php echo url('user/myaccount'); ?>"><img src="<?php echo $tpldir; ?>/images/back.png"></a>
+	</div>
+	<?php echo themeMessages(); ?>
+	<h2 class="classh2">My Orders</h2>
+		<div id="orders">
+			<?php $isfirst = true; ?>
+			<?php foreach($ordersList as $k => $v): ?>
+				<?php if($v->status > -1): ?>
+					<div class="my_order" <?php if($isfirst){echo 'style="margin-top: 0;"';}?>>
+						<div class="my_adr">
+							<div class="my_head">
+								<span class="adr_num"><?php echo isset($v->number)? $v->number : null;?> (<?php echo count($v->items); ?> items)</span>
+								<?php $tstatus = ""; ?>
+								<?php if($v->status==0): $tstatus = 'Pending';
+									  elseif($v->status==1): $tstatus = 'Processing';
+									  elseif($v->status==2): $tstatus = 'Completed';
+									  elseif($v->status==-1): $tstatus = 'Cancelled';
+									  elseif($v->status==-2): $tstatus = 'Cancelled';
+									  endif;?>
+								<span class="red_span"><?php echo $tstatus; ?></span>
+							</div>
+							<?php foreach($v->items as $item): ?>
+								<div class="lmr">
+									<div class="adr_left"><img src="<?php echo urlimg("118x178", $item->filepath)?>"></div>
+									<div class="my_right"><?php echo strwidth($item->name, 40); ?></div>
+								</div>
+							<?php endforeach; ?>
+							<div class="col-box">
+								<a href="<?php echo url('order/remove/' . $v->oid); ?>">
+									<button class="btn-default">Delete</button>
+								</a>
+								<a href="<?php echo url('order/info').$v->oid; ?>">
+									<button class="btn-default">View</button>
+								</a>
+							</div>
+						</div>
+					</div>
+					<?php $isfirst = false; ?>
+				<?php endif; ?>
+			<?php endforeach; ?>
+		</div>
+	<div class="col-box">
+		<button class="btn-long ajax-trigger" next="2" id="showmore">Show More</button>
+	</div>
+	<a class="back_to_top" href="#">
+		<span></span><br>
+		TOP OF PAGE
+	</a>
+	<script>
+		$("#showmore").click(function(){
+			var page = $(this).attr('next');
+			$.ajax({
+				url: "<?php echo url('user/ajaxgetmoreorders'); ?>" ,
+				method: 'post',
+				data : { page : page},
+				success: function(data){
+					$('#orders').append(data);
+					$("#showmore").attr('next', parseInt(page) + 1);
+				}
+			});
+		});
+	</script>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

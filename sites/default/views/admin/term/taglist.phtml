@@ -1,0 +1,72 @@
+<?php
+  $this->assign('menuItem', 'product_'.$stype);
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+<ul>
+    <li>
+    <span class="check">
+     <a href="<?php echo url('admin/vocabulary/getList'); ?>">商品分类</a> -
+     <a href="<?php echo url('admin/terms/getList/' . $vocabularyInfo->vid); ?>">标签列表的分类词</a>
+    </span>
+    </li>
+    <?php if (access('edit term')): ?>
+    <li><span class="new"><a href="<?php echo url('admin/terms/getInfo/'.$vocabularyInfo->vid.'/0'); ?>">新增分类词</a></span></li>
+    <?php endif; ?>
+</ul>
+</div>
+  <div class="main_right">
+    <?php echo themeMessages() ?>
+    <table>
+      <tr class="subhead">
+        <td width="8%">编号</td>
+        <td width="50%">分类名称</td>
+        <td width="20%">下级分类词数量</td>
+        <td width="20%">管理</td>
+      </tr>
+<?php
+$i = 1;
+  if(is_array($tagGroupList)):
+    foreach($tagGroupList as $key => $taglist):
+?>
+      <tr>
+        <td><?php echo $i++; ?></td>
+        <td><?php echo plain(trim($key)); ?></td>
+        <td></td>
+        <td></td>
+      </tr>
+<?php
+  if(is_array($taglist)):
+    foreach($taglist as $tag):
+?>
+      <tr>
+        <td><?php echo $i++; ?></td>
+        <td><span class="term_sub2"></span>
+        <?php if (access('edit term')): ?><a href="<?php echo url('admin/terms/getInfo/' . $vocabularyInfo->vid . '/' . $tag->tid); ?>"><?php endif;?>
+        <?php echo $tag->name?>
+        <?php if (access('edit term')): ?></a><?php endif;?></td>
+        <td></td>
+        <td>
+        <a href="<?php echo url('browse/' . $tag->path_alias . '.html')?>" target="_blank">查看</a>
+          <?php if (access('edit term')): ?><a href="<?php echo url('admin/terms/getInfo/' . $vocabularyInfo->vid . '/' . $tag->tid); ?>">编辑</a><?php endif;?>
+          <?php if (access('delete term')): ?>
+          <a href="<?php echo url('admin/terms/delete/' . $vocabularyInfo->vid . '/' . $tag->tid) ?>" class="btn_confirm" rel="确认删除该分类及其子类吗?">删除</a>
+          <?php endif;?>
+        </td>
+      </tr>
+<?php
+    endforeach;
+  endif;
+?>
+<?php
+    endforeach;
+  endif;
+?>
+    </table>
+  </div>
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

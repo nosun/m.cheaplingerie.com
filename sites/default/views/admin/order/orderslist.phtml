@@ -1,0 +1,158 @@
+<?php
+  $this->assign('menuItem', 'order_orderslist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/order/getList')?>"><?php echo t('Order Manage') ?></a></span></li>
+	</ul>
+</div>
+
+<div>
+    <?php echo themeMessages() ?>
+
+    <div class="clear left_photo" id="tabs">
+      <div class="clear tab_ul">
+      <ul>
+        <li><a href="#list"><?php echo t('List') ?></a></li>
+        <li><a href="#filter"><?php echo t('Filter') ?></a></li>
+      </ul>
+      </div>
+
+      <?php echo themeMessages() ?>
+      <div><?php echo $selectHtml;?></div>
+      <div id="list" class="box_Product main_right">
+        <form id="form1" action ="<?php echo url('admin/batchjobs/post') ?>" method="post">
+          <table id="products_list">
+          <tr class="subhead">
+            <td width="15%"><?php echo t('Order OrderId') ?></td>
+            <td width="15%"><?php echo t('Order Creat Time') ?></td>
+            <td width="10%"><?php echo t('Order Amount') ?></td>
+            <td width="10%"><?php echo t('Ship Name') ?></td>
+            <td width="7%"><?php echo t('Order Status') ?></td>
+            <td width="7%"><?php echo t('Order Pay Status') ?></td>
+            <td width="7%"><?php echo t('Order Ship Status') ?></td>
+            <td width="10%"><?php echo t('Print') ?></td>
+            <td width="10%"><?php echo t('Admin') ?></td>
+          </tr>
+  <?php
+    foreach($ordersList as $key => $dl):
+  ?>
+          <tr>
+            <td><?php echo $dl->number;?></td>
+            <td><?php echo date("y-m-d H:i:s",$dl->created);?></td>
+            <td><?php echo $dl->pay_amount; ?></td>
+            <td><?php if(isset($dl->delivery_last_name))echo $dl->delivery_last_name;echo ' '; if(isset($dl->delivery_first_name))echo $dl->delivery_first_name; ?></td>
+            <td><?php echo t(Order_Model::$orderDscripe[$dl->status]); ?></td>
+            <td><?php echo t('Pay'.$dl->status_payment); ?></td>
+            <td><?php echo t('Shipping'.$dl->status_shipping); ?></td>
+            <td><a href="<?php echo url('admin/order/print/all/'.$dl->oid);?>" target="_blank"><?php echo t('Print') ?></a></td>
+            <td>
+            <?php if(access('edit order')): ?>
+            <a href="<?php echo url('admin/order/getInfo/'.$dl->oid)?>"><?php echo t('Edit')?></a>
+            <?php endif; ?>
+            <?php if(access('delete order')): ?>
+            <a href="<?php echo url('admin/order/delete/'.$dl->oid)?>" class="btn_confirm" rel="确定删除该订单吗"><?php echo t('Delete')?></a>
+            <?php endif; ?>
+            <?php if(!access(array('edit order', 'delete order'), 'or')) echo '&nbsp;-'; ?>
+            </td>
+          </tr>
+  <?php
+    endforeach;
+  ?>
+          </table>
+          <div class="div_btn_bottom">
+<!--            <select><option>已发货</option></select> <input class="btn" type="submit" value="修改">-->
+          </div>
+          <div class="pagination"><?php echo $pagination ?></div>
+          <div style="clear:both; margin-bottom:10px;"></div>
+        </form>
+      </div>
+      <div id="filter" class="box_Product main_right">
+      <form action="" method="post" id="form_order">
+          <table style=" margin-bottom:10px;">
+            <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Order OrderId');?></td></tr>
+            <tr>
+              <td width="50%" id="sc1">
+                  <input class="txt" name="number"/>
+              </td>
+              <td width="40%"></td>
+            </tr>
+            
+            <tr class="nohover"><td class="bold" colspan="2">收货人Email</td></tr>
+            <tr>
+              <td width="50%" id="sc1">
+                  <input class="txt" name="delivery_email"/>
+              </td>
+              <td width="40%"></td>
+            </tr>
+            
+            <tr class="nohover"><td class="bold" colspan="2">购买者用户名</td></tr>
+            <tr>
+              <td width="50%" id="sc1">
+                <input class="txt" name="username"/>
+              </td>
+              <td width="40%"></td>
+            </tr>
+
+            <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Order Creat Time');?></td></tr>
+            <tr>
+               <td width="50%" id="sc1">
+                 <input name="startTime" width="100" class="datepicker" value="" /> - <input type="text" name="endTime" width="100" class="datepicker" />
+               </td>
+               <td width="40%"></td>
+            </tr>
+
+             <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Order Status');?></td></tr>
+             <tr>
+               <td width="50%" id="sc1">
+                                 <select name="status">
+                    <option value=""></option>
+                    <option value="0">待处理</option>
+                    <option value="1">处理中</option>
+                    <option value="2">成功</option>
+                    <option value="-1">已撤单</option>
+                    <option value="-2">已删除</option>
+                </select>
+               </td>
+               <td width="40%"></td>
+             </tr>
+
+             <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Order Pay Status');?></td></tr>
+             <tr>
+               <td width="50%" id="sc1">
+                                 <select name="status_payment">
+                    <option value=""></option>
+										<option value="1">已支付</option>
+										<option value="0">未支付</option>
+                </select>
+               </td>
+               <td width="40%"></td>
+             </tr>
+
+             <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Order Ship Status');?></td></tr>
+             <tr>
+               <td width="50%" id="sc1">
+                                 <select name="status_shipping">
+                    <option value=""></option>
+                    <option value="1">已发货</option>
+                    <option value="0">未发货</option>
+                </select>
+               </td>
+               <td width="40%"></td>
+             </tr>
+
+             <tr class="nohover"><td class="bold" colspan="2">
+             <input type="submit" value="<?php echo t('Sure');?>" class="btn"/>
+             </td></tr>
+           </table>
+      </form>
+      </div>
+    </div>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

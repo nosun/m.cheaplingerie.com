@@ -1,0 +1,22 @@
+<ul class="collapse-btn-grp">
+	<?php foreach ($lists as $item): ?>
+		<li class="collapse-parent">
+            <?php if(count($item->sub) == 0): ?>
+            <a href="<?php echo url(categoryURL($item->path_alias)); ?>">
+            <?php endif ?>
+<span class="outer-title"><?php echo isset($item->name)? $item->name : null;?></span>
+            <span class="p-arrow"></span>
+            <?php if(count($item->sub) == 0): ?>
+            </a>
+            <?php endif ?>
+			<ul class="collapse-inner">
+				<?php foreach($item->sub as $sub): ?>
+					<li class="collapse-child">
+						<a href="<?php echo url(categoryURL($sub->path_alias)); ?>"><?php echo $sub->name; ?></a>
+						<span class="p-arrow-inner"></span>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</li>
+	<?php endforeach; ?>
+</ul>

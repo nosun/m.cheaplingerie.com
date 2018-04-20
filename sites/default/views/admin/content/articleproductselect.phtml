@@ -1,0 +1,40 @@
+<form action="<?php echo isset($posturl) ? $posturl : null?>" method="post">
+          <table style="font-size:12px;">
+            <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Article Title');?></td></tr>
+            <tr>
+              <td width="50%" id="sc1">
+                  <input class="txt" name="title"/>
+              </td>
+              <td width="40%"></td>
+            </tr>
+            
+            <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Article Type');?></td></tr>
+            <tr>
+              <td width="50%" id="sc1">
+                <select name="atid" class="filter_select">
+                  <option value=""></option>
+<?php foreach ($articletypes as $k => $v):?>
+                  <option value="<?php echo isset($v->atid) ? $v->atid : 0?>"><?php echo isset($v->allname) ? $v->allname : null?></option>
+<?php endforeach;?>
+                </select>
+              </td>
+              <td width="40%"></td>
+            </tr>
+            
+            <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Article Status');?></td></tr>
+            <tr>
+               <td width="50%" id="sc1">
+               <select name="status" id="status" class="filter_select">
+                 <option value=""></option>
+                 <option value="1">已发布</option>
+                 <option value="-1">未发布</option>
+               </select>
+               </td>
+               <td width="40%"></td>
+             </tr>
+             
+             <tr class="nohover"><td class="bold" colspan="2">
+             <input type="submit" value="<?php echo t('Sure');?>" class="btn"/>&nbsp;
+             </td></tr>
+           </table>
+</form>

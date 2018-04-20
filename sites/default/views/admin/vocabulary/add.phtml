@@ -1,0 +1,48 @@
+<?php
+  $this->assign('menuItem', 'product_vocabulary');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+
+
+<div class="import clear">
+  <ul>
+    <li><span class="check"><a href="<?php echo url('admin/vocabulary/getList'); ?>">查看商品分类</a></span></li>
+    <li><span class="basic"><a href="<?php echo url('admin/vocabulary/insert/'); ?>">新建分类</a></span></li>
+  </ul>
+</div>
+
+  <div class="main_right">
+
+    <?php echo themeMessages() ?>
+
+
+    <form action="<?php  echo url('admin/Vocabulary/insert/'); ?>" method="POST">
+      <table class="noborder attribute">
+        <tr class="nohover"><td class="bold" colspan="2">分类名称</td></tr>
+        <tr>
+          <td width="50%"><input value="" class="txt non-empty"  title="分类名称不能为空" name="name" /> <span style="color:red">*</span></td>
+          <td width="40%">分类的名称</td>
+        </tr>
+        <tr class="nohover"><td class="bold" colspan="2">中文名称</td></tr>
+	      <tr>
+	        <td width="50%"><input value="" class="txt" name="name_cn"/></td>
+	        <td width="40%">中文名称</td>
+	      </tr>
+	      <tr class="noborder nohover" style="border-bottom:0px solid red;height:60px;">
+          <td class="bold" colspan="2">
+            <input type="submit" value="提交" class="Buttom_3 btn" />
+            <input type="button" value="取消" class="Buttom_4 btn btn_cancel" />
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>
+

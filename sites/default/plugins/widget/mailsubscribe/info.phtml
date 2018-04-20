@@ -1,0 +1,150 @@
+<?php
+  $this->assign('menuItem', 'site_widget');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+  <ul>
+    <li><span class="check"><a href="<?php echo url('admin/site/widgetlist') ?>">插件列表</a></span></li>
+    <li><span class="basic"><a href="<?php echo url('admin/site/widgetedit/mailsubscribe') ?>">邮件订阅</a></span></li>
+  </ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+  <?php echo themeMessages() ?>
+  <form action="<?php echo url('admin/site/widgetedit/mailsubscribe/editwidgetpost') ?>" method="post" enctype="multipart/form-data" id="mailSubscribeForm">
+  <input type="hidden" name="MailUidList" id="MailUidList" value="">
+  <table id="mailSubscribe">
+    <tr class="nohover">
+      <td class="bold">选择订阅者名单</td>
+    </tr>
+
+    <tr class="nohover" style="border-bottom:0;"><td style="padding-left:0px;border-bottom:0;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0"  style="width:100%;">
+        <tr class="nohover">
+          <td width="45%" align="center">请在下面列表中选择订阅者名单</td>
+          <td width="10%">&nbsp;</td>
+          <td width="45%" align="center">已选定的订阅者名单列表</td>
+        </tr>
+
+         <tr class="nohover" align="center">
+          <td>
+            <select id="src_select" multiple="multiple" size="20" name="src_select" style="float: left; width: 98%;">
+<?php
+if (is_array($usersEmailList) && count($usersEmailList)>0){
+  foreach($usersEmailList as $key => $subscribe):
+    echo '<option value="' .plain($subscribe->email). '">' .plain($subscribe->email). '</option>';
+    echo "\n";
+  endforeach;
+}
+?>
+            </select>
+          </td>
+          <td align="center">
+            <input type="button" value="&gt;&gt;" id="batchedit_select_all" name="batchedit_select_all" class="btn1" title="增加全部"><br>
+            <input type="button" value="增加" id="batchedit_add" name="batchedit_add" class="btn1" title="增加选中的"><br>
+            <input type="button" value="移除" id="batchedit_remove" name="batchedit_remove" class="btn1" title="移除选中的"><br>
+            <input type="button" value="&lt;&lt;" id="batchedit_clean_all" name="batchedit_clean_all" class="btn1" title="清除全部">
+          </td>
+          <td align="center">
+            <select id="dest_select" multiple="multiple" size="20" name="dest_select" style="float: left; width: 98%;">
+
+            </select>
+          </td>
+         </tr>
+      </table>
+    </td></tr>
+    <tr class="nohover">
+      <td class="bold">邮件标题</td>
+    </tr>
+    <tr>
+      <td><input type="text" name="mailTitle" value="" size="100"></td>
+    </tr>
+    <tr class="nohover">
+      <td class="bold">邮件内容</td>
+    </tr>
+    <tr>
+      <td><textarea name="mailContent" class="txt_xheditor" rows="10"></textarea></td>
+    </tr>
+    <tr class="nohover">
+      <td><input type="submit" class="btn1" value="发送"></td>
+    </tr>
+  </table>
+  </form>
+</div>
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>
+<script type="text/javascript">
+BOLING.mailSubscribe = {
+  initialize: function(el) {
+    var selectAll = $('#batchedit_select_all');
+    var add = $('#batchedit_add');
+    var remove = $('#batchedit_remove');
+    var cleanAll = $('#batchedit_clean_all');
+
+    var srcSelect = $('#src_select');
+    var destSelect = $('#dest_select');
+
+    if ($.xheditor) {
+        $('textarea.txt_xheditor').xheditor({width:'80%',height:'200px',html5Upload:false,upImgUrl:url('admin/file/editorupload/product'), forcePtag:false});
+    }
+
+    selectAll.click(function(e) {
+      html = [];
+      srcSelect.children('option').each(function(){
+        html.push('<option value="' + $(this).val() + '">' + $(this).text() + '</option>');
+      });
+      destSelect.append(html.join(''));
+      srcSelect.children().remove();
+      BOLING.mailSubscribe.setMailUidList(destSelect);
+    });
+    add.click(function(e) {
+      html = [];
+      srcSelect.children('option:selected').each(function(){
+        html.push('<option value="' + $(this).val() + '">' + $(this).text() + '</option>');
+        $(this).remove();
+      });
+      destSelect.append(html.join(''));
+      BOLING.mailSubscribe.setMailUidList(destSelect);
+    });
+    remove.click(function(e) {
+      html = [];
+      destSelect.children('option:selected').each(function(){
+        html.push('<option value="' + $(this).val() + '">' + $(this).text() + '</option>');
+        $(this).remove();
+      });
+      srcSelect.append(html.join(''));
+      BOLING.mailSubscribe.setMailUidList(destSelect);
+    });
+    cleanAll.click(function(e) {
+      html = [];
+      destSelect.children('option').each(function(){
+        html.push('<option value="' + $(this).val() + '">' + $(this).text() + '</option>');
+      });
+      srcSelect.append(html.join(''));
+      destSelect.children().remove();
+      BOLING.mailSubscribe.setMailUidList(destSelect);
+    });
+  },
+  setMailUidList : function (destSelect){
+	  var mailUidListValue = '[';
+	  var i = 0;
+	  var uidList = $('#MailUidList');
+
+	  destSelect.children("option").each(function(){
+	    i>0 ? mailUidListValue += ',"'+$(this).val()+'"':mailUidListValue += '"'+$(this).val()+'"';
+	    i++;
+	  });
+	  mailUidListValue += ']';
+	  if(i==0){
+		  mailUidListValue = '';
+	  }
+	  uidList.val(mailUidListValue);
+  }
+};
+BOLING.mailSubscribe.initialize($('table#mailSubscribe'));
+</script>

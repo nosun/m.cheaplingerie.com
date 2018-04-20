@@ -1,0 +1,57 @@
+.write_review_success{
+  .recommend{
+    overflow: hidden;
+    .title{
+      font-size: 1.4rem;
+      text-indent: 1rem;
+      font-family: 'arial';
+    }
+    .flexslidertwo{
+      margin-top: 0.3rem;
+      margin-bottom: 1rem;
+      .flex-control-nav,.flex-direction-nav{
+        display: none;
+      }
+    }
+  }
+  .big {
+    display: block;
+    padding: 3%;
+    font: 0.9rem 'arial';
+    color: black;
+    td{
+      vertical-align:middle;
+    }
+    .zuo {
+      width:25%;
+      img{
+        width:100%;
+      }
+    }
+
+    .you {
+      padding-left:20px;
+      .link {
+        font: 1.3rem/1.5rem 'Arial';
+        color: #007600;
+        a{
+          text-decoration:underline;
+          color:#007600;
+        }
+      }
+
+      .dec{font:1.3rem/1.5rem 'Arial';}
+      .star{
+        display: block;
+        margin-top:5px;
+        a{
+          width:13%;
+          display: inline-block;
+          img{
+            width:100%;
+          }
+        }
+      }
+    }
+  }
+}

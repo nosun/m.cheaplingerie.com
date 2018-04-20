@@ -1,0 +1,88 @@
+<?php
+  $this->assign('menuItem', 'product_typelist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/product/typelist') ?>">商品类型列表</a></span></li>
+		<li><span class="basic">商品类型管理 - <?php echo $isnew ? t('New') : plain($type->type) ?></span></li>
+		<li><span class="new"><a href="<?php echo url('admin/product/filterfieldlist/' . $type->type); ?>" >商品过滤管理 - <?php echo plain($type->type);?></a></span>
+	</ul>
+</div>
+
+<div class="main_right">
+    <?php echo themeMessages() ?>
+    <form action="" method="post">
+    <table class="attribute">
+<?php if ($isnew): ?>
+      <tr class="nohover"><td class="bold" colspan="2">类型标识</td></tr>
+      <tr>
+        <td width="50%"><input name="type" value="<?php if (isset($type)) echo plain($type->type) ?>" class="txt" /> <span style="color:red">*</span></td>
+        <td width="45%">类型标识，新建后不可修改<br>首字符必须是字母，其余由字母或数字组成，3-32 个字符</td>
+      </tr>
+<?php else: ?>
+      <tr class="nohover"><td class="bold" colspan="2">类型标识 : <?php echo plain($type->type) ?></td></tr>
+<?php endif ?>
+      <tr class="nohover"><td class="bold" colspan="2">类型名称</td></tr>
+      <tr>
+        <td width="50%"><input name="name" value="<?php if (isset($type)) echo plain($type->name) ?>" class="txt" /> <span style="color:red">*</span></td>
+        <td width="45%">类型名称</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">中文名称</td></tr>
+      <tr>
+        <td width="50%"><input name="name_cn" value="<?php if (isset($type)) echo plain($type->name_cn) ?>" class="txt" /></td>
+        <td width="45%">类型中文名称</td>
+      </tr>
+<?php if (!$isnew): ?>
+      <tr class="nohover"><td class="bold" colspan="2">该类型商品数量 : <?php echo plain($type->productsCount) ?></td></tr>
+      <tr class="nohover"><td class="bold" colspan="2">属性列表</td></tr>
+<?php //if (!empty($type->fields)): ?>
+      <tr class="nohover"><td colspan="2">
+        <table>
+          <tr class="subhead">
+            <td width="10%">属性标识</td>
+            <td width="15%">属性名称</td>
+            <td width="10%">类型</td>
+            <td width="10%">输入方式</td>
+            <td width="5%">必填</td>
+            <td width="5%">索引</td>
+            <td width="5%">多值</td>
+            <td width="5%">价格</td>
+            <td width="10%">Specification</td>
+            <td width="25%">选项</td>
+          </tr>
+<?php foreach ($type->fields as $fieldName => $field): ?>
+          <tr>
+            <td><a href="<?php echo url('admin/product/fieldedit/' . $type->type . '/' . $fieldName) ?>"><?php echo plain($fieldName)?></a></td>
+            <td><a href="<?php echo url('admin/product/fieldedit/' . $type->type . '/' . $fieldName) ?>"><?php echo plain($field->name) ?></a></td>
+            <td><?php echo t($fieldType[$field->field_type]) ?></td>
+            <td><?php echo t($displayType[$field->display_type]) ?></td>
+            <td><?php if ($field->required) echo t('Yes') ?></td>
+            <td><?php if ($field->indexed) echo t('Yes') ?></td>
+            <td><?php if ($field->multiple) echo t('Yes') ?></td>
+            <td><?php if ($field->valued) echo t('Yes') ?></td>
+            <td><?php if ($field->is_spec){echo t('Yes');} else {echo t('No');}?></td>
+            <td>
+              <a href="<?php echo url('admin/product/fieldedit/' . $type->type . '/' . $fieldName) ?>">编辑属性</a>
+              <a href="<?php echo url('admin/product/fielddelete/' . $type->type . '/' . $fieldName) ?>" class="btn_confirm" rel="确认删除该属性吗?">删除属性</a>
+            </td>
+          </tr>
+<?php endforeach ?>
+        </table>
+        <div><a href="<?php echo url('admin/product/fieldedit/' . $type->type) ?>">新建属性</a></div>
+      </td></tr>
+<?php endif ?>
+      <tr class="noborder nohover" style="border-bottom:0px solid red;">
+        <td colspan="2">
+          <input type="submit" value="提交" class="Buttom_3 but" />
+          <a href="<?php echo url('admin/product/typelist') ?>" class="Buttom_4b">返回列表</a>
+        </td>
+      </tr>
+    </table>
+    </form>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

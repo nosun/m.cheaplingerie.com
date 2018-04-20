@@ -1,0 +1,107 @@
+<?php foreach ($product->fields as $fieldName => $field): ?>
+	<?php if(!empty($product->{'field_' . $fieldName})): ?>
+		<div class="select-color-size <?php echo strtoupper($fieldName); ?>" style="display: none">
+			<div class="back_head">
+				<a class="back" href="javascript:history.back()"><img src="<?php echo $tpldir; ?>/images/back.png"></a>
+			</div>
+			<div class="content">
+				<h2 class="classh2">Select <?php echo ucfirst($fieldName); ?></h2>
+				<?php if($fieldName == "size" && !empty($product->brand_tid)): ?>
+					<a href="<?php echo url('product/viewsizechart/' . $product->pid); ?>"><span class="col-size_chart">Size Chart</span></a>
+					<div class="clear"></div>
+				<?php endif; ?>
+				<ul class="<?php echo strtolower($fieldName); ?>_select">
+					<?php foreach($product->{'field_' . $fieldName} as $fieldvalue): ?>
+						<li><span val="<?php echo $fieldvalue; ?>"><?php echo $fieldvalue; ?></span></li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+		</div>
+	<?php endif; ?>
+<?php endforeach; ?>
+
+<div class="select-color-size QUANTITY" style="display: none">
+	<div class="back_head">
+		<a class="back" href="javascript:history.back()"><img src="<?php echo $tpldir; ?>/images/back.png"></a>
+	</div>
+	<div class="content">
+		<h2 class="classh2">Quantity</h2>
+		<ul class="quantity_select">
+			<?php for($i=1; $i<11; $i++): ?>
+				<li><span val="<?php echo $i; ?>"><?php echo $i; ?></span></li>
+			<?php endfor; ?>
+		</ul>
+		<input class="input-quantity" placeholder="Quantity" />
+		<a class="go">GO</a>
+		<div class="clear"></div>
+	</div>
+</div>
+
+<?php if($product->summary): ?>
+	<div class="description" style="display: none">
+		<div class="back_head">
+			<a class="back" href="javascript:history.back()"><img src="<?php echo $tpldir; ?>/images/back.png"></a>
+		</div>
+		<div class="content">
+			<h2 class="classh2">Description</h2>
+			<p>
+				<?php echo $product->summary; ?>
+			</p>
+		</div>
+	</div>
+<?php endif; ?>
+
+<div class="specifications" style="display: none">
+	<div class="back_head">
+		<a class="back" href="javascript:history.back()"><img src="<?php echo $tpldir; ?>/images/back.png"></a>
+	</div>
+	<div class="content">
+		<h2 class="classh2">Product Details</h2>
+		<table class="spec_table" style="width:100%">
+			<tbody>
+			<?php if($product->brand):?>
+			<tr>
+				<td class="one">
+					<strong>&bull; Brand </strong>
+				</td>
+				<td class="two"><?php echo isset ($product->brand->name) ? $product->brand->name : null ;?></td>
+			</tr>
+			<?php endif;?>
+			<?php if($product->number):?>
+			<tr>
+				<td class="one">
+					<strong>&bull; Code: &nbsp;</strong>
+				</td>
+				<td class="two"><?php echo  isset($product->number) ? $product->number : null;?></td>
+			</tr>
+			<?php endif;?>
+			<?php if($product->field_color):?>
+			<tr>
+				<td class="one"><strong>&bull; Colors: &nbsp;</strong></td>
+				<td class="two"><?php $corlorLists="";
+					foreach ($product->field_color as $c){
+						$corlorLists.=($c.', ');
+					}
+					echo $corlorLists;?>
+				</td>
+			</tr>
+			<?php endif;?>
+			<?php if($product->field_size):?>
+			<tr>
+				<td class="one"><strong>&bull; Sizes: &nbsp;</strong></td>
+				<td class="two"><?php $sizeLists='';
+					foreach ($product->field_size as $s){
+						$sizeLists.=($s.', ');
+					}
+					echo $sizeLists;?>
+				</td>
+				</tr>
+			<?php endif;?>
+			<tr>
+				<td class="one"><strong>&bull; Status: &nbsp;</strong><?php if ($product->status):?></td>
+				<td class="two">In stock, usually ships in 24 hours<?php else:?>Under the frame<?php endif;?></td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

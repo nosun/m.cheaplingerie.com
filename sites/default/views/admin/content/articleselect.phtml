@@ -1,0 +1,64 @@
+<link rel="stylesheet" type="text/css" href="http://bolingcms.com/styles/global.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo url('images/admin/style.css') ?>" />
+<?php echo isset($relateStyle) ? $relateStyle : null;?>
+  <div class="main_right main_right_iframe" id="productrelated">
+<form id="form_productinfo" action="<?php echo isset($posturl) ? $posturl : null?>" method="post" >
+  <input type="hidden" id="directory_list" value='<?php echo strtr(json_encode($directoryList), "'", "\'")?>'>
+  <input type="hidden" name="isfilter" value="1">
+          <table style="font-size:12px;margin-bottom:10px;" >
+            <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Article Title');?></td></tr>
+            <tr>
+              <td colspan="2" id="sc1">
+                  <input class="txt" name="title"/>
+              </td>
+              
+            </tr>
+            
+            <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Article Type');?></td></tr>
+            <tr>
+              <td colspan="2" id="sc1">
+                <select name="atid" class="filter_select">
+                  <option value=""></option>
+<?php foreach ($articletypes as $k => $v):?>
+                  <option value="<?php echo isset($v->atid) ? $v->atid : 0?>"><?php echo isset($v->allname) ? $v->allname : null?></option>
+<?php endforeach;?>
+                </select>
+              </td>
+            </tr>
+            
+            <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Product Dir');?></td></tr>
+            <tr><td colspan="2"><select name="directory_tid1">
+            <option value="0">-- 请选择一级商品目录 --</option>
+<?php foreach ($directoryList as $tid1 => $term1): ?>
+            <option value="<?php echo $tid1 ?>"><?php echo t($term1->name) ?></option>
+<?php endforeach ?>
+          </select>
+          <select name="directory_tid2">
+            <option value="0">-- 请选择二级商品目录 --</option>
+          </select>
+          <select name="directory_tid3">
+            <option value="0">-- 请选择三级商品目录 --</option>
+          </select>
+          <select name="directory_tid4">
+            <option value="0">-- 请选择四级商品目录 --</option>
+          </select>
+          </td></tr>
+            
+            <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Article Status');?></td></tr>
+            <tr>
+               <td colspan="2" id="sc1">
+               <select name="status" id="status" class="filter_select">
+                 <option value=""></option>
+                 <option value="1">已发布</option>
+                 <option value="0">未发布</option>
+               </select>
+               </td>
+             </tr>
+             
+             <tr class="nohover"><td class="bold" colspan="2">
+             <input type="submit" value="<?php echo t('Sure');?>" class="btn"/>&nbsp;
+             </td></tr>
+           </table>
+</form>
+  </div>
+

@@ -1,0 +1,71 @@
+<?php
+  $this->assign('menuItem', 'site_widget');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+  <ul>
+    <li><span class="check"><a href="<?php echo url('admin/site/widgetlist') ?>">插件列表</a></span></li>
+    <li><span class="basic"><a href="<?php echo url('admin/site/widgetedit/sitemapxml') ?>">Sitemap XML</a></span></li>
+  </ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+  <?php echo themeMessages() ?>
+  <form action="" method="post" id="form_sitemapxml">
+  <table id="mailSubscribe">
+    <tr class="nohover">
+      <td class="bold" colspan="2">基本设置</td>
+    </tr>
+    <tr>
+      <td class="bold"><label style="color:#000"><input type="checkbox" name="actived"<?php if (!isset($settings) || !isset($settings['actived']) || $settings['actived']) echo ' checked="checked"' ?> /> 创建 sitemap.xml</label></td>
+      <td>创建一个 sitemap.xml 文件</td>
+    </tr>
+    <tr>
+      <td class="bold"><label style="color:#000"><input type="checkbox" name="gzipped"<?php if (!isset($settings) || !isset($settings['gzipped']) || $settings['gzipped']) echo ' checked="checked"' ?> /> 创建 gzipped 文件</label></td>
+      <td>创建一个 gzipped 文件 (sitemap.xml.gz)</td>
+    </tr>
+    <tr class="nohover">
+      <td class="bold" colspan="2"><?php echo t('Notify') ?></td>
+    </tr>
+    <tr>
+      <td class="bold"><label style="color:#000"><input type="checkbox" name="notify_google"<?php if (!isset($settings) || !isset($settings['notify_google']) || $settings['notify_google']) echo ' checked="checked"' ?> /> <?php echo t('Notify %s', 'Google') ?></label></td>
+      <td><?php echo t('Notify %s', 'Google 关于你站点的更新') ?></td>
+    </tr>
+    <tr>
+      <td class="bold"><label style="color:#000"><input type="checkbox" disabled="disabled" name="notify_bing"<?php if (isset($settings) && isset($settings['notify_bing']) && $settings['notify_bing']) echo ' checked="checked"' ?> /> <?php echo t('Notify %s', 'Bing/MSN Live Search') ?></label></td>
+      <td><?php echo t('Notify %s', 'Bing/MSN Live Search 关于你站点的更新') ?></td>
+    </tr>
+    <tr>
+      <td class="bold"><label style="color:#000"><input type="checkbox" disabled="disabled" name="notify_ask"<?php if (isset($settings) && isset($settings['notify_ask']) && $settings['notify_ask']) echo ' checked="checked"' ?> /> <?php echo t('Notify %s', 'Ask.com') ?></label></td>
+      <td><?php echo t('Notify %s', 'Ask.com 关于你站点的更新') ?></td>
+    </tr>
+    <tr class="nohover">
+      <td class="bold">Sitemap 内容</td>
+    </tr>
+<?php foreach ($settings['content'] as $key => $setting): ?>
+    <tr>
+      <td class="bold">
+        <label style="color:#000"><input type="checkbox" name="content[<?php echo $key ?>][included]"<?php if (!isset($setting['included']) || $setting['included']) echo ' checked="checked"' ?> /> 包含<?php echo t('sitemap_' . $key) ?></label>
+        <span style="margin-left:10px">频率:</span><select name="content[<?php echo $key ?>][changefreq]">
+<?php foreach ($changefreq as $freq): ?>
+          <option value="<?php echo $freq ?>"<?php if (isset($setting['changefreq']) && $setting['changefreq'] == $freq) echo 'selected="selected"'?>><?php echo t($freq) ?></option>
+<?php endforeach ?>
+        </select>
+        <span style="margin-left:10px">权重:</span><input type="text" size="5" name="content[<?php echo $key ?>][priority]" value="<?php if (isset($setting['priority'])) echo $setting['priority'] ?>">
+      </td>
+      <td></td>
+    </tr>
+<?php endforeach ?>
+    <tr class="nohover">
+      <td><input type="submit" class="btn1" value="保存"></td>
+    </tr>
+  </table>
+  </form>
+</div>
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

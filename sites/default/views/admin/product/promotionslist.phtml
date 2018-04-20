@@ -1,0 +1,50 @@
+<?php
+  $this->assign('menuItem', 'product_promotionslist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/product/promotionslist') ?>">促销活动管理</a></span></li>
+		<li><span class="new"><a href="<?php echo url('admin/product/promotionedit') ?>">新建促销活动</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right">
+    <?php echo themeMessages() ?>
+    <table>
+    <tr class="subhead">
+      <td width="10%">活动ID</td>
+      <td>活动名称</td>
+      <td width="15%">开始时间</td>
+      <td width="15%">结束时间</td>
+      <td width="15%">状态</td>
+      <td width="20%">选项</td>
+    </tr>
+<?php
+  foreach($promotionsList as $pmid => $promotion):
+?>
+    <tr>
+      <td><a href="<?php echo url('admin/product/promotionedit/' . $promotion->pmid) ?>"><?php echo plain($promotion->pmid) ?></a></td>
+      <td><a href="<?php echo url('admin/product/promotionedit/' . $promotion->pmid) ?>"><?php echo plain($promotion->name) ?></a></td>
+      <td><?php echo $promotion->start_time ? date('Y-m-d', $promotion->start_time) : '-' ?></td>
+      <td><?php echo $promotion->end_time ? date('Y-m-d', $promotion->end_time) : '-' ?></td>
+      <td><?php echo t($promotion->status == Product_Model::STATUS_PUBLISHED ? 'Published' : 'Unpublished') ?></td>
+      <td>
+        <a href="<?php echo url('promotion/' . $promotion->path_alias .'.html') ?>" target="_blank">查看</a>
+        <a href="<?php echo url('admin/product/promotionedit/' . $promotion->pmid) ?>">编辑</a>
+        <a href="<?php echo url('admin/product/promotionproducts/' . $promotion->pmid) ?>">设置商品</a>
+        <a href="<?php echo url('admin/product/promotiondelete/' . $promotion->pmid) ?>" class="btn_confirm" rel="确认删除该活动吗?">删除</a>
+      </td>
+    </tr>
+<?php
+  endforeach;
+?>
+    </table>
+    <div></div>
+	</div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

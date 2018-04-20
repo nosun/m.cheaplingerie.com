@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+<div>
+	<div class="head">
+		<?php echo $this->render("parts/header.phtml"); ?>
+	</div>
+	<?php echo themeMessages(); ?>
+	<div id="cart-area">
+		<form action="<?php echo url('cart/mobilecartpost/'); ?>" method="post" name="cartpayform">
+			<input type="hidden" name="checkout" />
+			<div class="subtotal">
+				<p class="total-price">
+					<?php if ($cartInfo->product): ?>
+						Cart subtotal(<span id="cartitemcount"><?php echo $goodsInCart; ?></span> items):<span id="carttotal"><?php echo c($goodsAmount); ?></span>
+					<?php else: ?>
+						Cart subtotal(0 items):<span>$0.00</span>
+					<?php endif; ?>
+				</p>
+				<?php if($goodsAmount > 129): ?>
+<!-- 					<p class="free-word"> -->
+<!-- 						Your order qualifies for free shipping -->
+<!-- 					</p> -->
+				<?php endif; ?>
+				
+				<?php if ($cartInfo->product): ?>
+					<div class="btn-mom">
+						<button class="btn-red btn-red-high" type="submit">Proceed to Checkout</button>
+					</div>
+				<?php endif; ?>
+			</div>
+			<ul class="buy-list">
+				<?php foreach($cartInfo->product as $k => $v): ?>
+					<input type="hidden" name="cart_item_id_checked[]" value="<?php echo $v->cart_item_id; ?>" />
+					<input type="hidden" name="cart_item_ids[]" value="<?php echo $v->cart_item_id; ?>" />
+					<input type="hidden" name="pids[]" value="<?php echo $v->pid; ?>" />
+					<input type="hidden" name="qtys[]" id="qty<?php echo $v->cart_item_id; ?>" value="<?php echo $v->qty; ?>" />
+					<li item-id="<?php echo $v->cart_item_id; ?>">
+						<div class="img-box">
+							<a href="<?php echo url($v->url); ?>">
+								<img src="<?php echo urlimg('118x178', $v->filepath); ?>" alt="<?php $v->name; ?>" />
+							</a>
+						</div>
+						<a class="info" href="<?php echo url($v->url); ?>">
+							<p class="title info-common">
+								<?php echo strwidth($v->name, 40); ?>
+							</p>
+							<?php $cusflag = 0;?>
+							<?php foreach($v->data as $kk =>$vv): ?>
+								<?php if($kk == 'Bust (Inch)'): ?>
+									<p class="info-common">
+										Size:Custom Measurements
+									</p>
+									<p class="cus_mea">
+										<p class="info-grey"><?php echo $kk; ?>:<span><?php echo $vv; ?></span></p>
+									<?php $cusflag = 1; ?>
+								<?php elseif($kk == 'Height (Inch)'): ?>
+										<p class="info-grey"><?php echo $kk; ?>:<span><?php echo $vv; ?></span></p>
+									</p>
+									<?php $cusflag = 0; ?>
+								<?php else: ?>
+									<?php if($cusflag): ?>
+										<p class="info-grey"><?php echo $kk; ?>:<span><?php echo $vv; ?></span></p>
+										<?php continue; ?>
+									<?php endif; ?>
+									<?php if(strstr($vv, 'As Picture')): ?>
+										<p class="info-common">
+											<?php echo $kk . ':' . substr($vv, 0, strpos($vv, ':')); ?>
+										</p>
+										<p class="info-img">
+											<img src="<?php echo urlimg('118x178',substr($vv, strpos($vv, ':')+1)); ?>" />
+										</p>
+									<?php else: ?>
+										<p class="info-common">
+											<?php echo $kk . ':' . $vv; ?>
+										</p>
+									<?php endif; ?>
+								<?php endif; ?>
+							<?php endforeach; ?>
+							<p class="info-common info-price"><span id="itemsub<?php echo $v->cart_item_id; ?>"><?php echo isset($v->qty) ? c($v->price * $v->qty) : null;?></span></p>
+						</a>
+						<div class="clear btn-grp">
+							<input type="tel" class="text-default">
+							<button class="btn-default btn-num" type="button">
+								<span class="num"><?php echo $v->qty; ?></span>
+								<img src="<?php echo $tpldir; ?>/images/up-down.png" alt="">
+							</button>
+							<a href="<?php echo url('cart/deleteproductfromcart/'.$v->cart_item_id);?>">
+								<button class="btn-default" type="button">Delete</button>
+							</a>
+						</div>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</form>
+		<div class="recommend">
+			<p class="title">Recommended Products</p>
+			<div class="flexslidertwo carousel">
+				<ul class="slides">
+					<?php foreach ($recommandProductList as $v): ?>
+						<?php $path = ''; ?>
+						<?php if($v->filepath): ?>
+							<?php $path = $v->filepath; ?>
+						<?php else: ?>
+							<?php $path = $v->files[0]->filepath; ?>
+						<?php endif; ?>
+						<li>
+							<a href="<?php echo url($v->url); ?>">
+								<img src="<?php echo urlimg('210x320',$path)?>" />
+								<p class="title"><?php echo $v->name; ?></p>
+                                <p class="price"><?php echo c($v->sell_price); ?></p>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+			<div class="btn-mom">
+				<a href="<?php echo url(''); ?>">
+					<button class="btn-long">Continue Shopping</button>
+				</a>
+			</div>
+		</div>
+		<a class="back_to_top" href="#">
+			<span></span><br>
+			TOP OF PAGE
+		</a>
+		<div class="other-option">
+			<span class="change">Change Language</span>
+			<div class="common-select">
+				<select>
+					<option value="">English</option>
+					<option value="">Chinese</option>
+				</select>
+				<span class="se-arrow"></span>
+			</div>
+			<span class="change">Change Currency</span>
+			<div class="common-select">
+				<select>
+					<option value="">US Dollar</option>
+					<option value="">RMB</option>
+				</select>
+				<span class="se-arrow"></span>
+			</div>
+			<ul class="no-collapse-btn-grp">
+				<?php global $user; ?>
+				<?php if($user->uid): ?>
+					<li class="grp-item">
+						<a href="<?php echo url('user/logout'); ?>" class="title">Log out</a>
+						<span class="p-arrow"></span>
+					</li>
+					<li class="grp-item">
+						<a href="<?php echo url('user/wishlist'); ?>" class="title">My Wish List</a>
+						<span class="p-arrow"></span>
+					</li>
+				<?php else: ?>
+					<li class="grp-item">
+						<a href="<?php echo url('user/login'); ?>" class="title">Sign In or Register</a>
+						<span class="p-arrow"></span>
+					</li>
+				<?php endif; ?>
+			</ul>
+		</div>
+	</div>
+	<div class='backDrop'>
+		<div class="num-box">
+			<p>
+				Count:
+				<span>x</span>
+			</p>
+			<ul>
+				<li>1</li>
+				<li class="active">2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+				<li>6</li>
+				<li>7</li>
+				<li>8</li>
+				<li>9</li>
+				<li>10+</li>
+			</ul>
+		</div>
+		<div class="backDrop-bg"></div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(function() {
+		$(".flexslidertwo").flexslider({
+			animation: "slide",
+			animationLoop: false,
+			itemWidth: 100,
+			itemMargin: 5,
+			maxItems: 10
+		});
+	});
+	function ajaxupdatecart(itemid, count){
+		$.get('/cart/updateOrderProductQty/' + itemid +'/' + count,
+			function(data,status){
+				var backdata = eval("("+data+")");
+				var newtotal = backdata.amount;
+				var newsubtotal = backdata.modified_item.subtotal;
+				var changedid = backdata.modified_item.cart_item_id;
+				$("#cartitemcount").html(backdata.total);
+				$("#carttotal").html(newtotal);
+				$("#itemsub" + changedid).html(newsubtotal);
+			}
+		);
+	}
+	var pro_pid, pro_quantity;
+	$('.btn-num').click(function(){
+		pro_pid = $(this).parents('li').eq(0).attr('item-id');
+	});
+	$('.backDrop ul li').click(function(){
+		var selectNum = $('.backDrop ul li').index($(this)) + 1;
+		if (selectNum !== 10) {
+            pro_quantity = $(this).html();
+            ajaxupdatecart(pro_pid, pro_quantity);
+		}
+	});
+	$('.text-default').blur(function(){
+		pro_quantity = $(this).val();
+		ajaxupdatecart(pro_pid, pro_quantity);
+	});
+</script>
+<script src="<?php echo $tpldir; ?>/javascripts/main.js" type="text/javascript"></script>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

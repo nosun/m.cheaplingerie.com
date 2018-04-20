@@ -1,0 +1,157 @@
+<?php
+  $this->assign('menuItem', 'product_'.$stype);
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+<ul>
+	<li>
+	<span class="check">
+	 <a href="<?php echo url('admin/vocabulary/getList'); ?>">商品分类</a> -
+	 <a href="<?php echo url('admin/terms/getList/' . $vocabularyInfo->vid); ?>">
+	 <?php if ($vocabularyInfo->type == Taxonomy_Model::TYPE_TAG): ?> 标签列表 <?php elseif ($vocabularyInfo->type == Taxonomy_Model::TYPE_BRAND): ?>
+	 品牌列表 <?php else: ?> <?php echo $vocabularyInfo->name; ?> <?php endif;?> 的分类词</a>
+	</span>
+	</li>
+	<?php if (access('edit term')): ?>
+	<li><span class="new"><a href="<?php echo url('admin/terms/getInfo/'.$vocabularyInfo->vid.'/0'); ?>">新增分类词</a></span></li>
+	<?php endif; ?>
+</ul>
+</div>
+
+
+  <div class="main_right">
+    <?php echo themeMessages() ?>
+    <table>
+      <tr class="subhead">
+        <td width="8%">编号</td>
+        <td width="50%">分类名称</td>
+        <td width="20%">下级分类词数量</td>
+        <td width="20%">管理</td>
+      </tr>
+<?php
+$i = 1;
+  if(is_array($termsList)):
+    foreach($termsList as $key => $dl):
+?>
+      <tr>
+        <td><?php echo $i++; ?></td>
+        <td><?php if (access('edit term')): ?><a href="<?php echo url('admin/terms/getInfo/'.$vocabularyInfo->vid . '/' . $dl->tid); ?>"><?php endif;?>
+        <?php echo $dl->name . (trim($dl->name_cn) !== '' ? (' (' . plain(trim($dl->name_cn)) . ')') : '') ?>
+        <?php if (access('edit term')): ?></a><?php endif;?></td>
+        <td><?php echo $dl->count; ?></td>
+        <td>
+        <a href="<?php
+if ($vocabularyInfo->vid == 3) {
+  echo url($dl->url);
+} elseif($vocabularyInfo->vid == 2) {
+  echo url('browse/+' . $dl->path_alias . '.html');
+} else {
+  echo url('browse/++' . $dl->path_alias . '.html');
+}
+?>" target="_blank">查看</a>
+<?php if ($vocabularyInfo->type == Taxonomy_Model::TYPE_DIRECTORY): ?>
+          <?php if (access('edit term')): ?>
+          <a href="<?php echo url('admin/terms/getInfo/'.$vocabularyInfo->vid . '/0/'.$dl->tid);?>">新增子分类</a>
+          <?php endif;?>
+<?php endif;?>
+<?php if ($vocabularyInfo->type == Taxonomy_Model::TYPE_RECOMMEND) : ?>
+          <a href="<?php echo url('admin/terms/listproduct/'.$vocabularyInfo->vid . '/' . $dl->tid);?>">商品管理</a>
+<?php endif;?>
+          <?php if (access('edit term')): ?><a href="<?php echo url('admin/terms/getInfo/'.$vocabularyInfo->vid . '/' . $dl->tid); ?>">编辑</a><?php endif;?>
+          <?php if (access('delete term')): ?>
+          <a href="<?php echo url('admin/terms/delete/' . $vocabularyInfo->vid . '/' . $dl->tid) ?>" class="btn_confirm" rel="确认删除该分类及其子类吗?">删除</a>
+          <?php endif;?>
+          
+        </td>
+      </tr>
+<?php
+  if(is_array($dl->sub)):
+    foreach($dl->sub as $key2 => $dll):
+?>
+      <tr>
+        <td><?php echo $i++; ?></td>
+        <td><span class="term_sub2"></span>
+        <?php if (access('edit term')): ?><a href="<?php echo url('admin/terms/getInfo/' . $vocabularyInfo->vid . '/' . $dll->tid); ?>"><?php endif;?>
+        <?php echo $dll->name . (trim($dll->name_cn) !== '' ? (' (' . plain(trim($dll->name_cn)) . ')') : '') ?>
+        <?php if (access('edit term')): ?></a><?php endif;?></td>
+        <td><?php echo $dll->count; ?></td>
+        <td>
+        <a href="<?php echo url('browse/' . $dll->path_alias . '.html')?>" target="_blank">查看</a>
+<?php if ($vocabularyInfo->type != Taxonomy_Model::TYPE_TAG && $vocabularyInfo->type != Taxonomy_Model::TYPE_BRAND): ?>
+          <?php if (access('edit term')): ?>
+          <a href="<?php echo url('admin/terms/getInfo/'.$vocabularyInfo->vid . '/0/'.$dll->tid); ?>">新增子分类</a>
+          <?php endif;?>
+<?php endif;?>
+          <?php if (access('edit term')): ?><a href="<?php echo url('admin/terms/getInfo/' . $vocabularyInfo->vid . '/' . $dll->tid); ?>">编辑</a><?php endif;?>
+          <?php if (access('delete term')): ?>
+          <a href="<?php echo url('admin/terms/delete/' . $vocabularyInfo->vid . '/' . $dll->tid) ?>" class="btn_confirm" rel="确认删除该分类及其子类吗?">删除</a>
+          <?php endif;?>
+        </td>
+      </tr>
+<?php
+  if(is_array($dll->sub)):
+    foreach($dll->sub as $key3 => $dlll):
+?>
+      <tr>
+        <td><?php echo $i++; ?></td>
+        <td><span class="term_sub3"></span>
+        <?php if (access('edit term')): ?><a href="<?php echo url('admin/terms/getInfo/' . $vocabularyInfo->vid . '/' . $dlll->tid); ?>"><?php endif;?>
+        <?php echo $dlll->name . (trim($dlll->name_cn) !== '' ? (' (' . plain(trim($dlll->name_cn)) . ')') : '') ?>
+        <?php if (access('edit term')): ?></a><?php endif;?></td>
+        <td>0</td>
+        <td>
+          <a href="<?php echo url('browse/' . $dlll->path_alias . '.html')?>" target="_blank">查看</a>
+          <?php if (access('edit term')): ?>
+          <a href="<?php echo url('admin/terms/getInfo/'.$vocabularyInfo->vid . '/0/'.$dlll->tid); ?>">新增子分类</a>
+          <?php endif;?>
+          <?php if (access('edit term')): ?><a href="<?php echo url('admin/terms/getInfo/' . $vocabularyInfo->vid . '/' . $dlll->tid); ?>">编辑</a><?php endif;?>
+          <?php if (access('delete term')): ?>
+          <a href="<?php echo url('admin/terms/delete/' . $vocabularyInfo->vid . '/' . $dlll->tid) ?>" class="btn_confirm" rel="确认删除该分类及其子类吗?">删除</a>
+          <?php endif;?>
+
+        </td>
+      </tr>
+<?php
+  if(is_array($dlll->sub)):
+    foreach($dlll->sub as $key4 => $dl4):
+?>
+      <tr>
+        <td><?php echo $i++; ?></td>
+        <td><span class="term_sub4"></span>
+        <?php if (access('edit term')): ?><a href="<?php echo url('admin/terms/getInfo/' . $vocabularyInfo->vid . '/' . $dl4->tid); ?>"><?php endif;?>
+        <?php echo $dl4->name . (trim($dl4->name_cn) !== '' ? (' (' . plain(trim($dl4->name_cn)) . ')') : '') ?>
+        <?php if (access('edit term')): ?></a><?php endif;?></td>
+        <td>0</td>
+        <td>
+          <a href="<?php echo url('browse/' . $dl4->path_alias . '.html')?>" target="_blank">查看</a>
+          <?php if (access('edit term')): ?><a href="<?php echo url('admin/terms/getInfo/' . $vocabularyInfo->vid . '/' . $dl4->tid); ?>">编辑</a><?php endif;?>
+          <?php if (access('delete term')): ?>
+          <a href="<?php echo url('admin/terms/delete/' . $vocabularyInfo->vid . '/' . $dl4->tid) ?>" class="btn_confirm" rel="确认删除该分类及其子类吗?">删除</a>
+          <?php endif;?>
+
+        </td>
+      </tr>
+<?php
+    endforeach;
+  endif;
+?>
+<?php
+    endforeach;
+  endif;
+?>
+<?php
+    endforeach;
+  endif;
+?>
+<?php
+    endforeach;
+  endif;
+?>
+    </table>
+  </div>
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

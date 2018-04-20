@@ -1,0 +1,10 @@
+<?php if (!empty($fieldsList)): ?>
+<table style=" margin-bottom:10px;">
+<?php foreach ($fieldsList as $fieldName => $field): ?>
+<tr class="nohover"><td class="bold"><?php echo plain($field->name) ?><?php if (isset($field->can_add) && $field->can_add) echo ' <a href="javascript:void(0)" class="btn_field_add">[+]</a>' ?></td></tr>
+<tr><td><?php echo $field->widget ?></td></tr>
+<?php endforeach ?>
+</table>
+<?php else: ?>
+<div>该类型无扩展属性</div>
+<?php endif ?>

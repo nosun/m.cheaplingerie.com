@@ -1,0 +1,127 @@
+<?php
+  $this->assign('menuItem', 'user_list');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/user/list') ?>">用户管理</a></span></li>
+		<li><span class="new"><a href="<?php echo url('admin/user/edit') ?>">新建用户</a></span></li>
+		<li><span class="export"><a href="<?php echo url('admin/user/export') ?>">导出用户</a></span></li>
+	</ul>
+</div>
+<div>
+    <?php echo themeMessages() ?>
+
+    <div class="clear left_photo" id="tabs">
+      <div class="clear tab_ul">
+      <ul>
+        <li><a href="#list"><?php echo t('List') ?></a></li>
+        <li><a href="#filter"><?php echo t('Filter') ?></a></li>
+      </ul>
+      </div>
+
+      <?php echo themeMessages() ?>
+      <div id="list" class="box_Product main_right">
+      <div><?php echo $selectHtml;?></div>
+    <table style="margin-top:5px;">
+    <tr class="subhead">
+      <td width="8%"></td>
+      <td width="10%">用户名</td>
+      <td width="10%">会员等级</td>
+      <td width="10%">姓名</td>
+      <td width="7%">性别</td>
+      <td width="15%">电子邮箱</td>
+      <td width="10%">注册时间</td>
+      <td width="8%">地区</td>
+      <td width="7%">积分</td>
+      <td width="15%">选项</td>
+    </tr>
+<?php
+  foreach($usersList as $uid => $account):
+?>
+    <tr>
+      <td><input type="checkbox" name="uid[]" value="<?php echo $uid ?>"></td>
+      <td><a href="<?php echo url('admin/user/edit/' . $uid) ?>"><?php echo plain($account->name) ?></a></td>
+      <td><?php echo isset($ranksList[$account->rid]) ? plain($ranksList[$account->rid]->name) : '-'?></td>
+      <td><a href="<?php echo url('admin/user/edit/' . $uid) ?>"><?php echo plain($account->nickname) ?></a></td>
+      <td><?php echo $account->gender == User_Model::GENDER_MALE ? t('Male') : ($account->gender == User_Model::GENDER_FEMALE ? t('Female') : '-') ?></td>
+      <td><?php echo plain($account->email) ?></td>
+      <td><?php echo date('Y-m-d G:i', $account->created) ?></td>
+      <td><?php echo plain($account->area) ?></td>
+      <td><?php echo plain($account->points) ?></td>
+      <td>
+        <a href="<?php echo url('admin/user/edit/' . $uid) ?>">编辑</a>
+        <a href="<?php echo url('admin/user/delete/' . $uid) ?>" class="btn_confirm" rel="确认删除该用户吗?">删除</a>
+      </td>
+    </tr>
+<?php
+  endforeach;
+?>
+    </table>
+    <div></div>
+    <div class="pagination"><?php echo $pagination ?></div>
+    <div style="clear:both"></div>
+    </div>
+<div id="filter" class="box_Product main_right">
+      <form action="" method="post" id="form_order">
+          <table style=" margin-bottom:10px;">
+            <tr class="nohover"><td class="bold" colspan="2">用户名称</td></tr>
+            <tr>
+              <td width="50%" id="sc1">
+                  <input class="txt" name="username"/>
+              </td>
+              <td width="40%"></td>
+            </tr>
+            <tr class="nohover"><td class="bold" colspan="2">姓名</td></tr>
+            <tr>
+              <td width="50%" id="sc1">
+                <input class="txt" name="nickname"/>
+              </td>
+              <td width="40%"></td>
+            </tr>
+            <tr class="nohover"><td class="bold" colspan="2">电子邮箱</td></tr>
+            <tr>
+              <td width="50%" id="sc1">
+                  <input class="txt" name="email"/>
+              </td>
+              <td width="40%"></td>
+            </tr>
+          <tr class="nohover"><td class="bold" colspan="2">会员等级</td></tr>
+            <tr>
+              <td width="50%" id="sc1">
+                <select name="rank">
+<?php foreach ($ranksList as $rid => $rank): ?>
+          <option value="<?php echo $rid ?>"<?php if (isset($account) && $account->rid == $rid) echo ' selected="selected"' ?>><?php echo plain($rank->name); ?></option>
+<?php endforeach ?>
+        </select>
+              </td>
+              <td width="40%"></td>
+            </tr>
+
+            <tr class="nohover"><td class="bold" colspan="2">注册时间</td></tr>
+            <tr>
+               <td width="50%" id="sc1">
+                 <input name="startTime" width="100" class="datepicker" value="" /> - <input type="text" name="endTime" width="100" class="datepicker" />
+               </td>
+               <td width="40%"></td>
+            </tr>
+          <tr class="nohover"><td class="bold" colspan="2">用户状态</td></tr>
+            <tr>
+               <td width="50%" id="sc1">
+                <input type="checkbox" checked="checked" value="1" name="status">
+               </td>
+               <td width="40%"></td>
+            </tr>
+           <tr class="nohover"><td class="bold" colspan="2">
+             <input type="submit" value="<?php echo t('Sure');?>" class="btn"/>
+             </td></tr>
+           </table>
+      </form>
+      </div>
+    </div>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

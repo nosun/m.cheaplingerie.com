@@ -1,0 +1,91 @@
+<?php
+  $this->assign('menuItem', 'site_display');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="basic"><a href="<?php echo url('admin/site/displaysetting') ?>">显示设置</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="POST">
+
+    <table>
+    <!--
+      <tr class="nohover"><td class="bold" colspan="2">时区设置</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="timeZone" value="<?php echo isset($displayInfo['timeZone']) ? $displayInfo['timeZone'] : null?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">时间格式</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="timeFormat" value="<?php echo isset($displayInfo['timeFormat']) ? $displayInfo['timeFormat'] : null?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+      -->
+      <tr class="nohover"><td class="bold" colspan="2">商品列表分页数</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="goodsListNum" value="<?php echo isset($displayInfo['goodsListNum']) ? $displayInfo['goodsListNum'] : 20?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+      <!--
+      <tr class="nohover"><td class="bold" colspan="2">评论列表分页数</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="commentListNum" value="<?php echo isset($displayInfo['commentListNum']) ? $displayInfo['commentListNum'] : null?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+       -->
+      <tr class="nohover"><td class="bold" colspan="2">文章列表分页数</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="articleListNum" value="<?php echo isset($displayInfo['articleListNum']) ? $displayInfo['articleListNum'] : 20?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">商品列表默认显示方式</td></tr>
+      <tr>
+        <td width="50%">
+          <input type="radio" value="list" name="productListMothed"
+          <?php if ($displayInfo['productListMothed'] == 'list' || !isset($displayInfo['productListMothed'])) echo 'checked';?>
+          > 列表方式
+          <input type="radio" value="photo" name="productListMothed"
+          <?php if ($displayInfo['productListMothed'] == 'photo') echo 'checked';?>
+          > 图片方式
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">商品列表  Home 名称 (SEO)</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="productListHomeName" value="<?php echo isset($displayInfo['productListHomeName']) ? $displayInfo['productListHomeName'] : null?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+    </table>
+
+    <div class="main_bottom_deal">
+      <input type="submit" value="保存" class="btn">
+    </div>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

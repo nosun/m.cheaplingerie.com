@@ -1,0 +1,34 @@
+<div id="articleRelated">
+  <div id="tabs1"  style="margin-bottom:10px;">
+    <ul style="height:28px;">
+      <li><a href="###" id="btn_list1"><?php echo t('List');?></a></li>
+      <li><a href="####" id="btn_add1"><?php echo t('Add');?></a></li>
+      <li><a href="###" id="btn_select1"><?php echo t('Filter');?></a></li>
+    </ul>
+    <div id="list1">
+            <table  id="datalist1">
+              <tr class="subhead">
+                <td width="8%">ID</td>
+                <td width="30%">标题</td>
+              </tr>
+<?php
+  if(is_array($articleRelatedData)):
+    foreach($articleRelatedData as $key => $v):
+?>
+            <tr class="i<?php echo $key ?>">
+              <td><a href="javascript:;" class="related_cancel" id="a_cancel_<?php echo $v->aid ;?>" rel="<?php echo $v->aid ;?>" >&nbsp;&nbsp;&nbsp;&nbsp;</a></td>
+              <td><?php echo plain($v->title) ?></td>
+            </tr>
+<?php
+  endforeach;
+    endif;
+?>
+            </table>
+    </div>
+    <div id="add1" style="display:none"  style="clear:both;">
+          <iframe id="ifr_add1" width="100%" height=480 name="main" id="main" frameborder="0" scrolling=no src="<?php echo url('admin/content/getAricleRelatedList');?>"></iframe>
+    </div>
+  </div>
+</div>
+
+

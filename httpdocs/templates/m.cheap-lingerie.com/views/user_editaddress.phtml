@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+	<div class="back_head">
+		<a class="back" href="<?php echo $backurl; ?>"><img src="<?php echo $tpldir; ?>/images/back.png"></a>
+	</div>
+	<?php echo themeMessages(); ?>
+	<form action="<?php echo url("user/useraddressedit/"); ?>" method="post" name="editaddressform">
+		<input type="hidden" name="rid" value="<?php echo $address->rid; ?>" class="editen" />
+		<div class="sign_regist">
+			<div class="h">Edit Shipping Address</div>
+			<h2 class="sign_regist_h2">First Name<span>*</span>:</h2>
+			<input name="delivery_first_name" class="sign_regist_input firstname" type="text" value="<?php echo isset($address->delivery_first_name) ? $address->delivery_first_name : null; ?>" />
+			<h2 class="sign_regist_h2">Last Name<span>*</span></h2>
+			<input name="delivery_last_name" class="sign_regist_input lastname" type="text" value="<?php echo isset($address->delivery_last_name) ? $address->delivery_last_name : null; ?>" />
+			<h2 class="sign_regist_h2">Address<span>*</span></h2>
+			<input name="delivery_address" class="sign_regist_input address" type="text" value="<?php echo isset($address->delivery_address) ? $address->delivery_address : null; ?>" />
+			<h2 class="sign_regist_h2">City<span>*</span>:</h2>
+			<input name="delivery_city" class="sign_regist_input city" type="text" value="<?php echo isset($address->delivery_city) ? $address->delivery_city : null; ?>" />
+			
+			<div style="margin-top:1rem;">
+				<h2 class="sign_regist_h2">Country / Region<span>*</span>:</h2>
+				<div class="common-select" style="border-color: #000000">
+					<select name="delivery_cid" id="delivery_cid_select">
+						<?php foreach($countries as $k => $v) : ?>
+							<option value="<?php echo $k ?>"><?php echo $v ?></option>
+						<?php endforeach;?>
+					</select>
+					<span class="se-arrow"></span>
+				</div>
+			</div>
+			<div style="margin-top:1rem;">
+				<h2 class="sign_regist_h2">State / Province / Region<span>*</span>:</h2>
+				<input type="hidden" name="delivery_country" id="delivery_country" class="en" />
+				<div class="common-select" style="border-color: #000000" id="delivery_pid_div">
+					<select name="delivery_pid" id="delivery_pid_select">
+						<?php foreach($provinces as $k => $v) : ?>
+							<option value="<?php echo $k ?>"><?php echo $v ?></option>
+						<?php endforeach;?>
+					</select>
+					<span class="se-arrow"></span>
+				</div>
+			</div>
+			<input type="text" name="delivery_province" id="delivery_province" style="display:none" class="sign_regist_input" />
+
+			<h2 class="sign_regist_h2">Postal Code<span>*</span>:</h2>
+			<input name="delivery_postcode" class="sign_regist_input code" type="text" value="<?php echo isset($address->delivery_postcode) ? $address->delivery_postcode : null; ?>" />
+			<h2 class="sign_regist_h2">Phone Number<span>*</span>:</h2>
+			<input name="delivery_mobile" class="sign_regist_input phone" type="text" value="<?php echo isset($address->delivery_mobile) ? $address->delivery_mobile : null; ?>" />
+		</div>
+		<div class="col-box" style="margin-top:8%;">
+		    <button class="btn-red btn-red-high submit">Submit</button>
+		</div>
+	</form>
+	<script type="text/javascript">
+		function checkform(){
+			if($('.firstname').val()==''){
+	            $('input').removeClass('aaa');
+	            $('.firstname').addClass('aaa');
+	            alert('Please enter your firstname');
+	            return false;
+	        }
+	        if($('.lastname').val()==''){
+	            $('input').removeClass('aaa');
+	            $('.lastname').addClass('aaa');
+	            alert('Please enter your lastname');
+	            return false;
+	        }
+	        if($('.address').val()==''){
+	            $('input').removeClass('aaa');
+	            $('.address').addClass('aaa');
+	            alert('Please enter your address');
+	            return false;
+	        }
+	        if($('.city').val()==''){
+	            $('input').removeClass('aaa');
+	            $('.city').addClass('aaa');
+	            alert('Please enter your city');
+	            return false;
+	        }
+	        if($('.code').val()==''){
+	            $('input').removeClass('aaa');
+	            $('.city').addClass('aaa');
+	            alert('Please enter your Postal Code');
+	            return false;
+	        }
+	        if($('.phone').val()==''){
+	            $('input').removeClass('aaa');
+	            $('.phone').addClass('aaa');
+	            alert('Please enter your phone number');
+	            return false;
+	        }
+	        return true;
+		}
+		$(".submit").click(function(){
+			event.preventDefault();
+			if(checkform()){
+				editaddressform.submit();
+			}
+		});
+	
+		$('.sign_regist_input').click(function(){
+			$('input').removeClass('aaa');
+			$(this).addClass('aaa');
+		});
+		$("#delivery_cid_select").change(selectchange);
+
+	 	function selectchange(){
+		 	$('#delivery_country').val($('#delivery_cid_select').find("option:selected").text());
+		 	var cid = $("#delivery_cid_select").val();
+		 	var ajaxUrl = 'cart/ajaxgetprovince/';
+		 	$.ajax({
+		 		type : "GET",
+		        url : "<?php echo url('cart/ajaxgetprovince/'); ?>" + encodeURI(cid),
+		        contentType : "application/txt; charset=utf-8",
+		        dataType : "text",
+		        success : function(msg) {
+//		      	  $('#delivery_pid_select').removeAttr('disabled');
+		            if (msg == -1) {
+		              alert('Error for getting province information');
+		            } else {
+		              provinceArray = msg;
+		              provinceArray = eval('(' + provinceArray + ')');
+
+		              var select = document.getElementById('delivery_pid_select');
+		              select.innerHTML = '';
+		              $('input[name="delivery_province"]').val('');
+		              //if the province Array don't have keys.
+		              if(Object.keys(provinceArray).length < 1){
+		              	$('#delivery_province').css('display', 'inline');
+		              	$('#delivery_pid_div').css('display', 'none');
+		              	<?php if(isset($address->delivery_province) && $address->delivery_province): ?>
+		              	$('#delivery_province').val("<?php echo $address->delivery_province; ?>");
+	  	              	<?php endif; ?>
+		              }else{
+		              	$('#delivery_province').css('display', 'none');
+		              	$('#delivery_pid_div').css('display', 'block');
+		  	            for (var i in provinceArray){
+		  	              var opt1 = document.createElement("option");
+		  	              <?php if(isset($address->delivery_province) && $address->delivery_province): ?>
+		  	              	if(provinceArray[i] == "<?php echo $address->delivery_province; ?>"){
+			  	              	opt1.selected = true;
+		  	              	}
+		  	              <?php endif; ?>
+		  	              opt1.value = i;
+		  	              opt1.innerHTML = provinceArray[i];
+		  	              select.appendChild(opt1);
+		  	            }
+		              }
+		            }
+		          }
+			 	});
+		 	}
+	 	$('#delivery_pid_select').change(function(){
+		 	$('#delivery_province').val($('#delivery_pid_select').find("option:selected").text());
+		});
+	 	var dp1 = document.getElementById('delivery_cid_select');
+	  	<?php if(isset($address->delivery_cid) && $address->delivery_cid): ?>
+		  			dp1.value = <?php echo $address->delivery_cid; ?>;
+		  			dp1.addEventListener("change", selectchange(), false);
+  		<?php endif; ?>
+
+  		<?php if(isset($address->delivery_province) && $address->delivery_province): ?>
+  			var dp2 = document.getElementById('delivery_province');
+  		<?php endif; ?>
+	</script>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

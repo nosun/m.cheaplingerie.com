@@ -1,0 +1,52 @@
+<?php
+  $this->assign('menuItem', 'site_flashphoto');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+  <div class="main_right">
+    <div class="main_title">页面管理</div>
+    <?php echo themeMessages() ?>
+    <div id="tabs">
+      <div id="list">
+        <form id="form1" action ="<?php echo url('admin/content/post') ?>" method="post">
+          <table id="products_list">
+            <tr class="subhead">
+              <td width="35%">标题</td>
+              <td width="20%">发布</td>
+              <td width="10%">排序</td>
+              <td width="15%"><?php echo t('Admin') ?></td>
+            </tr>
+<?php
+  //if (isset($articleList)) ：
+    foreach($pageList as $key => $dl) :
+?>
+            <tr class="subhead">
+              <td><?php echo $dl->title;?></td>
+              <td><?php if($dl->visible)echo '√';else echo 'χ'; ?></td>
+              <td><input value="<?php echo $dl->weight?>" name="weights[]" class="file_list_weight_txt" /></td>
+              <td>
+              <a href="<?php echo url($dl->url)?>" target="_blank">查看</a>
+              <a href="<?php echo url('admin/content/editPage/'.$dl->pid)?>"><?php echo t('Edit')?></a>
+<?php if ($dl->visible !=2 ) :?>
+              <a href="<?php echo url('admin/content/deletePage/'.$dl->pid)?>" class="btn_confirm" rel="确定删除该页面信息吗"><?php echo t('Delete')?></a>
+<?php endif;?>
+              </td>
+            </tr>
+<?php
+    endforeach;
+  //endif;
+?>
+            <tr>
+              <td colspan="6"><a href="<?php echo url('admin/content/editPage/0')?>">新增页面</a></td>
+            </tr>
+          </table>
+          <div class="pagination"><?php echo $pagination ?></div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

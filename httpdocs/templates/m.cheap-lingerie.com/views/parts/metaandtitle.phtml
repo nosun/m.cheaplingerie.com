@@ -1,0 +1,11 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="format-detection" content="telephone=no" />
+<?php if (!empty($from) && $from == "product"):?>
+<meta property="fb:app_id" content="587116731372374" /> 
+<meta property="og:url"    content="<?php echo url($product->path_alias . "-p$product->sn.html"); ?>" /> 
+<meta property="og:title"  content="<?php echo "[ " . c($product->sell_price) . " ]" . plain(isset($docTitle) ? $docTitle : str_replace('-', ' ', $product->path_alias)); ?>" /> 
+<meta property="og:description"  content="I like this. Do you think I should buy it?" /> 
+<meta property="og:image"  content="<?php echo urlimg('380X380', $product->filepath) ?>" /> 
+<?php endif;?>
+<title><?php echo plain(isset($docTitle)? $docTitle : ''); ?></title>

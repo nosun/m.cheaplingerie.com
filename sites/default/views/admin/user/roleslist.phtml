@@ -1,0 +1,44 @@
+<?php
+  $this->assign('menuItem', 'user_roles');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/user/roles') ?>">角色管理</a></span></li>
+		<li><span class="new"><a href="<?php echo url('admin/user/roleedit') ?>">新建角色</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-top:10px;margin-left:10px;">
+    <?php echo themeMessages() ?>
+    <table>
+    <tr class="subhead">
+      <td width="40%">角色名称</td>
+      <td width="55%">选项</td>
+    </tr>
+<?php
+  foreach($roles as $rid => $role):
+?>
+    <tr>
+      <td><a href="<?php echo url('admin/user/roleedit/' . $rid) ?>"><?php echo plain($role->name) ?></a></td>
+      <td>
+        <a href="<?php echo url('admin/user/roleedit/' . $rid) ?>">编辑</a>
+        <a href="<?php echo url('admin/user/rolepermission/' . $rid) ?>">权限设置</a>
+<?php if ($rid != User_Model::ROLE_ANONYMOUS_USER && $rid != User_Model::ROLE_AUTHENTICATED_USER): ?>
+        <a href="<?php echo url('admin/user/roledelete/' . $rid) ?>" class="btn_confirm" rel="确认删除该角色吗?">删除</a>
+<?php endif ?>
+      </td>
+    </tr>
+<?php
+  endforeach;
+?>
+    </table>
+    <div></div>
+    <div style="clear:both"></div>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<?php $this->render('parts/metaandtitle.phtml'); ?>
+		<?php $this->render('parts/includecss.phtml', array('from' => 'error')); ?>
+		<?php $this->render('parts/includejs.phtml'); ?>
+	</head>
+	<body>
+		<div class="main">
+			<div class="head">
+				<?php echo $this->render("parts/header.phtml"); ?>
+		    </div>
+		    <div class="about_us" style="font:1.2rem/2rem 'arial';padding:0 4.5%;margin-top:5px;">
+		    	<span style="font:1.7rem/2.3rem 'arial';font-weight:bold">403 Forbidden</span><br/>
+		    	<?php if ($debug): ?>
+				    <p><?php echo $ex->getMessage(); ?></p>
+				<?php endif ?>
+		    </div>
+		    <div class="foot">
+				<?php echo $this->render('parts/footer.phtml'); ?>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,65 @@
+<?php
+  $this->assign('menuItem', 'statistics_customers');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+  <ul>
+    <li><span class="basic"><a href="">客户统计</a></span></li>
+  </ul>
+</div>
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+
+    <table class="allborder">
+      <tr class="subhead"><td class="bold" colspan="4">会员购买率 （会员购买率 = 有订单会员数 ÷ 会员总数）</td></tr>
+      <tr>
+        <td>会员总数</td>
+        <td>有订单会员数</td>
+        <td>订单总数</td>
+        <td>会员购买率</td>
+      </tr>
+      <tr>
+        <td><?php echo $members[0]?></td>
+        <td><?php echo $members[1]?></td>
+        <td><?php echo $orders[0]?></td>
+        <td><?php echo round(($members[1] / $orders[0]) * 100 , 2) . '%'?></td>
+      </tr>
+    </table>
+    <br>
+      <table class="allborder">
+      <tr class="subhead"><td class="bold" colspan="3">每会员平均订单数及购物额（每会员订单数 = 会员订单总数 ÷ 会员总数） （每会员购物额 = 会员购物总额 ÷ 会员总数）</td></tr>
+      <tr>
+        <td>会员购物总额</td>
+        <td>每会员订单数</td>
+        <td>每会员购物额</td>
+      </tr>
+      <tr>
+        <td><?php echo $amount[0]?></td>
+        <td><?php echo $orders[0] / $members[0]?></td>
+        <td><?php echo $amount[0] / $members[0]?></td>
+      </tr>
+    </table>
+    <br>
+        <table class="allborder">
+      <tr class="subhead"><td class="bold" colspan="3">匿名会员平均订单额及购物总额（匿名会员平均订单额 = 匿名会员购物总额 ÷ 匿名会员订单总数）</td></tr>
+      <tr>
+        <td>匿名会员购物总额</td>
+        <td>匿名会员订单总数</td>
+        <td>匿名会员平均订单额</td>
+      </tr>
+      <tr>
+        <td><?php echo $amount[1]?></td>
+        <td><?php echo $orders[1]?></td>
+        <td><?php echo round($amount[1] / $orders[1], 2)?></td>
+      </tr>
+    </table>
+
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

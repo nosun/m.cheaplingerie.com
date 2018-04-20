@@ -1,0 +1,42 @@
+<?php
+  $this->assign('menuItem', 'site_widget');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+
+<div class="import clear">
+<ul>
+	<li><span class="check"><a href="<?php echo url('admin/site/widgetlist') ?>">插件列表</a></span></li>
+	<li><span class="check"><a href="<?php echo url('admin/site/widgetedit/randproduct/index') ?>">商品随机上下架</a></span></li>
+	<li><span class="basic"><a href="<?php echo url('admin/site/widgetedit/randproduct/auto') ?>">自动随机上下架</a></span></li>
+</ul>
+</div>
+<div  class="main_right">
+  <?php echo themeMessages() ?>
+   <form  id="form_productinfo" action="<?php echo url('admin/site/widgetedit/randproduct/auto');?>" method="post">
+   <input type="hidden" id="directory_list" value='<?php echo strtr(json_encode($directoryList), "'", "\'")?>'>
+   <table>
+     <tr class="subhead bold"><td width="20%">页面信息模板设置</td><td width="80%"></td></tr>
+     <tr><td>开启或关闭</td><td>
+        <lable><input type="radio" name="rand[status]" value="1" <?php if($setting['status'] == 1) echo 'checked'; ?>> 开启</lable>
+         <lable><input value="0" name="rand[status]" type="radio" <?php if(!isset($setting['status']) || $setting['status'] == 0) echo 'checked'; ?>> 关闭</lable>
+      </td></tr>
+     
+     <tr><td>上架或下架</td><td>
+        <lable><input type="radio" name="rand[type]" value="1" <?php if(!isset($setting['type']) || $setting['type'] == 1) echo 'checked'; ?>> 上架</lable>
+         <lable><input value="0" name="rand[type]" type="radio" <?php if($setting['type'] == 0) echo 'checked'; ?>> 下架</lable>
+      </td></tr>
+      
+     <tr><td>自动上架时间间隔</td><td><input name="rand[time]" value="<?php echo isset($setting['time']) ? $setting['time'] : null?>" /> 分钟（请填写5的倍数）</td></tr>
+     <tr><td>自动上下架商品数量</td><td><input name="rand[num]" value="<?php echo isset($setting['num']) ? $setting['num'] : null?>" /> 每次自动上下架的数量</td></tr>
+     
+   </table>
+   <div class="divbtn"><input type="submit" value="保存" name="save" class="btn"/></div>
+  </form>
+</div>
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

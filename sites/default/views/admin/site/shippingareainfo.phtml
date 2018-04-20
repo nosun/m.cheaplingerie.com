@@ -1,0 +1,69 @@
+<?php
+  $this->assign('menuItem', 'site_shipping');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+  <ul>
+    <li><span class="check"><a href="<?php echo url('admin/site/shippingList') ?>"> 配送方式表</a></span></li>
+    <li><span class="basic">编辑配送方式</span></li>
+  </ul>
+</div>
+
+<?php echo themeMessages() ?>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;" id="shippingarea">
+    <div class="main_title">配送管理</div>
+    <form action="" method="POST">
+    <input type="hidden" value="<?php echo isset($key) ? $key : null?>" name="key" id="key">
+    <input type="hidden" value="<?php echo isset($name) ? $name : null?>" id="name">
+    <input type="hidden" value='<?php echo isset($pids) ? json_encode($pids) : '[]'; ?>' id="spid_json">
+    <div id = "dataform">
+<?php echo $form;?>
+    </div>
+	    <table>
+	    <tr><td width="30%">所辖地区</td><td id="txt_provinces">
+	    
+<?php
+if(isset($config['area'])):
+  foreach($config['area'] as $k2 => $v2):
+    foreach($v2 as $k3 => $v3):
+      echo '<div>';
+      echo '<input type="checkbox" class="del" checked value="'.$v3.'" name="area['.$k2.'][]">';
+      echo (isset($countries[$k2]) ? $countries[$k2] : 'all') .' '. (isset($provinces[$v3]) ? $provinces[$v3] : null) ;
+      echo '</div>';
+      endforeach;
+  endforeach;
+endif;
+?>
+
+	    </td></tr>
+	    <tr><td>添加区域</td><td>
+	    <span style="float:left;">
+	      <select size="12" id="select_countries" style="width:250px;">
+	      <option value=0>all</option>
+<?php foreach($countries as $k => $v) : ?>
+        <option value="<?php echo $k ?>"><?php echo $v ?></option>
+<?php endforeach;?>
+	      </select>
+	      
+	      <select size="12" id="select_provinces" style="width:250px;">
+<?php foreach($provinces as $k => $v) : ?>
+        <option value="<?php echo $k ?>"><?php echo $v ?></option>
+<?php endforeach;?>
+        </select>
+        </span>
+        <a href="javascript:;" style="margin-top:4px;margin-left:4px;display:block;float:left;"><img src="<?php echo url('images/admin/cross.gif');?>" id="addprovince"/></a>
+	    </td></tr>
+	    <tr><td colspan="2"><input type="submit" value="保存"></td></tr>
+	    
+	    </table>
+    </form>
+</div>
+   
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>
+  

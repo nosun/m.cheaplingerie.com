@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+    <!--顶部back-->
+    <div class="back_head">
+        <a class="back" href="<?php echo url( $product->url) . '#backanchor'; ?>"><img src="<?php echo $tpldir; ?>/images/back.png"></a>
+    </div>
+    <!--顶部back end-->
+    <div class="Custom_Measurements">
+        <div class="Custom_Measurements_h">Custom Measurements</div>
+        <p class="looking">Looking for a perfect fit? Our tailors will use
+            your exact measurements to create a made-
+            to-order dress just for you.</p>
+        <div class="measure_img"><img src="<?php echo $tpldir; ?>/images/measure.png"> </div>
+        <div class="select_content">
+        	<form name="saveandback" action="<?php echo url($product->url) . '#backanchor'; ?>" method="post">
+        		<input type="hidden" name="custom" value="1" />
+	            <table>
+	              <tr class="row">
+	                <td class="left_word">Bust (Inch):</td>
+	                <td>
+	                    <div class="select">
+	                        <select name="bust_inch" id="bust_inch">
+	                        	<option value="">Please Select</option>
+	                            <?php for($i=42; $i<=150; $i++) :?>
+					            	<option value="<?php echo $i / 2; ?>"><?php echo $i / 2; ?> inch</option>
+					            <?php endfor; ?>
+	                        </select>
+	                        <span class="se-arrow"></span>
+	                    </div>
+	                </td>
+	              </tr>
+	              <tr class="row">
+	                <td class="left_word">Waist (Inch):</td>
+	                <td>
+	                    <div class="select">
+	                        <select name="waist_inch" class="required" id="waist_inch">
+	                        	<option value="">Please Select</option>
+	                            <?php for($i=40; $i<=150; $i++) :?>
+	                                <option value="<?php echo $i / 2; ?>"><?php echo $i / 2; ?> inch</option>
+	                            <?php endfor; ?>
+	                        </select>
+	                        <span class="se-arrow"></span>
+	                    </div>
+	                </td>
+	              </tr>
+	              <tr class="row">
+	                <td class="left_word">Hips (Inch):</td>
+	                <td>
+	                    <div class="select">
+	                        <select name="hips_inch" class="required" id="hips_inch">
+	                        	<option value="">Please Select</option>
+	                            <?php for($i=40; $i<=150; $i++) :?>
+	                            	<option value="<?php echo $i / 2; ?>"><?php echo $i / 2; ?> inch</option>
+	                            <?php endfor; ?>
+	                        </select>
+	                        <span class="se-arrow"></span>
+	                    </div>
+	                </td>
+	              </tr>
+	              <tr class="row">
+	                <td class="left_word">Hollow to Floor (Inch):</td>
+	                <td>
+	                    <div class="select">
+	                        <select name="hollow_to_floor_inch" class="required" id="hollow_to_floor_inch">
+	                        	<option value="">Please Select</option>
+	                            <?php for($i=44; $i<=150; $i++) :?>
+	                                  <option value="<?php echo $i / 2; ?>"><?php echo $i / 2; ?> inch</option>
+	                            <?php endfor; ?>
+	                        </select>
+	                        <span class="se-arrow"></span>
+	                    </div>
+	                </td>
+	              </tr>
+	              <tr class="row">
+	                <td class="left_word">Height (Inch):</td>
+	                <td>
+	                    <div class="select">
+	                        <select name="height_inch" class="required" id="height_inch">
+	                        	<option value="">Please Select</option>
+	                            <?php for($i=70; $i<=152; $i++) :?>
+	                            	<option value="<?php echo $i / 2; ?>"><?php echo $i / 2; ?> inch</option>
+	                            <?php endfor; ?>
+	                        </select>
+	                        <span class="se-arrow"></span>
+	                    </div>
+	                </td>
+	              </tr>
+	          </table>
+	          <button id="customsubmit" type="button" class="btn-red btn-red-high" style="margin-top:4%;">Save Change</button>
+          </form>
+        </div>
+    </div>
+	<script type="text/javascript">
+		function checkCustomForm(){
+			var bust_inch = $('#bust_inch').val(),
+				waist_inch= $('#waist_inch').val(),
+				hips_inch= $('#hips_inch').val(),
+				hollow_to_floor_inch= $('#hollow_to_floor_inch').val(),
+				height_inch= $('#height_inch').val();
+			return bust_inch && waist_inch && hips_inch && hollow_to_floor_inch && height_inch;
+		}
+		$('#customsubmit').click(function(){
+			if(checkCustomForm()){
+				saveandback.submit();
+			}
+			else{
+				alert("You need to choose all");
+			}
+		});
+    </script>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

@@ -1,0 +1,72 @@
+<?php
+  $this->assign('menuItem', 'product_vocabulary');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+
+	<div class="import clear">
+	  <ul>
+	    <li><span class="check"><a href="<?php echo url('admin/vocabulary/getList'); ?>">查看商品分类</a></span></li>
+	    <li style="background: none;"><span class="basic">编辑商品分类</span></li>
+	  </ul>
+	</div>
+
+  <div class="main_right">
+    <?php echo themeMessages() ?>
+    <form action="<?php  echo url('admin/vocabulary/update/'); ?>" method="POST">
+    <input type="hidden" name="vid" value="<?php echo $vocabularyInfo->vid; ?>"/>
+    <table class="attribute">
+      <tr class="nohover"><td class="bold" colspan="2">分类名称</td></tr>
+      <tr><td width="50%"><input value="<?php echo $vocabularyInfo->name; ?>" class="txt non-empty"  title="分类名称不能为空" name="name" maxlength="128" /> <span style="color:red">*</span></td>
+      <td width="40%">
+      <?php
+      if($vocabularyInfo->type==1){
+        echo '品牌&nbsp;';
+      } else if($vocabularyInfo->type==2){
+        echo '标签&nbsp;';
+      }else{
+        echo '商品目录的名称';
+      }
+      ?>
+      </td></tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">中文名称</td></tr>
+      <tr>
+        <td width="50%"><input value="<?php echo $vocabularyInfo->name_cn; ?>" class="txt" name="name_cn"/></td>
+        <td width="40%">中文名称</td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">
+      <?php
+      if($vocabularyInfo->type==2){
+        echo '品牌总数';
+      } else if($vocabularyInfo->type==1){
+        echo '标签总数';
+      }else{
+        echo '下级分类词数目';
+      }
+      ?>
+      </td></tr>
+
+      <tr>
+        <td width="50%"><input value="<?php echo $vocabularyInfo->count; ?>" disabled="disabled" class="txt" /></td>
+        <td width="40%">该分类的下级分类的数目</td>
+      </tr>
+
+
+      <tr class="noborder nohover" style="border-bottom:0px solid red;">
+        <td class="bold" colspan="2">
+          <input type="submit" value="提交" class="Buttom_3 btn" />&nbsp;
+          <input type="button" value="取消" class="Buttom_4 btn btn_cancel" />
+        </td>
+      </tr>
+    </table>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

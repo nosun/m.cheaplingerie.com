@@ -1,0 +1,4 @@
+name = Wire Transfer
+version = 1.0
+description = Directly Transfer Money to us, you may need pay extra wire transfer fees to the bank. 5-7 days delay might occur using this payment method.
+online = 0

@@ -1,0 +1,55 @@
+<?php
+  $this->assign('menuItem', 'site_currency');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/site/getCurrencyList') ?>">货币管理</a></span></li>
+		<li><span class="new"><a href="<?php echo url('admin/site/editCurrency/0'); ?>">新增货币</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <table>
+      <tr class="subhead">
+        <td width="10%">序号</td>
+        <td width="30%">货币名称</td>
+        <td width="10%">货币代码</td>
+        <td width="10%">货币符号</td>
+        <td width="10%">兑换汇率</td>
+        <td width="10%">默认货币</td>
+        <td width="10%">显示</td>
+        <td width="20%">管理</td>
+      </tr>
+<?php
+$i = 1;
+  if(is_array($currencyList)):
+    foreach($currencyList as $key => $dl):
+?>
+      <tr>
+        <td><?php echo $i++; ?></td>
+        <td><?php echo isset($dl->fullname) ? $dl->fullname : null; ?></td>
+        <td><?php echo isset($dl->name) ? $dl->name : null; ?></td>
+        <td><?php echo isset($dl->symbol) ? $dl->symbol : 0; ?></td>
+        <td><?php echo isset($dl->exchange) ? $dl->exchange : 0; ?></td>
+        <td><?php echo isset($dl->isdefault) && $dl->isdefault ? '是' : '否'; ?></td>
+        <td><?php echo isset($dl->visible) && $dl->visible ? '√' : '×'; ?></td>
+        <td>
+          <a href="<?php echo url('admin/site/editCurrency/'.$dl->name); ?>">编辑</a>
+          <a href="<?php echo url('admin/site/deleteCurrency/'.$dl->name) ?>" class="btn_confirm" rel="您确认要删除该货币?">删除</a>
+        </td>
+      </tr>
+<?php
+    endforeach;
+  endif;
+?>
+    </table>
+  </div>
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

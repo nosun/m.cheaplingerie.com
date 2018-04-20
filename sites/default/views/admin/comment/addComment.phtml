@@ -1,0 +1,77 @@
+<?php
+  $this->assign('menuItem', 'comment_commonadd');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+  <ul>
+    <li><span class="check"><a href="<?php echo url('admin/product/list') ?>">商品管理</a></span></li>
+    <li><span class="basic">添加评论</span></li>
+  </ul>
+</div>
+
+ <div class="main_right" style="margin-top:5px; margin-left:5px;">
+	 <?php echo themeMessages() ?>
+    <form action="<?php  echo url('admin/comment/insert/'.$pid); ?>" method="POST">
+    <table>
+
+      <tr class="nohover"><td class="bold" colspan="2">昵称</td></tr>
+      <tr>
+        <td width="50%">
+          <input name="nickname" value="" size="60" />
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+
+      <tr class="nohover"><td class="bold" colspan="2">评论标题</td></tr>
+      <tr>
+        <td width="50%">
+          <input name="subject" value="" size="60" /> <span style="color: #FF0000;">*</span>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">评论内容</td></tr>
+      <tr>
+        <td width="50%">
+          <textarea name="comment" cols="100" rows="5"/></textarea>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">是否在前台显示</td></tr>
+      <tr>
+        <td width="50%">
+	        <select name="status">
+	          <option value="1" selected="selected">是</option>
+	          <option value="0">否</option>
+	        </select>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">IP地址</td></tr>
+      <tr>
+        <td width="50%">
+          <input name="ip" value="" size="40" />
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="noborder nohover">
+        <td class="noborder" colspan="2" style="border:0px;">
+          <input type="submit" value="新增" class="btn">
+          <input type="button" class="Buttom_4 btn btn_cancel" value="取消">
+        </td>
+      </tr>
+
+    </table>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

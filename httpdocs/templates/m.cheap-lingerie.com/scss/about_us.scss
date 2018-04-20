@@ -1,0 +1,53 @@
+.about_us{
+  h1{
+    font:1.5rem/2rem 'arial';
+    text-align: center;
+  }
+  h2{
+    font: 1.5rem/2rem 'arial';
+  }
+  .email{
+    text-align: center;
+    margin-top: 3%;
+  }
+  .biaoge {
+    font: 0.6rem/1.5rem "Arial";
+    color: #666666;
+    margin-top: 3%;
+    width: 100%;
+    border-left: #817f7d 1px solid;
+    border-bottom: #817f7d 1px solid;
+  }
+
+  .biaoge td {
+    padding: 0.9rem 0;
+    border-top: #817f7d 1px solid;
+    border-right: #817f7d 1px solid;
+  }
+
+  .biaoge td div {
+    float: left;
+  }
+
+  .refund {
+    width: 15%;
+    margin-left: 3%;
+  }
+
+  .refund img {
+    width: 105%;
+  }
+
+  .prod {
+    margin-left: 15%;
+  }
+
+  .perc {
+    margin-left: 5%;
+  }
+
+  .dan {
+    background: #ebe7e4;
+  }
+
+}

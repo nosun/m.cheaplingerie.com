@@ -1,0 +1,65 @@
+<?php
+  $this->assign('menuItem', 'site_adphoto');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+  $stype = array('1'=> 'images', '2' => 'flash', '3' => 'video');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/site/getadphotolist') ?>">广告管理</a></span></li>
+		<li><span class="new"><a href="<?php echo url('admin/site/editadphoto')?>">新增广告</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:5px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <div id="tabs">
+      <div id="list">
+        <form id="form1" action ="<?php echo url('admin/content/post') ?>" method="post">
+          <table id="products_list">
+            <tr class="subhead">
+              <td width="20%"></td>
+              <td width="10%">广告名称</td>
+              <td width="10%">广告标识</td>
+              <td width="35%">调用代码</td>
+              <td width="5%">大小</td>
+              <td width="5%">类型</td>
+              <td width="5%">显示</td>
+              <td width="15%"><?php echo t('Admin') ?></td>
+            </tr>
+<?php
+  //if (isset($articleList)) ：
+    foreach($adphotoList as $key => $dl) :
+?>
+            <tr>
+            <td><?php echo '<script src="'.url('script/getadimg/'.$dl->aid.'/'.$dl->tid.'/120/80').'"></script>';?></td>
+              <td><?php echo $dl->name;?></td>
+              <td><?php echo $dl->script_id;?></td>
+              <td><textarea rows="3" class="littletxtarea">
+<?php echo '<script src="'.url('script/getadimg/'.$dl->script_id.(isset($dl->tid) && $dl->tid ? '/'.$dl->tid : null)).'"></script>';?>
+</textarea></td>
+              <td><?php echo $dl->width.'*'.$dl->height;?></td>
+              <td><?php echo $stype[$dl->type];?></td>
+              <td><?php if($dl->visible)echo '√';else echo 'χ'; ?></td>
+              <td>
+              <a href="<?php echo url('admin/site/editadphoto/'.$dl->aid)?>"><?php echo t('Edit')?></a>
+              <a href="<?php echo url('admin/site/deleteadphoto/'.$dl->aid)?>" class="btn_confirm" rel="确定删除该页面信息吗"><?php echo t('Delete')?></a>
+              </td>
+            </tr>
+<?php
+    endforeach;
+  //endif;
+?>
+
+          </table>
+          <div class="pagination"><?php echo $pagination ?></div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

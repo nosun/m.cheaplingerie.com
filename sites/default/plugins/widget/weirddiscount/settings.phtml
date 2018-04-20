@@ -1,0 +1,28 @@
+<?php
+  $this->assign('menuItem', 'site_widget');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+
+<div class="import clear">
+  <ul>
+    <li><span class="check"><a href="<?php echo url('admin/site/widgetlist') ?>">插件列表</a></span></li>
+    <li><span class="basic"><a href="<?php echo url('admin/site/widgetedit/weirddiscount') ?>">奇怪的折扣插件</a></span></li>
+  </ul>
+</div>
+<div  class="main_right">
+<?php echo themeMessages();?>
+  <form action="" method="post">
+  <table width="100%">
+      <tr><td class="bold">输入折扣的力度（0-1的数值，0表示free, 1表示原价）</td></tr>
+      <tr><td ><input type="text" name="discount" value="<?php echo isset($discount) ? $discount : '';?>"/></tr>
+     </table>
+  <div class="divbtn"><input type="submit" value="保存" name="save" class="btn"/></div>
+</form>
+</div>
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

@@ -1,0 +1,40 @@
+<?php
+  $this->assign('menuItem', 'statistics_sales');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+  <ul>
+    <li><span class="basic"><a href="">会员排行</a></span></li>
+  </ul>
+</div>
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <table>
+      <tr class="subhead">
+        <td width="5%">排行 </td>
+        <td width="25%">会员名</td>
+        <td width="15%">订单数</td>
+        <td width="15%">购物金额</td>
+      </tr>
+<?php if($list) :
+  $i=1; 
+  foreach($list as $k => $v) : 
+?>      
+      <tr>
+        <td><?php echo $pageRows * ($page-1) + $i?></td>
+        <td><?php echo $v->name?></td>
+        <td><?php echo $v->num?></td>
+        <td><?php echo $v->pay_amount?></td>
+      </tr>
+<?php $i++;endforeach;endif;?>      
+    </table>
+  <div class="pagination"><?php echo $pagination ?></div>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

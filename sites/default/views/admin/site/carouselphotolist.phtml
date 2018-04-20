@@ -1,0 +1,58 @@
+<?php
+  $this->assign('menuItem', 'site_carouselphoto');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/site/getcarouselphotolist') ?>">轮播图片管理</a></span></li>
+		<li><span class="new"><a href="<?php echo url('admin/site/editcarouselphoto')?>">新增轮播图片</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:5px;margin-top:5px;">
+
+    <?php echo themeMessages() ?>
+    <div id="tabs">
+      <div id="list">
+        <form id="form1" action ="<?php echo url('admin/content/post') ?>" method="post">
+          <table id="products_list">
+            <tr class="subhead">
+              <td width="20%">图片</td>
+              <td width="20%">标题</td>
+              <td width="10%">显示</td>
+              <td width="10%">移动端</td>
+              <td width="15%"><?php echo t('Admin') ?></td>
+            </tr>
+<?php
+  //if (isset($articleList)) ：
+    foreach($carouselphotoList as $key => $dl) :
+?>
+            <tr>
+              <td><img src="<?php echo urlimg('admin_product_album', $dl->filepath) ?>" style="margin:5px;"></td>
+              <td><?php echo $dl->title;?></td>
+              <td><?php if($dl->visible)echo '√';else echo 'χ'; ?></td>
+              <td><?php if($dl->isMobile)echo '√';else echo 'χ'; ?></td>
+              <td>
+              <a href="<?php echo url('admin/site/editcarouselphoto/'.$dl->sid)?>"><?php echo t('Edit')?></a>
+              <a href="<?php echo url('admin/site/deletecarouselphoto/'.$dl->sid)?>" class="btn_confirm" rel="确定删除该页面信息吗"><?php echo t('Delete')?></a>
+              </td>
+            </tr>
+<?php
+    endforeach;
+  //endif;
+?>
+
+          </table>
+          <div class="pagination"><?php echo $pagination ?></div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>
+

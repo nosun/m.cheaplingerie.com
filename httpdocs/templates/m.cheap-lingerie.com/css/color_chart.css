@@ -1,0 +1,115 @@
+
+.back_head {
+    width: 100%;
+    background:#f1f1f1;
+    border-bottom: 1px solid #dddddd;
+}
+.back_head .back {
+    width: 24%;
+    display: block;
+}
+
+.back_head .back img{
+    width:100%;
+}
+
+
+.mend-font {
+    font: normal 0.8em/1em Arial;
+    color: #333;
+    width:100%;
+    display:block;
+    text-align: center;
+	word-wrap:break-word;
+	background:#fff;
+	height:2em;
+	padding: 3px 0 2px;
+}
+
+#satin,#chiffon,#taffeta,#organza,#matte_satin,#elastic_woven_satin,#silk_like_satin,#DChiffon,#Satin_Chiffon_satin,#Polyester_Warp_Knitting,#Polyester_Weft_Knitting,#Satin_Chiffon {
+margin-left:7%;
+}
+
+#color-chart {
+    width: 100%;
+    margin: 0 auto;
+    /*background-color: white;*/
+    text-align: left;
+}
+
+#color-chart a:link {
+    color: #000;
+}
+
+#color-chart th div {
+
+   font: normal 1.5em/2em Arial;
+    color: #000;
+}
+
+#color-chart th div span {
+    font-size: 0.5em;
+    font-weight: normal;
+}
+
+#color-chart .top {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 12px;
+}
+
+#color-chart td p {
+    font: normal 0.9em Arial;/*1.2改为1 解决切换图片被字串撑开的问题*/
+    color: #000;
+	margin-left:-2%;
+    
+}
+
+#satin div,#chiffon div,#taffeta div,#organza div,#matte_satin div,#elastic_woven_satin div,#silk_like_satin div,#Satin_Chiffon div,#DChiffon div,#Satin_Chiffon_satin div,#Polyester_Warp_Knitting div,#Polyester_Weft_Knitting div {
+
+    /*background: #fff;*/
+    width: 43px;
+    
+    cursor: pointer;
+	float:left;
+	margin-left:5px;
+}
+#satin div img,#chiffon div img,#taffeta div img,#organza div img,#matte_satin div img,#elastic_woven_satin div img,#silk_like_satin div img,#Satin_Chiffon div img,#DChiffon div img,#Satin_Chiffon_satin div img,#Polyester_Warp_Knitting div img,#Polyester_Weft_Knitting div img{
+  width:100%;
+  
+}
+#color-chart td p img {
+    padding: 2px;
+    border: 1px solid #ddd;
+    width: 100%;
+    
+}
+
+#color-chart td {
+    border: 0;
+}
+
+#color-chart #loading {
+    background: url(../images/loading_img_s1241076863.gif) no-repeat 50% 40px;
+    height: 157px;
+    margin-top: -65px;
+}
+@charset "utf-8";
+*{margin:0;padding:0;}
+img{ border:0;}
+img{max-width:100%;}
+
+ul,li{ padding:0; margin:0; list-style:none;}
+.clear{clear:both; font-size:0; line-height:0; height:0;}
+a:link { text-decoration:none;color:#666666} /*a:link 指正常的未被访问过的链接*/
+a:active { text-decoration: none;color:#666666 } /*a:active 指点击链接的瞬间出现的链接情况*/
+a:visited { text-decoration: none;color:#666666 } /*a:visited 指已经访问过的链接*/
+a:hover { text-decoration: none;color:#666666 } /*a:hover 指鼠标放上去链接出现的情况*/
+html,body{height:100%;}
+.main{padding:0 3%;}
+
+/*color chart 部分*/
+.bq{width:100%;margin-top:3%;}
+.bq p{font:1em/1em 'Arial';font-weight:bold;margin-left:5%;float:left;}
+.bq span{font:0.9em 'Arial';float:left;display:block;text-align:bottom;margin-left:5%;}

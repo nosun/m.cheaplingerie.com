@@ -1,0 +1,18 @@
+<?php $this->render('before_body.phtml') ?>
+<body>
+<?php $this->render('header.phtml')?>
+<div class="bodyer">
+
+  <div class="position"><?php echo themeBreadcrumb() ?>&nbsp;&nbsp;取消订阅</div>
+
+  <table height="500px" width="100%">
+    <tr>
+      <td valign="top" align="center"><br><br><?php echo $message; ?></td>
+    </tr>
+  </table>
+
+<?php $this->render('bottom.phtml')?>
+</div>
+<?php $this->render('footer.phtml')?>
+</body>
+<?php $this->render('after_body.phtml')?>

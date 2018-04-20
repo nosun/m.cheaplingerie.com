@@ -1,0 +1,20 @@
+<?php echo $this->render('before_body.phtml') ?>
+<body>
+  <div style="float:left;width:300px;background-color:#ffc;border:1px solid #cc9;padding:30px 50px;text-align:center">
+    <form action="" method="post">
+      <h2 style="text-align:left"><?php echo t('MEMBER LOGIN') ?></h2>
+      <p><label><?php echo t('Username') ?></label> : <input type="text" name="username"></p>
+      <p><label><?php echo t('Password') ?></label> : <input type="password" name="password"></p>
+      <p><button type="submit"><?php echo t('LOGIN') ?></button></p>
+    </form>
+  </div>
+  <div style="float:left;margin-left:10px;width:300px;background-color:#ffc;border:1px solid #cc9;padding:30px 50px;text-align:center">
+    <form action="<?php echo url('register') ?>" method="post">
+      <h2 style="text-align:left"><?php echo t('REGISTER') ?></h2>
+      <p><label><?php echo t('Username') ?></label> : <input type="text" name="username"></p>
+      <p><label><?php echo t('Password') ?></label> : <input type="password" name="password"></p>
+      <p><button type="submit"><?php echo t('REGISTER') ?></button></p>
+    </form>
+  </div>
+</body>
+<?php echo $this->render('after_body.phtml') ?>

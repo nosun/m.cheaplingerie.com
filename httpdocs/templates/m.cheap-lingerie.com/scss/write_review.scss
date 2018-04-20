@@ -1,0 +1,128 @@
+.write_review{
+  .error{
+    font:1.2rem/1.5rem 'arial';
+    color: #d32e35;
+    padding:0 6%;
+    margin-top:3%;
+  }
+  .big {
+    display: block;
+    padding: 3%;
+    font: 0.9rem 'arial';
+    color: black;
+    td{
+      vertical-align:middle;
+    }
+    .zuo {
+      width:25%;
+      img{
+        width:100%;
+      }
+    }
+
+    .you {
+      padding-left:20px;
+      .aline{font:1.5rem/1.5rem 'Arial';color:black;}
+      .USD{font:1.5rem/1.5rem 'Arial';color:#e80044;}
+      .star{
+        display: block;
+        margin-top:5px;
+        a{
+          width:13%;
+          display: inline-block;
+          img{
+            width:100%;
+          }
+        }
+      }
+    }
+  }
+  input {
+    width: 0;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+  }
+  .view {
+    position: relative;
+    width: 90%;
+    margin: 0 auto;
+    height: 1.7rem;
+    background: #fff;
+    padding: 2% 2%;
+    border: 1px solid #f3b021;
+    .ss {
+      width: 100%;
+      height: 100%;
+      border: none;
+      opacity: 1;
+      font: 1.2rem/1.7rem 'Arial';
+      color: #b3b0ad;
+      resize: none;
+    }
+    #top {
+      position: absolute;
+      width:12px;
+      left: 15%;
+      top: -8px;
+      img{
+        width:100%
+      }
+    }
+  }
+  .view2 {
+    position: relative;
+    width: 90%;
+    margin: 0 auto;
+    height: 5rem;
+    background: #fff;
+    padding: 2% 2%;
+    border: 1px solid #a1a1a1;
+    margin-top:1rem;
+    .ss {
+      width: 100%;
+      height: 100%;
+      border: none;
+      opacity: 1;
+      font: 1.2rem/1.7rem 'Arial';
+      color: #b3b0ad;
+      resize: none;
+    }
+    .less {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      font: 0.5rem 'Arial';
+      color: #b3b0ad;
+      padding: 1px 8px;
+    }
+
+  }
+  .tianjia {
+    width: 15%;
+    float: left;
+    margin: 5% 3%;
+    position: relative;
+    .shan {
+      position: absolute;
+      right: -0.5rem;
+      top: -0.5rem;
+      z-index: 15;
+      display: none;
+      img{
+        width:1rem;heigth:1rem;
+      }
+    }
+  }
+  .btn-file{
+    display: block;
+    line-height: 4rem;
+    font-family: 'arial';
+    font-size: 1.6rem;
+    border-radius: 5px;
+    border: 1px solid #929394;
+    text-align: center;
+    color: #333;
+    background-image: linear-gradient(to top, #d6d6d6, #fbfbfb);
+  }
+}

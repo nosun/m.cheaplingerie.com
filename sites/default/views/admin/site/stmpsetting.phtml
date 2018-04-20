@@ -1,0 +1,105 @@
+<?php
+  $this->assign('menuItem', 'site_stmp');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="basic"><a href="<?php echo url('admin/site/stmpsetting') ?>">邮件服务器设置</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="POST">
+
+    <table>
+      <tr class="nohover"><td class="bold" colspan="2">发送邮件方式</td></tr>
+      <tr>
+        <td width="50%">
+          <select name="smpttype" class="select">
+            <option value="smtp" <?php if (isset($stmpInfo['smpttype']) && $stmpInfo['smpttype'] == 'stmp') echo 'selected';?>>smtp</option>
+            <option value="sendmail" <?php if (isset($stmpInfo['smpttype']) && $stmpInfo['smpttype'] == 'sendmail') echo 'selected';?>>sendmail</option>
+          </select>
+        </td>
+        <td width="40%"></td>
+      </tr>
+ 
+      <tr class="nohover"><td class="bold" colspan="2">邮件服务器名称</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="stmpserver" value="<?php echo isset($stmpInfo['stmpserver']) ? $stmpInfo['stmpserver'] : null?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+      
+      <tr class="nohover"><td class="bold" colspan="2">端口号</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="stmpport" value="<?php echo isset($stmpInfo['stmpport']) ? $stmpInfo['stmpport'] : null?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+      
+      <tr class="nohover"><td class="bold" colspan="2">STMP账号</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="stmpuser" value="<?php echo isset($stmpInfo['stmpuser']) ? $stmpInfo['stmpuser'] : null?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+      
+      <tr class="nohover"><td class="bold" colspan="2">STMP密码</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" type="password" name="stmppasswd" value="<?php echo isset($stmpInfo['stmppasswd']) ? $stmpInfo['stmppasswd'] : null?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+      
+      <tr class="nohover"><td class="bold" colspan="2">邮件发送者地址</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="mailfrom" value="<?php echo isset($stmpInfo['mailfrom']) ? $stmpInfo['mailfrom'] : null?>"/>
+        </td>
+        <td width="40%">用户邮件中显示的邮件发送者地址</td>
+      </tr>
+      
+      <tr class="nohover"><td class="bold" colspan="2">邮件发送者用户名</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="mailfromname" value="<?php echo isset($stmpInfo['mailfromname']) ? $stmpInfo['mailfromname'] : null?>"/>
+        </td>
+        <td width="40%">用户邮件中显示的邮件发送者名称</td>
+      </tr>
+      
+      <tr class="nohover"><td class="bold" colspan="2">自动回复邮件地址</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="mailreply" value="<?php echo isset($stmpInfo['mailreply']) ? $stmpInfo['mailreply'] : null?>"/>
+        </td>
+        <td width="40%">用户自动回复时的邮件地址</td>
+      </tr>
+      
+      <tr class="nohover"><td class="bold" colspan="2">自动回复用户名</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="mailreplyname" value="<?php echo isset($stmpInfo['mailreplyname']) ? $stmpInfo['mailreplyname'] : null?>"/>
+        </td>
+        <td width="40%">用户自动回复时的用户名</td>
+      </tr>
+      
+    </table>
+    
+    <div class="main_bottom_deal">
+      <input type="submit" value="保存" class="btn">
+    </div>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

@@ -1,0 +1,51 @@
+<?php
+  $this->assign('menuItem', 'site_templateedit');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/site/templateedit') ?>"><?php echo t('Edit template') ?></a></span></li>
+		<li><span class="basic"><?php echo t('Template - %s', $template->name) ?></span></li>
+	</ul>
+</div>
+
+<div class="main_right">
+  <?php echo themeMessages() ?>
+  <form action="" method="POST" id="form_templateedit">
+    <input id="filename" type="hidden" value="<?php echo $template->template . '|' . base64_encode($file) ?>">
+    <table>
+      <tr class="nohover">
+        <td class="bold" colspan="2"><?php echo t('Current template')?> : <?php echo plain($template->name) ?></td>
+      </tr>
+      <tr>
+        <td colspan="2"><span class="bold">模版文件列表</span> :
+<?php if ($file): ?>
+          <?php echo plain($file) ?>
+          <a href="javascript:void(0);" id="tplfile_reload" class="bold" style="margin-left:30px">重新载入</a>
+<?php if ($content['in_site']): ?>
+          <a href="<?php echo url('admin/site/templatedel/' . base64_encode($file)) ?>" class="btn_confirm bold" rel="确认删除该模版吗?">删除模版</a>
+<?php
+  endif;
+else:
+?>
+          <input type="text" name="newfilename" size="60"> (扩展名必须为 .phtml)
+<?php endif ?>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2"><textarea name="content" id="content" class="monospace" rows="20"><?php echo plain($content['content']) ?></textarea></td>
+      </tr>
+      <tr class="noborder nohover" style="border-bottom:0px solid red;">
+        <td class="bold" colspan="2">
+          <input type="submit" value="<?php echo t('Save') ?>" class="btn" />
+          <a href="<?php echo url('admin/site/templateedit') ?>" class="Buttom_4b">返回</a>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

@@ -1,0 +1,39 @@
+<?php
+  $this->assign('menuItem', 'site_integral');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="basic"><a href="<?php echo url('admin/site/stockchecksetting') ?>">库存检查设置</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="POST">
+
+    <table>
+      <tr class="nohover"><td class="bold" colspan="2">是否开启库存检查</td></tr>
+      <tr>
+        <td width="50%">
+          <input id="el-c9631-e855c" type="radio" name="status" value="1"<?php if ($stockCheck) echo ' checked="checked"' ?>/> <label for="el-c9631-e855c">开启</label>
+          <input id="el-c9631-e855b" type="radio" name="status" value="0"<?php if (!$stockCheck) echo ' checked="checked"' ?>/> <label for="el-c9631-e855b">关闭</label>
+        </td>
+        <td width="40%"></td>
+      </tr>
+   </table>
+    
+    <div class="main_bottom_deal">
+      <input type="submit" value="保存" class="btn">
+    </div>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>
+

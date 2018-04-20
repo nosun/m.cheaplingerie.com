@@ -1,0 +1,70 @@
+.review{
+ .ave{
+   padding:0 15%;
+   margin-top:0.5rem;
+   p{
+     font:1.3rem/1.5rem 'arial';
+     float: left;
+   }
+   .star{
+     width:50%;
+     display:inline-block;
+     float: right;
+     a{
+       width:13%;
+       display: inline-block;
+       img{
+         width:100%;
+       }
+     }
+   }
+ }
+  .latest_review{
+    padding:2% 4.5%;
+    margin-top: 1rem;
+    border-bottom: 1px solid #dddddd;
+    p{
+      font:1.5rem/1.5rem 'arial';
+      float: left;
+    }
+    .review_star{
+      width:48%;
+      display:inline-block;
+      margin-left: 1rem;
+      a{
+        width:13%;
+        display: inline-block;
+        img{
+          width:100%;
+        }
+      }
+    }
+    .title{
+      font:1.2rem/1.3rem 'arial';
+      margin-top:1rem;
+      float: none;
+      word-break: break-all;
+    }
+    .content{
+      font:1.2rem/1.3rem 'arial';
+      margin-top:0.5rem;
+      float: none;
+      word-break: break-all;
+    }
+    .showimg{
+      width:24%;
+      float: left;
+      margin-left: 15px;
+      margin-top:10px;
+      img{
+        width:100%;
+      }
+    }
+    .date{
+      margin-top:5px;
+      display: block;
+      font:1.2rem/1.5rem 'arial';
+      color: #929394;
+    }
+  }
+}

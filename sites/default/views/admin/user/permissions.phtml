@@ -1,0 +1,51 @@
+<?php
+  $this->assign('menuItem', 'user_permissions');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="basic"><a href="<?php echo url('admin/user/permissions') ?>">权限管理</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-top:10px;margin-left:5px;margin-bottom:20px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="post">
+    <table>
+      <tr class="nohover">
+        <td></td>
+<?php
+$rolesCount = count($roles);
+foreach ($roles as $rid => $role):
+?>
+        <td><?php echo plain($role->name) ?></td>
+<?php endforeach ?>
+      </tr>
+<?php foreach ($permissions as $key => $permissionsGroup): ?>
+      <tr class="nohover"><td class="bold" colspan="<?php echo $rolesCount + 1 ?>">权限组 : <?php echo plain($key) ?></td></tr>
+<?php foreach ($permissionsGroup as $permission): ?>
+      <tr>
+        <td><?php echo t($permission) ?></td>
+<?php foreach ($roles as $rid => $role): ?>
+        <td><input type="checkbox" name="permissions[<?php echo $rid ?>][]" value="<?php echo $permission ?>"<?php if (in_array($permission, $role->permissions)) echo ' checked="checked"' ?> /></td>
+<?php endforeach ?>
+      </tr>
+<?php
+  endforeach;
+endforeach;
+?>
+      <tr class="noborder nohover" style="border-bottom:0px solid red;">
+        <td colspan="<?php echo $rolesCount + 1 ?>">
+          <input type="submit" value="提交" class="but" />
+          <input type="reset" value="重设" class="but1" />
+        </td>
+      </tr>
+    </table>
+    </form>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

@@ -1,0 +1,54 @@
+<?php if(isset($productList) && $productList): ?>
+				<?php foreach ($productList as $k => $v): ?>
+					<div>
+						<p class="ppic">
+							<a href="<?php echo url($v->url);?>" title="<?php echo $v->name;?>">
+								<img src="<?php echo urlimg('210x320',$v->filepath)?>" alt="<?php echo $v->name;?>">
+							</a>
+						</p>
+						<span class="newcontent"><?php echo strwidth($v->name,40); ?></span>
+						<span class="priceandgrade">
+							<span class="pricespan"><?php echo c($v->price); ?></span>
+							<?php global $user ?>
+							<?php $grades = widgetCallFunction('fivestars', 'getStars', $v->pid); ?>
+							<?php $gradesTotal = 0; ?>
+							<?php $sumTotal = 0; ?>
+							<?php $halfflag = false; ?>
+							<?php $left = 0; ?>
+							<?php if(isset($grades)): ?>
+								<?php foreach($grades as $k=> $v): ?>
+									<?php $gradesTotal += $k * $v; ?>
+									<?php $sumTotal += $v; ?>
+								<?php endforeach;?>
+								<?php if($sumTotal > 0): ?>
+									<?php $avggrades = round($gradesTotal/$sumTotal, 2); ?>
+									<?php $fullcount = intval($avggrades); ?>
+									<?php if(strpos($avggrades, '.')): ?>
+										<?php $halftemp = explode(".", $avggrades); ?>
+										<?php if($halftemp[1] >= 0.5): ?>
+											<?php $halfflag = true;?>
+											<?php $left = 5 - $fullcount - 1;?>
+										<?php endif; ?>
+									<?php else: ?>
+										<?php $left = 5 - $fullcount;?>
+									<?php endif;?>
+									<?php for($i = 0; $i < $fullcount; $i++): ?>
+										<span><img src="<?php echo $tpldir; ?>/images/starfill.png"></span>
+									<?php endfor; ?>
+									<?php if($halfflag): ?>
+										<span><img src="<?php echo $tpldir; ?>/images/starhalf.png"></span>
+									<?php endif; ?>
+									<?php for($i=0; $i<$left; $i++): ?>
+										<span><img src="<?php echo $tpldir; ?>/images/star.png"></span>
+									<?php endfor; ?>
+									<span>(<?php echo $sumTotal; ?>)</span>
+								<?php else: ?>
+								<?php endif; ?>
+							<?php endif; ?>
+						</span>
+					</div>
+				<?php endforeach; ?>
+			<?php endif; ?>
+			<?php if(isset($canShowMore) && !$canShowMore): ?>
+				<script>$("#showmore").hide();</script>
+			<?php endif; ?>

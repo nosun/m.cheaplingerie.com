@@ -1,0 +1,45 @@
+      <div id="album" class="box_Product main_right">
+        <input type="hidden" id="session_id" name="session_id" value="<?php echo session_id(); ?>">
+        <input type="hidden" id="swfupload_id" name="swfupload_id" value="productalbum">
+        <table>
+          <tr class="subhead">
+            <td width="20%"><?php echo t('Img');?></td>
+            <td width="25%"><?php echo t('FirstName');?></td>
+            <td width="15%"><?php echo t('Alt');?></td>
+            <td width="10%"><?php echo t('Weight');?></td>
+            <td width="15%"><?php echo t('ShowInColorBox');?></td>
+            <td width="15%"><?php echo t('Admin');?></td>
+          </tr>
+        </table>
+        <table id="listData">
+  <?php
+    if(is_array($filesList) && !$isnew):
+      foreach($filesList as $key => $dl):
+  ?>
+          <tr>
+            <td width="20%"><a href="<?php echo url('images/'.$dl->filepath); ?>" target="_blank"><img src="<?php echo urlimg('admin_product_album', $dl->filepath); ?>"/></a></td>
+            <td width="25%"><?php echo $dl->filename; ?></td>
+            <td width="15%"><input class="file_list_txt" value="<?php echo $dl->alt; ?>" name="alt[<?php echo $dl->fid; ?>]" title="<?php echo $dl->fid; ?>" /></td>
+            <td width="10%"><input class="file_list_weight_txt" value="<?php echo $dl->weight; ?>" name="weights[<?php echo $dl->fid; ?>]" title="<?php echo $dl->fid; ?>" /></td>
+            <td width="15%" >
+            	<input class="show_in_color_check_box" rel="<?php echo $dl->fid; ?>" type="checkbox" <?php if(!empty($dl->show_in_color_box)){echo 'checked="checked"';}?>>
+            </td>
+            <td width="15%">
+            	<a href="###" class="btn_del_file" rel="<?php echo $dl->fid; ?>"><?php echo t('Delete');?></a>
+           	</td>
+          </tr>
+  <?php
+      endforeach;
+    endif;
+  ?>
+        </table>
+        <div class="btnarea">
+          <div id="swfupload-control">
+            <input type="button" id="button" />
+            <input type="button" value="<?php echo t('UploadBtn');?>" id="btnstartupload"  style="margin:0;padding:0;height:24px; width:61px;" />
+            <div id="divStatus"><?php echo t('FileUploads');?><span><?php echo t('FileUploadstxt');?></span></div>
+            <div id="fsUploadProgress"></div>
+          </div>
+        </div>
+        <div style="clear:both"></div>
+      </div>

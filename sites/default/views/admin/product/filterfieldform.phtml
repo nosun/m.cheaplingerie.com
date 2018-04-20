@@ -1,0 +1,94 @@
+<form id="filter_field_form" action="" method="post">
+    <table class="attribute">
+        <tr class="nohover">
+            <td class="bold" colspan="2">
+            <input name="filter_field_id" id="filter_field_id" type="hidden" value="<?php if (isset($field)){echo $field->id;} ?>">
+            <input name="product_type" id="product_type" type="hidden" value="<?php echo $type; ?>">
+                                    类型标识 : <?php echo plain($type) ?>
+            </td>
+        </tr>
+        <tr class="nohover"><td class="bold" colspan="2">选项类别：</td></tr>
+        <tr>
+            <td>
+            	<input type="hidden" name="filter_field_attr_type" id="filter_field_attr_type" value="<?php if (isset($field)){echo $field->attr_type;} else { echo TypeFilterField_Model::ATTR_TYPE_SELF;} ?>" >
+	            <select name="filter_field_attr_type_select" id="filter_field_attr_type_select" <?php if (isset($field)){echo "disabled";} ?> >
+	                <option value="<?php echo TypeFilterField_Model::ATTR_TYPE_SELF;?>" <?php if (isset($field) && $field->attr_type == TypeFilterField_Model::ATTR_TYPE_SELF){echo 'selected';} ?>>基本属性</option>
+	                <option value="<?php echo TypeFilterField_Model::ATTR_TYPE_MULTI;?>" <?php if (isset($field) && $field->attr_type == TypeFilterField_Model::ATTR_TYPE_MULTI){echo 'selected';} ?>>扩展属性</option>
+	                <option value="<?php echo TypeFilterField_Model::ATTR_TYPE_TAG;?>" <?php if (isset($field) && $field->attr_type == TypeFilterField_Model::ATTR_TYPE_TAG){echo 'selected';} ?>>Tags Terms</option>
+	                <option value="<?php echo TypeFilterField_Model::ATTR_TYPE_RECOMMENED;?>" <?php if (isset($field) && $field->attr_type == TypeFilterField_Model::ATTR_TYPE_RECOMMENED){echo 'selected';} ?>>Recommend  Terms</option>
+	                <option value="<?php echo TypeFilterField_Model::ATRR_TYPE_BRAND;?>" <?php if (isset($field) && $field->attr_type == TypeFilterField_Model::ATRR_TYPE_BRAND){echo 'selected';} ?>>Brand</option>
+	            </select>
+            </td>
+            <td>属性类别</td>
+        </tr>
+        <tr><td class="bold" colspan="2">属性标识：</td></tr>
+        <tr>
+            <td>
+            	<input type="hidden" name="filter_field_attr_name" id="filter_field_attr_name" value="<?php if (isset($field)){echo $field->attr_name;} else if (!empty($filterFieldList)){echo $filterFieldList[0]->field_name;} ?>" >
+            	<select name="filter_field_attr_name_select" id="filter_field_attr_name_select" <?php if (isset($field)){echo "disabled";} ?> >
+                <?php if(isset($filterFieldList)) :?>
+                    <?php foreach ($filterFieldList as $filterField): ?>
+                        <option value="<?php echo $filterField->field_name;?>" <?php if (isset($field) && $field->attr_name == $filterField->field_name){echo 'selected';} ?>><?php echo $filterField->field_name; ?></option>
+                    <?php endforeach;?>
+                <?php endif; ?>
+                </select>
+            </td>
+            <td>属性标识,产品的属性</td>
+        </tr>
+        <tr class="nohover"><td class="bold" colspan="2">选项名称</td></tr>
+        <tr>
+            <td><input id="name" name="name" value="<?php if (isset($field)) echo plain($field->name) ?>" class="txt" /> <span style="color:red">*</span></td>
+            <td>选项名称(不超过64个字符)</td>
+        </tr>
+        <tr><td class="bold" colspan="2">选项值类别：</td></tr>
+        <tr>
+            <td>
+            	<input type="hidden" id="filter_field_value_type" name="filter_field_value_type" value="<?php echo isset($field) ? $field->value_type : 1;?>" >
+                <select name="filter_field_value_type_select" id="filter_field_value_type_select" disabled>
+                    <option value="1" <?php if (isset($field) && $field->value_type == 1){echo 'selected';} ?>>数值</option>
+                    <option value="2" <?php if (isset($field) && $field->value_type == 2){echo 'selected';} ?>>枚举</option>
+                </select>
+            </td>
+            <td>选项值类别</td>
+        </tr>
+        <tr><td class="bold" colspan="2">选项值：</td></tr>
+        <tr>
+            <td>
+                <div id="decimal_value_input" style="display:<?php if(isset($field) && $field->value_type != 1){echo "none";}?>">
+                    <span>最小值：</span><input name="min_value" id="min_value" value="<?php if (isset($field) && $field->value_type == 1){echo $field->values['min_value'];}?>" />
+                    <span>最大值：</span><input name="max_value" id="max_value" value="<?php if (isset($field) && $field->value_type == 1){echo $field->values['max_value'];}?>"/>
+                </div>
+                <div id="menu_value_input" style="display:<?php if(isset($field) && $field->value_type == 2){echo "block";}else{echo "none";}?>">
+                    <!-- <textarea name="menu_values" id="menu_values" rows="5"><?php if(isset($field) && $field->value_type == 2){echo implode('&#10;', $field->values);} ?></textarea>  -->
+                    <script language="javascript" type="text/javascript">
+                    	function checkall(sender){
+                    		$('#filter_field_value input[type=checkbox]').attr('checked', sender.is(':checked'));
+                    		changeMultiValues();
+                        }
+                        function changeMultiValues() {
+							var multiValues = '';
+							$.each($('#filter_field_value input[type=checkbox]:checked'), function(){
+								multiValues += $(this).val() + "\n";
+							});
+							$('#menu_values').val(multiValues);
+                        }
+                    </script>
+                    <input type="checkbox" value="all" onclick="checkall($(this));">全选
+                    <textarea name="menu_values" id="menu_values" style="visibility:hidden;position:absolute;"><?php if(isset($field) && $field->value_type == 2){echo implode('\n', $field->values);} ?></textarea>
+                    <div id="filter_field_value">
+                    	<?php if (isset($filterValueList)): ?>
+                    		<?php foreach ($filterValueList as $filterValue): ?>
+                    			<?php if (!empty($filterValue)): ?>
+                    			<input type="checkbox" value="<?php echo $filterValue?>" onclick="changeMultiValues()" <?php if (isset($field) && in_array($filterValue, $field->values)){echo 'checked';} ?>><span class="filter_field_checkbox"><?php echo $filterValue;?></span>
+                    		    <?php endif; ?>
+                    		<?php endforeach; ?>
+                    	<?php endif; ?>
+                    </div>
+                </div>
+            </td>
+            <td>
+            	选项值
+            </td>
+        </tr>
+    </table>
+</form>

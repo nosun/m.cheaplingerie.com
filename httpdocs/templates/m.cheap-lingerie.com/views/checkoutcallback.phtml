@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+<div class="main">
+	<div class="head">
+		<?php echo $this->render("parts/header.phtml"); ?>
+	</div>
+	
+	<div id="cart-area">
+		<?php if(isset($orderInfo) && $orderInfo->status_payment == 1): ?>
+			<p class="pay-success-word">
+				<span></span>Your payment has been confirmed!
+			</p>
+			<div class="view-detail">
+				<a href="<?php echo url('order/info/' . $orderInfo->oid); ?>">
+					<button class="btn-long">View Order Details</button>
+				</a>
+			</div>
+		<?php endif; ?>
+		<?php if (isset($orderInfo) && $orderInfo->status_payment == 0 && isset($paymentList)): ?>
+			<div class="pay-fail-area">
+				<?php echo themeMessages(); ?>
+				<p class="contact-word">
+					Contact us
+					<a href="mailto:support@cheap-lingerie.com">support@cheap-lingerie.com</a>
+				</p>
+				<p class="contact-word">
+					If you need any help.
+				</p>
+				<div class="col-box">
+					<button class="btn-red btn-red-high" method="<?php echo $orderInfo->payment_method; ?>" id="continuetopay">Continue Your Payment</button>
+				</div>
+				<script>
+					$("#continuetopay").click(function(){
+						var method = $(this).attr('method');
+						$("#" + method + " form").submit();
+					});
+				</script>
+			</div>
+			<?php foreach ($paymentList as $name => $payment): ?>
+				<?php if($payment->status && $payment->visible): ?>
+					<div style="display:none" id="<?php echo $name; ?>"><?php echo $payment->submitform;?></div>
+				<?php endif; ?>
+			<?php endforeach; ?>
+		<?php endif; ?>
+        
+        <div class="recommend">
+            <p class="title">Recommended Products</p>
+            <div class="flexslidertwo carousel">
+                <ul class="slides">
+                    <?php foreach ($recommandProductList as $v): ?>
+						<?php $path = ''; ?>
+						<?php if($v->filepath): ?>
+							<?php $path = $v->filepath; ?>
+						<?php else: ?>
+							<?php $path = $v->files[0]->filepath; ?>
+						<?php endif; ?>
+						<li>
+							<a href="<?php echo url($v->url); ?>">
+								<img src="<?php echo urlimg('210x320',$path)?>" />
+								<p class="title"><?php echo $v->name; ?></p>
+                                <p class="price"><?php echo c($v->sell_price); ?></p>
+							</a>
+						</li>
+					<?php endforeach; ?>
+                </ul>
+            </div>
+            <div class="btn-mom">
+            	<a href="<?php echo url(''); ?>">
+                	<button class="btn-long">Continue Shopping</button>
+                </a>
+            </div>
+        </div>
+        <div class="foot">
+    		<?php echo $this->render('parts/footer.phtml'); ?>
+    	</div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+        $(".flexslidertwo").flexslider({
+            animation: "slide",
+            animationLoop: false,
+            itemWidth: 100,
+            itemMargin: 5,
+            maxItems: 10
+        });
+    });
+</script>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

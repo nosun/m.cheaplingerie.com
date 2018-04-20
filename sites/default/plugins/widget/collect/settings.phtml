@@ -1,0 +1,28 @@
+<?php
+  $this->assign('menuItem', 'site_widget');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+
+<div class="import clear">
+  <ul>
+    <li><span class="check"><a href="<?php echo url('admin/site/widgetlist') ?>">插件列表</a></span></li>
+    <li><span class="basic"><a href="<?php echo url('admin/site/widgetedit/collect') ?>">商品收藏夹插件</a></span></li>
+  </ul>
+</div>
+<div  class="main_right">
+<?php echo themeMessages();?>
+  <form action="" method="post">
+  <table width="100%">
+      <tr><td colspan="2" class="bold">是否开启收藏功能</td></tr>
+      <tr><td ><input type="radio" value="1" name="on" <?php echo isset($setInfo) && $setInfo==1 ? 'checked="checked"' : null;?>/>是   <input type="radio" value="0" name="on" <?php echo isset($setInfo) && $setInfo==0 ? 'checked="checked"' : null;?>/>否</td><td></td></tr>
+     </table>
+  <div class="divbtn"><input type="submit" value="保存" name="save" class="btn"/></div>
+</form>
+</div>
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

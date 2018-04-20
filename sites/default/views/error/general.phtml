@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<?php $this->render('parts/before_body.phtml'); ?>
+<body>
+<?php global $user; ?>
+<?php $this->render('parts/top_bar.phtml');?>
+<div class="container">
+<?php $this->render('parts/header.phtml'); ?>
+<div class="main-content">
+<div class="general article">
+
+<div class="main-block2">
+
+<div class="widget">
+<div class="w-head">
+<h2>General Error</h2>
+</div>
+<div class="w-content">
+
+
+<?php if ($debug): ?>
+    <p><?php echo $ex->getMessage(); ?></p>
+<?php endif ?>
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div class="footer">
+<div class="clear"></div>
+<div id="copyright">
+<span class="floatleft">
+           	<?php $siteInfo = Bl_Config::get('siteInfo');echo $siteInfo['copyright'];?>
+        </span>
+</div>
+</div>
+</body>
+<?php echo $this->render('parts/after_body.phtml'); ?>
+</html>
+

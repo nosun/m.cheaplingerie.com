@@ -1,0 +1,42 @@
+<?php
+  $this->assign('menuItem', 'user_roles');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/user/roles') ?>">角色列表</a></span></li>
+		<li><span class="basic">角色权限管理 - <?php echo plain($role->name) ?></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-top:10px;margin-left:10px;margin-bottom:20px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="post">
+    <table>
+      <tr class="nohover"><td class="bold" colspan="2">角色名称 : <?php echo plain($role->name) ?></td></tr>
+<?php foreach ($permissions as $key => $permissionsGroup): ?>
+      <tr class="nohover"><td class="bold" colspan="2">权限组 : <?php echo plain($key) ?></td></tr>
+<?php foreach ($permissionsGroup as $permission): ?>
+      <tr>
+        <td colspan="2">
+          <p><label style="color:#333"><input type="checkbox" name="permissions[]" value="<?php echo $permission ?>"<?php if (in_array($permission, $role->permissions)) echo ' checked="checked"' ?> /> <?php echo t($permission) ?></label></p>
+        </td>
+      </tr>
+<?php
+  endforeach;
+endforeach;
+?>
+      <tr class="noborder nohover" style="border-bottom:0px solid red;">
+        <td colspan="2">
+          <input type="submit" value="提交" class="but" />
+          <a href="<?php echo url('admin/user/roles') ?>" class="Buttom_4b">返回列表</a>
+        </td>
+      </tr>
+    </table>
+    </form>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

@@ -1,0 +1,91 @@
+<?php
+  $this->assign('menuItem', 'comment_commonlist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/comment/messageList') ?>">网站留言管理</a></span></li>
+		<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;留言详细信息&nbsp;&nbsp;</span></li>
+	</ul>
+</div>
+
+
+<div class="main_right" style="margin-left:10px; margin-top:10px;">
+    <?php echo themeMessages() ?>
+    <table>
+      <tr class="nohover"><td class="bold" colspan="2">留言标题</td></tr>
+      <tr>
+        <td width="50%">
+          <?php if(is_object($messageInfo)) echo $messageInfo->subject; ?>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">留言内容</td></tr>
+      <tr>
+        <td width="50%">
+          <?php if(is_object($messageInfo)) echo $messageInfo->content; ?>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">留言人</td></tr>
+      <tr>
+        <td width="50%">
+          <?php if(is_object($messageInfo)) echo $messageInfo->nickname; ?>
+        </td>
+        <td width="40%"></td>
+      </tr>
+<?php if(isset($messageInfo->data[telphone]) && $messageInfo->data[telphone]): ?>
+      <tr class="nohover"><td class="bold" colspan="2">留言电话</td></tr>
+      <tr>
+        <td width="50%">
+          <?php echo $messageInfo->data[telphone]; ?>
+        </td>
+        <td width="40%"></td>
+      </tr>
+<?php endif;?>
+      <tr class="nohover"><td class="bold" colspan="2">留言邮箱</td></tr>
+      <tr>
+        <td width="50%">
+          <?php if(is_object($messageInfo)) echo isset($messageInfo->email) ? '<a href="mailto:'.$messageInfo->email.'" style="text-decoration:underline;">'.$messageInfo->email.'</a>' : null; ?>
+        </td>
+        <td width="40%"></td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">发布时间</td></tr>
+      <tr>
+        <td width="50%">
+        <?php if(is_object($messageInfo)) echo date("Y-m-d H:i:s", $messageInfo->timestamp); ?>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">IP</td></tr>
+      <tr>
+        <td width="50%">
+          <?php if(is_object($messageInfo)) echo $messageInfo->ip; ?>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="noborder nohover">
+        <td class="noborder" colspan="2" style="border:0px;">
+        <?php if (is_object($messageInfo) && $messageInfo->status == 1) : ?>
+          <a href="<?php echo url('admin/comment/updateMessageStatus/' . $messageInfo->gbid.'/2') ?>">[取消前台显示]</a>
+        <?php else : ?>
+          <a href="<?php echo url('admin/comment/updateMessageStatus/' . $messageInfo->gbid.'/1') ?>">[前台显示]</a>
+        <?php endif ;?>
+
+          <a href="<?php echo url('admin/comment/deleteMessage/' . $messageInfo->gbid) ?>" class="btn_confirm" rel="确认删除该留言吗?">[删除]</a>
+        </td>
+      </tr>
+
+    </table>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

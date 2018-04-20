@@ -1,0 +1,49 @@
+<?php if (isset($pvThemes)) : ?>
+      <tr class="nohover"><td class="bold" colspan="2">页面信息模板</td></tr>
+      <tr class="nohover"><td class="bold" width="50%">
+      <select class="select" style="width:330px;" id="pvTheme" name="pvTheme">
+      <option value=""></option>
+<?php foreach ($pvThemes as $k => $v) : ?>
+      <option value="<?php echo $v->pvid;?>" <?php if (isset($pv->pvid) && $v->pvid == $pv->pvid) echo 'selected' ?>><?php echo $v->key;?></option>
+<?php endforeach;?>
+      </select></td>
+      <td width="40%">使用模板的状态时不能修改</td></tr>
+<?php endif;?>
+<tbody id="pvbody" style="visibility:inherit">
+      <tr class="nohover"><td class="bold" colspan="2">页面标题</td></tr>
+      <tr>
+        <td colspan="2"><textarea name="title" rows="6" class="pv"><?php echo isset($pv->title) ? plain($pv->title) : ''?></textarea></td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">页面关键字</td></tr>
+      <tr>
+        <td colspan="2"><textarea name="meta_keywords" rows="6" class="pv"><?php echo isset($pv->meta_keywords) ? $pv->meta_keywords : ''?></textarea></td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">页面描述</td></tr>
+      <tr>
+        <td colspan="2"><textarea name="meta_description" rows="6" class="pv"><?php echo isset($pv->meta_description) ? plain($pv->meta_description) : ''?></textarea></td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">var1</td></tr>
+      <tr>
+        <td colspan="2"><textarea name="var1" class="pagevariable_xheditor pv" rows="6"><?php if (isset($pv->var1)) echo stripslashes($pv->var1) ?></textarea></td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">var2</td></tr>
+      <tr>
+        <td colspan="2"><textarea name="var2" class="pagevariable_xheditor pv" rows="6"><?php if (isset($pv->var2)) echo stripslashes($pv->var2) ?></textarea></td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">var3</td></tr>
+      <tr>
+        <td colspan="2"><textarea name="var3" class="pagevariable_xheditor pv" rows="6"><?php if (isset($pv->var3)) echo stripslashes($pv->var3) ?></textarea></td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">var4</td></tr>
+      <tr>
+        <td colspan="2"><textarea name="var4" class="pagevariable_xheditor pv" rows="6"><?php if (isset($pv->var4)) echo stripslashes($pv->var4) ?></textarea></td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">var5</td></tr>
+      <tr>
+        <td colspan="2"><textarea name="var5" class="pagevariable_xheditor pv" rows="6"><?php if (isset($pv->var5)) echo stripslashes($pv->var5) ?></textarea></td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">var6</td></tr>
+      <tr>
+        <td colspan="2"><textarea name="var6" class="pagevariable_xheditor pv" rows="6"><?php if (isset($pv->var6)) echo stripslashes($pv->var6) ?></textarea></td>
+      </tr>
+</tbody>

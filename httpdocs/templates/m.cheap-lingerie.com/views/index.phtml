@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php echo $this->render('parts/metaandtitle.phtml'); ?>
+	<?php echo $this->render('parts/includecss.phtml'); ?>
+	<?php echo $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+<div class="main">
+    <!--头部-->
+    <div class="head">
+		<?php echo $this->render("parts/header.phtml"); ?>
+    </div>
+    <!--home页-->
+    <div id="home">
+       <div class="searchbox">
+         <div class="kuang">
+    			<form name="searchform" action="<?php echo url("pitems"); ?>" method="post">
+    				<input name="keyword" class="search" type="text" id="keywordinput" placeholder="Search...">
+    			</form>
+    			<div class="sou">Go</div>
+    			<div class="clear"></div>
+    		</div>
+    	</div>
+    	<script>
+	    	$('.sou').click(function(){
+			    var key = $("#keywordinput").val();
+			    if(key){searchform.submit();}
+			});
+    	</script>
+       <!--home 页轮播图-->
+       <div class="slide_home">
+           <ul class="slides">
+    			<?php foreach ($hdpArr as $v): ?>
+    				<li><a href="<?php echo $v->url; ?>"><img src="<?php echo urlimg('718x317',$v->filepath); ?>" alt="<?php echo $v->title;?>" title='<?php echo $v->title;?>' /></a></li>
+    			<?php endforeach; ?>
+           </ul>
+       </div>
+       <!--产品展示-->
+       <div class="product_show">
+           <?php echo $this->render('modules/new-arrival.phtml'); ?>
+       </div>
+       <!-- shop by -->
+       <div class="col-box" style="font-size: 133.33%">
+           <?php echo $this->render('modules/collapsemenu.phtml'); ?>
+       </div>
+       <a class="back_to_top" href="#">
+            <span></span><br/>TOP OF PAGE
+       </a>
+       <div class="foot">
+            <?php echo $this->render('parts/footer.phtml'); ?>
+       </div>
+    </div>
+</div>
+<script src="<?php echo $tpldir. '/javascripts/main.js?v' . filemtime($_SERVER['DOCUMENT_ROOT'] . $tpldir . '/javascripts/main.js'); ?>" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function(){
+        $('.slide_home').flexslider({
+            animation: "slide",
+            slideshow:true,
+            slideshowSpeed:5000,
+            prevText: "no",
+            nextText: "no"
+        })
+        $('.flex-direction-nav').css({display:'none'})//隐藏指向箭头
+    })
+</script>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

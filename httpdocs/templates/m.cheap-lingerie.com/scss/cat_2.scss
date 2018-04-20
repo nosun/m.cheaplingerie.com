@@ -1,0 +1,41 @@
+#cat2{
+	.searchbox{
+      width: 100%;
+      background: #f1f1f1;
+      padding: 10px 0;
+      border-bottom: 1px solid #dddddd;
+	}
+	.collapse-btn-grp{
+		margin-bottom: 20px;
+	}
+	.col-box .title{
+		font-size: 1.6rem;
+	}
+    .go_back{
+      position:relative;
+      height:4rem;
+      font:1.4rem/4rem 'arial';
+      background: #f1f1f1;
+      .p-arrow-inner{
+        margin-left:4.5%;
+        display: block;
+        float: left;
+        width: 16px;
+        height:4rem;
+        background: transparent url("../images/back-to.png") left no-repeat;
+        background-size: 7px;
+      }
+    }
+    .sort{
+       font:1.2rem/1.5rem 'arial';
+       padding-left: 4.5%;
+       .red{
+          color:#c01920;
+         font-weight: bold;
+       }
+    }
+}
+
+.product_show div:nth-child(2n+1){
+  clear: both;
+}

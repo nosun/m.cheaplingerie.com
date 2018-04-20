@@ -1,0 +1,38 @@
+<html>
+	<head>
+		<?php $this->render('parts/includejs.phtml'); ?>
+	</head>
+	
+	<body>
+		<div id="ccc">
+			
+		</div>
+		<div id="commentdiv" onclick="ajaxget(event)">
+			<a href="" onclick="javascript:void(0);">1</a>
+			<a href="" onclick="javascript:void(0);">2</a>
+			<a href="" onclick="javascript:void(0);">3</a>
+			<a href="" onclick="javascript:void(0);">4</a>
+			<a href="" onclick="javascript:void(0);">5</a>
+			<a href="" onclick="javascript:void(0);">6</a>
+		</div>
+		
+		<script>
+			function ajaxget(event){
+				event.preventDefault();
+				var ele = event.srcElement;
+				if( ele.tagName == "A"){
+					var text = ele.innerHTML;
+					$('#ccc').html('<img src="<?php echo $tpldir; ?>/images/progress.gif" />');
+					$.post('/comment/ajaxgetcomment/',
+							{
+								pid: text
+							},
+							function(data,status){
+								$('#ccc').html(data);
+							});
+				}
+			}
+		</script>
+	</body>
+	<?php $this->render('parts/after_body.phtml'); ?>
+</html>

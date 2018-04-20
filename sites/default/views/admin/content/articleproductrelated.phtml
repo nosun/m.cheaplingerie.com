@@ -1,0 +1,34 @@
+<div id="articleProduct">
+  <div id="tabs2"  style="margin-bottom:10px;">
+    <ul style="height:28px;">
+      <li><a href="###" id="btn_list"><?php echo t('List');?></a></li>
+      <li><a href="####" id="btn_add"><?php echo t('Add');?></a></li>
+      <li><a href="###" id="btn_select"><?php echo t('Filter');?></a></li>
+    </ul>
+    <div id="list">
+            <table  id="datalist">
+              <tr class="subhead">
+                <td width="8%">ID</td>
+                <td width="30%">商品名称</td>
+              </tr>
+<?php
+  if(isset($articleProductRelatedData)):
+    foreach($articleProductRelatedData as $key => $v):
+?>
+            <tr class="i<?php echo $key ?>">
+              <td><a href="javascript:;" class="related_cancel" id="a_cancel_<?php echo $v->pid ;?>" rel="<?php echo $v->pid;?>" >&nbsp;&nbsp;&nbsp;&nbsp;</a></td>
+              <td><?php echo plain($v->name) ?></td>
+            </tr>
+<?php
+  endforeach;
+    endif;
+?>
+            </table>
+    </div>
+    <div id="add" style="display:none"  style="clear:both;">
+          <iframe id="ifr_add" width="100%" height=480 name="main" id="main" frameborder="0" scrolling=no src="<?php echo url('admin/productrelated/addlist');?>"></iframe>
+    </div>
+  </div>
+</div>
+
+

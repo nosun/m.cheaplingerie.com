@@ -1,0 +1,457 @@
+<?php
+  $this->assign('menuItem', 'product_productslist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a
+				href="<?php echo url('admin/product/list') ?>">商品列表</a></span></li>
+		<li><span class="basic"><?php echo t('Product Manage') ?> - <?php echo $isnew ? t('New') : plain($product->name . ' (' . $product->sn . ')') ?></span></li>
+	</ul>
+</div>
+
+<div>
+    <?php echo themeMessages() ?>
+    <form action="" method="post" id="form_productinfo"
+		enctype="multipart/form-data">
+		<input type="hidden" id="pid"
+			value="<?php if (isset($product) && isset($product->pid)) echo $product->pid ?>">
+		<input type="hidden" id="type"
+			value="<?php if (isset($product)) echo plain($product->type) ?>"> <input
+			type="hidden" id="pvid" name="pvid"
+			value="<?php echo isset($product->pvid) ? $product->pvid : 0 ?>"> <input
+			type="hidden" id="directory_list"
+			value='<?php echo isset($directoryList) ? strtr(json_encode($directoryList), "'", "\'") : '{}'; ?>'>
+		<input type="hidden" id="continue" name="continue" value="0"> <input
+			type="hidden" id="related_info" name="related_info"
+			value="<?php echo $isnew ? '{}' : $relatedListJson ?>"> <input
+			type="hidden" id="files" name="files"
+			value='<?php echo json_encode($fileListSimple) ?>'> <input
+			type="hidden" id="pvThemeType" value="product" /> <input
+			type="hidden" id="dataid"
+			value="<?php echo isset($product->pid) ? $product->pid : null?>" /> <input
+			type="hidden" id="fid" name="fid"
+			value="<?php echo isset($product->fid) ? $product->fid : 0?>" />
+		<div class="clear left_photo" id="tabs">
+			<div class="clear tab_ul">
+				<ul>
+					<li><a href="#base"><?php echo t('Base information') ?></a></li>
+					<li><a href="#extra"><?php echo t('Attributes') ?></a></li>
+					<li><a href="#album"><?php echo t('Album') ?></a></li>
+					<li><a href="#related"><?php echo t('Related') ?></a></li>
+					<li><a href="#pagevariables">页面信息</a></li>
+				</ul>
+			</div>
+			<div id="base" class="box_Product main_right">
+				<table>
+					<tr class="nohover">
+						<td class="bold" colspan="2">商品类型</td>
+					</tr>
+					<tr>
+						<td width="50%"><select name="type" class="non-empty"
+							title="商品类型不能为空">
+								<option value=""></option>
+<?php foreach ($typeList as $key => $type): ?>
+            <option value="<?php echo $key ?>"
+									<?php if (isset($product) && $product->type == $key) echo ' selected="selected"' ?>><?php echo t($type->name) ?></option>
+<?php endforeach ?>
+          </select> <span style="color: red">*</span></td>
+						<td width="45%">商品类型</td>
+					</tr>
+					<tr class="nohover">
+						<td class="bold" colspan="2">货号</td>
+					</tr>
+					<tr>
+						<td><input name="sn"
+							value="<?php if (isset($product) && !$continue) echo plain($product->sn) ?>"
+							class="txt" /></td>
+						<td>商品内部货号</td>
+					</tr>
+					<tr class="nohover">
+						<td class="bold" colspan="2">商品编号</td>
+					</tr>
+					<tr>
+						<td><input name="number"
+							value="<?php if (isset($product) && !$continue) echo plain($product->number) ?>"
+							class="txt" /></td>
+						<td>商品编号</td>
+					</tr>
+					<tr class="nohover">
+						<td class="bold" colspan="2">商品名称</td>
+					</tr>
+					<tr>
+						<td><input name="name" size="60"
+							value="<?php if (isset($product) && !$continue) echo plain($product->name) ?>"
+							class="txt non-empty" title="商品名称不能为空" /> <span
+							style="color: red">*</span></td>
+						<td>商品名称</td>
+					</tr>
+					<tr class="nohover">
+						<td class="bold" colspan="2">商品图片</td>
+					</tr>
+<?php if (isset($product) && !$continue && isset($product->fid) && $product->fid): ?>
+        <tr>
+						<td colspan="2"><a
+							href="<?php echo url('images/' . $product->filepath) ?>"
+							target="_blank"><img
+								src="<?php echo urlimg('admin_product_album', $product->filepath); ?>" /></a></td>
+					</tr>
+<?php endif;?>
+        <tr>
+						<td><input name="file" type="file" class="file"></td>
+						<td>商品图片<br>
+						<span style="color: red">当不上传此图片时，将使用图库第一张图片作为该商品默认商品图片</span></td>
+					</tr>
+        <?php $i=0;?>
+        <?php foreach ($product->terminfo_list as $directory):?>
+        <?php $i++;?>
+        <tr class="nohover">
+						<td class="bold" colspan="1">商品目录</td>
+						<td ><input type="button" value="删除" onclick="deleteDirectory(this)" style="margin:0;padding:0"></td>
+					</tr>
+					<tr>
+						<td><p>
+						<input name="<?php echo 'directory_tid[]'?>" value="<?php echo $directory->pdid?>" type="hidden" class="directory_index">
+								<select name="<?php echo 'directory_tid[]'?>" onchange="selectChange(this)" class="directory_tid1">
+									<option value="0">-- 请选择一级商品目录 --</option>
+<?php foreach ($directoryList as $tid1 => $term1): ?>
+            <option value="<?php echo $tid1 ?>"
+										<?php if (isset($product) && isset($directory->ptid1) && ($directory->ptid1 == $tid1||$directory->tid==$tid1)) echo ' selected="selected"' ?>><?php echo t($term1->name) ?></option>
+<?php endforeach ?>
+          </select>
+							</p>
+							<p>
+								<select name="<?php echo 'directory_tid[]'?>" onchange="selectChange(this)" class="directory_tid2">
+									<option value="0">-- 请选择二级商品目录 --</option>
+<?php
+  if (isset($directory->ptid1) && isset($directoryList[$directory->ptid1]) && isset($directoryList[$directory->ptid1]->sub)):
+    foreach ($directoryList[$directory->ptid1]->sub as $tid2 => $term2):
+?>
+            <option value="<?php echo $tid2 ?>"
+										<?php if (isset($product) && isset($directory->ptid2) && ($directory->ptid2 == $tid2||$directory->tid==$tid2)) echo ' selected="selected"' ?>><?php echo t($term2->name) ?></option>
+<?php
+    endforeach;
+    else: if (isset($directory->tid) && isset($directoryList[$directory->tid]) && isset($directoryList[$directory->tid]->sub)):
+    foreach ($directoryList[$directory->tid]->sub as $tid2 => $term2):?>
+            <option value="<?php echo $tid2 ?>"><?php echo t($term2->name) ?></option>
+    <?php endforeach;
+  endif;
+  endif;
+?>
+          </select>
+							</p>
+							<p>
+								<select name="<?php echo 'directory_tid[]'?>" onchange="selectChange(this)" class="directory_tid3">
+									<option value="0">-- 请选择三级商品目录 --</option>
+<?php
+  if (isset($directory->ptid2) && isset($directoryList[$directory->ptid1]->sub[$directory->ptid2]) && isset($directoryList[$directory->ptid1]->sub[$directory->ptid2]->sub)):
+    foreach ($directoryList[$directory->ptid1]->sub[$directory->ptid2]->sub as $tid3 => $term3):
+?>
+            <option value="<?php echo $tid3 ?>"
+										<?php if (isset($product) && isset($directory->ptid3) && ($directory->ptid3 == $tid3||$directory->tid==$tid3)) echo ' selected="selected"' ?>><?php echo t($term3->name) ?></option>
+<?php
+    endforeach;
+    else: if (isset($directory->tid) && isset($directoryList[$directory->ptid1]->sub[$directory->tid]) && isset($directoryList[$directory->ptid1]->sub[$directory->tid]->sub)):
+        foreach ($directoryList[$directory->ptid1]->sub[$directory->tid]->sub as $tid3 => $term3):?> 
+                <option value="<?php echo $tid3 ?>"><?php echo t($term3->name) ?></option>
+        <?php endforeach;
+      endif;
+  endif;
+?>
+          </select>
+							</p>
+							<p>
+								<select name="<?php echo 'directory_tid[]'?>" class="directory_tid4">
+									<option value="0">-- 请选择四级商品目录 --</option>
+<?php
+  if (isset($product->directory_tid3) && isset($directoryList[$product->directory_tid1]->sub[$product->directory_tid2]->sub[$product->directory_tid3]) && isset($directoryList[$product->directory_tid1]->sub[$product->directory_tid2]->sub[$product->directory_tid3]->sub)):
+    foreach ($directoryList[$product->directory_tid1]->sub[$product->directory_tid2]->sub[$product->directory_tid3]->sub as $tid4 => $term4):
+?>
+            <option value="<?php echo $tid4 ?>"
+										<?php if (isset($product) && isset($product->directory_tid4) && $product->directory_tid4 == $tid4) echo ' selected="selected"' ?>><?php echo t($term4->name) ?></option>
+<?php
+    endforeach;
+  endif;
+?>
+          </select>
+							</p></td>
+						<td>商品所属目录</td>
+					</tr>
+					
+        <?php endforeach;?>
+        <tr class="nohover"><td><input type="button" style="margin: 0;padding:0" value="新增商品目录" onclick="addDirectory(this)"></td><tr>
+        <tr class="nohover">
+						<td class="bold" colspan="2">品牌</td>
+					</tr>
+					<tr>
+						<td><select name="brand">
+								<option value=""></option>
+<?php foreach ($brandList as $tid => $brand): ?>
+            <option value="<?php echo $tid ?>"
+									<?php if (isset($product) && $product->brand_tid == $tid) echo ' selected="selected"' ?>><?php echo t($brand->name) ?></option>
+<?php endforeach ?>
+          </select></td>
+						<td>商品所属品牌</td>
+					</tr>
+					<tr>
+						<td class="bold">销售价 <input name="sell_price" id="sell_price"
+							value="<?php echo c(isset($product) ? $product->sell_price : 0, Bl_Config::get('currency'), false) ?>"
+							class="txt non-empty" title="销售价不能为空" /> <span
+							style="color: red; weight: normal;">*</span></td>
+						<td>销售价</td>
+					</tr>
+<?php if (count($ranks) > 1): ?>
+        <tr>
+						<td class="bold rank_price">
+<?php
+foreach ($ranks as $rid => $rank):
+  if ($rid == User_Model::RANK_MEMBER) {
+    continue;
+  }
+?>
+            <p>
+								<input type="checkbox" id="rank_price_check_<?php echo $rid ?>"
+									title="<?php echo $rank->discount ?>"
+									name="rank_price_check[<?php echo $rid ?>]"
+									<?php if (isset($ranksPrice) && isset($ranksPrice[$rid])) echo ' checked="checked"'?>
+									class="checkboxrank"> <label
+									for="rank_price_check_<?php echo $rid ?>" style="color: #333"><?php echo t($rank->name) ?> <?php echo t($rank->discount).'%' ?></label>
+								<input name="rank_price[<?php echo $rid ?>]"
+									value="<?php echo c(isset($ranksPrice) && isset($ranksPrice[$rid]) ? $ranksPrice[$rid] : (isset($product) ? $product->sell_price * $rank->discount / 100 : 0), Bl_Config::get('currency'), false) ?>"
+									class="txt"
+									<?php if (!isset($ranksPrice) || !isset($ranksPrice[$rid])) echo ' disabled="disabled"' ?> />
+							</p>
+<?php endforeach ?>
+          </td>
+						<td>会员销售价</td>
+					</tr>
+<?php endif;?>
+        <tr>
+						<td class="bold">市场价 <input id="list_price" name="list_price"
+							value="<?php echo c(isset($product) ? $product->list_price : 0, Bl_Config::get('currency'), false) ?>"
+							class="txt" /> <input type="hidden" id="list_price_percentage"
+							value="<?php echo $markprice ?>">
+						</td>
+						<td>市场价</td>
+					</tr>
+
+					<tr class="nohover" style="border-bottom: 0;">
+						<td colspan="2" style="padding-left: 0px; border-bottom: 0;">
+							<table width="100%" cellpadding="0" cellspacing="0" border="0"
+								style="width: 100%;">
+								<tr class="nohover">
+									<td class="bold" colspan="2">所属分类</td>
+								</tr>
+
+<?php
+foreach ($vocabularyList as $vid => $vocabulary):
+  if ($vid == Taxonomy_Model::TYPE_BRAND || $vid == Taxonomy_Model::TYPE_DIRECTORY || empty($termsList[$vid])) {
+    continue;
+  }
+?>
+            <tr>
+									<td width="150px" align="right"
+										style="border-right: 1px solid #E0E0E0; padding-right: 10px; font-weight: bold">
+                <?php echo plain($vocabulary->name) . (trim($vocabulary->name_cn) !== '' ? (' (' . plain(trim($vocabulary->name_cn)) . ')') : '') ?>
+              </td>
+									<td width="*">
+                <?php if ($vid == Taxonomy_Model::TYPE_RECOMMEND): ?>
+                    <?php foreach ($termsList[$vid] as $tid => $term):
+                            $checked = '';
+                            if (isset($product) && in_array($tid, $product->terms_products)) {
+                                $checked = 'checked="checked"';
+                            }
+                            if ($term->name_cn !== '') {
+                              	$term->name .= ' (' . $term->name_cn . ')';
+                            }?>
+                    <div style="float: left; margin-left: 15px;">
+											<input type="checkbox" value="<?php echo $tid ?>"
+												name="terms_products[]" <?php echo $checked;?>><?php echo plain($term->name) ?>
+                    </div>
+                    <?php endforeach; ?>
+                <?php elseif ($vid == Taxonomy_Model::TYPE_TAG):
+                    $tagGroups = array();
+                    foreach ($termsList[$vid] as $tid => $term) {
+                        if (!key_exists($term->name_cn, $tagGroups)) {
+                            $tagGroups[$term->name_cn] = array();
+                        }
+                        $tagGroups[$term->name_cn][] = $term;
+                    }
+                    foreach ($tagGroups as $groupName => $taglist):?>
+                        <div style="clear: both">
+											<b><?php echo $groupName;?></b>
+										</div>
+                        <?php foreach ($taglist as $tag):
+                            $checked = '';
+                            if (isset($product) && in_array($tag->tid, $product->terms_products)) {
+                                $checked = 'checked="checked"';
+                            }?>
+                            <div style="float: left; margin-left: 15px;">
+											<input type="checkbox" value="<?php echo $tag->tid ?>"
+												name="terms_products[]" <?php echo $checked;?>><?php echo plain($tag->name) ?>
+                            </div>
+                        <?php endforeach;?>
+                    <?php endforeach;?>
+                <?php endif;?>
+              </td>
+								</tr>
+<?php endforeach ?>
+          </table>
+						</td>
+					</tr>
+					<tr>
+						<td class="bold">重量 <input name="wt"
+							value="<?php echo isset($product) ? $product->wt : 0 ?>"
+							class="txt" /></td>
+						<td>商品单位重量 (单位:千克)</td>
+					</tr>
+					<tr>
+						<td class="bold">库存 <input name="stock"
+							value="<?php echo isset($product) ? $product->stock : 0 ?>"
+							class="txt" /></td>
+						<td>商品库存</td>
+					</tr>
+					<tr>
+						<td class="bold">最小购买数量 <input name="sell_min"
+							value="<?php echo isset($product) ? $product->sell_min : 0 ?>"
+							class="txt" /></td>
+						<td>最小购买数量， 0 表示不限制</td>
+					</tr>
+					<tr>
+						<td class="bold">最大购买数量 <input name="sell_max"
+							value="<?php echo isset($product) ? $product->sell_max : 0 ?>"
+							class="txt" /></td>
+						<td>最大购买数量， 0 表示不限制</td>
+					</tr>
+					<tr class="nohover">
+						<td class="bold" colspan="2">简介</td>
+					</tr>
+					<tr>
+						<td colspan="2"><textarea name="summary" class="txt_xheditor"
+								rows="10"><?php if (isset($product)) echo stripslashes($product->summary) ?></textarea></td>
+					</tr>
+					<tr class="nohover">
+						<td class="bold" colspan="2">详细介绍</td>
+					</tr>
+					<tr>
+						<td colspan="2"><textarea name="description" class="txt_xheditor"
+								rows="10"><?php if (isset($product)) echo stripslashes($product->description) ?></textarea></td>
+					</tr>
+					<tr class="nohover">
+						<td class="bold" colspan="2">视频路径</td>
+					</tr>
+					<tr>
+						<td><input name="videopath"
+							value="<?php if (isset($product) && !$continue) echo plain($product->videopath) ?>"
+							class="txt" /></td>
+						<td>视频路径地址，可以填写网络地址如 http://163.com/013.wmv<br>或者是服务器上的路径如
+							attachment/videos/013.wmv
+						</td>
+					</tr>
+					<tr class="nohover">
+						<td class="bold" colspan="2">路径</td>
+					</tr>
+					<tr>
+						<td><input name="path_alias"
+							value="<?php if (isset($product) && !$continue) echo plain($product->path_alias) ?>"
+							class="txt" /></td>
+						<td>路径名称，留空则系统自动生成</td>
+					</tr>
+					<tr class="nohover">
+						<td class="bold" colspan="2">页面模板</td>
+					</tr>
+					<tr>
+						<td><input name="template"
+							value="<?php if (isset($product)) echo plain($product->template) ?>"
+							class="txt" /></td>
+						<td>页面模板</td>
+					</tr>
+					<tr>
+						<td class="bold"><label style="color: #000"><input type="checkbox"
+								name="status"
+								<?php if ((!isset($product) && Bl_Config::get('isProductPublishAuto', 1)) || (isset($product) && isset($product->status) && $product->status)) echo ' checked="checked"' ?> />
+								上架</label></td>
+						<td>上架状态</td>
+					</tr>
+					<tr>
+						<td class="bold"><label style="color: #000"><input type="checkbox"
+								name="shippable"
+								<?php if (!isset($product) || !isset($product->shippable) || $product->shippable) echo ' checked="checked"' ?> />
+								可配送</label></td>
+						<td>是否可配送</td>
+					</tr>
+					<tr>
+						<td class="bold"><label style="color: #000"><input type="checkbox"
+								name="free_shipping"
+								<?php if (isset($product) && isset($product->free_shipping) && $product->free_shipping) echo ' checked="checked"' ?> />
+								免运费</label></td>
+						<td>是否免运费</td>
+					</tr>
+					<tr>
+						<td class="bold"><label style="color: #000"><input type="checkbox"
+								name="customizable"
+								<?php if (isset($product) && isset($product->customizable) && $product->customizable) echo ' checked="checked"' ?> />
+								可定制</label></td>
+						<td>是否可定制</td>
+					</tr>
+					<tr>
+						<td class="bold">检索词<input name="search_key" size="60"
+							value="<?php echo isset($product) ? $product->sphinx_key : '' ?>"
+							class="txt" /></td>
+						<td>用于匹配词库里的词组，多个单词用空格分隔</td>
+					</tr>
+					<tr>
+						<td class="bold">排序 <input name="weight"
+							value="<?php echo isset($product) ? $product->weight : 0 ?>"
+							class="txt" /></td>
+						<td>商品的权重 (默认排序字段，越大越靠前)</td>
+					</tr>
+				</table>
+				<div style="color: #999999; padding: 10px;">(注：标*号的为必填，且商品至少要上传一张图片)</div>
+			</div>
+			<div id="extra" class="box_Product main_right">
+<?php if ($isnew && !isset($typeInfo)): ?>
+        <div>请选择类型</div>
+<?php else: ?>
+<?php $this->render('admin/product/getfields.phtml', array(
+  'type' => isset($typeInfo) ? $typeInfo : null,
+  'product' => isset($product) ? $product : null,
+  'fieldsList' => isset($fieldsList) ? $fieldsList : null,
+)); ?>
+<?php endif ?>
+      </div>
+			<!-- 图库部分 Start -->
+<?php echo $this->render('admin/product/productalbum.phtml');?>
+<!-- 图库部分 End -->
+			<!-- 商品关联 Start -->
+<?php echo $this->render('admin/product/productrelated.phtml');?>
+<!-- 商品关联 End -->
+			<div id="pagevariables" class="box_Product main_right">
+				<table style="margin-bottom: 10px;">
+<?php echo $this->render('admin/site/page_variables.phtml');?>
+      </table>
+			</div>
+
+		</div>
+		<div class="attribute"
+			style="margin-top: 10px; margin-left: 30px; margin-bottom: 30px;">
+			<input type="submit" value="保存" class="Buttom_1 but" />
+<?php if ($isnew): ?>
+      <input type="submit" value="保存并继续新增" class="Buttom_2 but"
+				id="btn_continue" />
+<?php endif ?>
+<?php if (!$isnew): ?>
+      <a
+				href="<?php echo url('admin/product/edit/' . $product->pid . '/new') ?>"
+				class="Buttom_g but">用此内容新建商品</a>
+<?php endif ?>
+      <a href="<?php echo url('admin/product/list') ?>"
+				class="Buttom_back but">返回商品列表</a>
+		</div>
+	</form>
+</div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

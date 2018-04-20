@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+	<div class="back_head">
+		<a class="back" href="<?php echo url('user/myaccount'); ?>"><img src="<?php echo $tpldir; ?>/images/back.png"></a>
+	</div>
+	<?php echo themeMessages(); ?>
+	<h2 class="classh2">Manage Address Book</h2>
+	<div class="col-box">
+		<a href="<?php echo url('user/newaddress'); ?>" style="display: block">
+			<button class="btn-long">Add a New Shipping Address</button>
+		</a>
+	</div>
+	<div class="manage-Addres" style="margin-top:0">
+		<?php if($addressList): ?>
+			<h2 class="classh2"">Shipping Addresses</h2>
+			<?php foreach ($addressList as $index => $address): ?>
+				<a href="<?php echo url('user/useraddressedit/' . $address->rid); ?>" style="display: block">
+					<div class="manage-left">
+						<p><span><?php echo $address->delivery_first_name; ?> <?php echo $address->delivery_last_name;?></span></p>
+						<p><?php echo $address->delivery_address; ?>,<?php echo $address->delivery_city; ?>,<?php echo $address->delivery_province; ?></p>
+						<p><?php echo $address->delivery_country; ?>,<?php echo $address->delivery_postcode; ?></p>
+						<p><?php echo $address->delivery_mobile; ?></p>
+					</div>	
+					<div class="manage-right">
+						<img src="<?php echo $tpldir; ?>/images/manage.png">
+					</div>
+					<div class="clear"></div>
+				</a>
+				<div class="col-box" style="padding-left: 8%">
+					<a href="<?php echo url('user/useraddressedit/' . $address->rid); ?>"><button class="btn-default">Edit</button></a>
+					<a href="<?php echo url('user/deleteaddress/' . $address->rid); ?>"><button class="btn-default">Delete</button></a>
+				</div>
+				<div class="clear"></div>
+				<div style="border-bottom: 1px solid #ddd; margin: 20px 0 10px 0;"></div>
+			<?php endforeach; ?>
+		<?php endif; ?>
+	</div>
+	<div class="clear"></div>
+	<a class="back_to_top" href="#">
+		<span></span><br/>TOP OF PAGE
+	</a>
+	<div class="foot">
+		<?php echo $this->render('parts/footer.phtml'); ?>
+	</div>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

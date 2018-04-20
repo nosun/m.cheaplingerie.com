@@ -1,0 +1,58 @@
+<?php
+  $this->assign('menuItem', 'site_widget');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+
+<div class="import clear">
+  <ul>
+    <li><span class="check"><a href="<?php echo url('admin/site/widgetlist') ?>">插件列表</a></span></li>
+    <li><span class="basic"><a href="<?php echo url('admin/site/widgetedit/fivestars') ?>">商品评级插件</a></span></li>
+  </ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+  <?php echo themeMessages() ?>
+  <form action="<?php echo url('admin/site/widgetedit/fivestars') ?>" method="post" enctype="multipart/form-data" id="topsearchForm">
+  <table id="mailSubscribe">
+    <tr class="nohover">
+      <td class="bold">选择图标风格</td>
+    </tr>
+    <tr>
+      <td>
+<?php
+if (isset($info->iconList) && count($info->iconList) > 0) {
+  foreach ($info->iconList as $name => $size) {
+    $x = $size[0];
+    $y = $size[1];
+    if ($info->iconStyle == $name) $checked = ' checked="checked"'; else $checked = '';
+?>
+        <div style="float:left;margin-left:20px;">
+          <input type="radio" name="iconStyle" value="<?php echo $name; ?>" <?php echo $checked; ?>>
+
+          <img src="<?php echo url($info->iconImagePath.'/'.$name);?>"> &nbsp;
+
+        </div>
+<?php }} ?>
+      </td>
+    </tr>
+    <tr class="nohover">
+      <td class="bold">商品评级</td>
+    </tr>
+    <tr>
+      <td>
+        <input type="radio" name="status" value="1" <?php if ($info->status == 1) echo ' checked="checked"'; ?>>开启&nbsp;
+        <input type="radio" name="status" value="0" <?php if ($info->status == 0) echo ' checked="checked"'; ?>>关闭
+      </td>
+    </tr>
+    <tr class="nohover">
+      <td><input type="submit" class="btn1" value="保存"></td>
+    </tr>
+  </table>
+  </form>
+</div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

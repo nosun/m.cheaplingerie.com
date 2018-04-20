@@ -1,0 +1,179 @@
+html {
+  * {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .clear {
+    clear: both;
+  }
+  img {
+
+    margin-bottom: 0;
+  }
+  ul {
+    list-style-type: none;
+  }
+  select{
+    background: none;
+  }
+  body {
+    padding-bottom: 20px;
+    input, button, select, textarea {
+      outline: none
+    }
+    .head {
+      background-image: linear-gradient(to top, #d6d6d6, #fbfbfb);
+      border-bottom: 1px solid #a1a1a1;
+      padding:2.5% 4.5%;
+      a {
+        display:inline-block;
+        vertical-align: middle;
+        img{
+          width: 100%;
+        }
+        
+      }
+      .todo-list{
+        width: 9%;
+        float: left;
+        margin-top: 5%;
+
+      }
+      .top-logo{
+        width: 45%;
+        margin-left: 10%;
+        float: left;
+      }
+      .top-car{
+        float: right;
+        width: 9%;
+        margin-top: 5%;
+      }
+      .top-person{
+        float: right;
+        width: 9%;
+        margin-top: 5%;
+        margin-right: 10%;
+      }
+    }
+    /*search box*/
+    .searchbox {
+      width: 100%;
+      background: #f1f1f1;
+      padding: 10px 0;
+      border-bottom: 1px solid #dddddd;
+      .kuang {
+        margin: 0 auto;
+        width: 94%;
+        border: 1px solid #666666;
+        border-radius: 5px;
+        position: relative;
+        .search {
+          margin: 0 auto;
+          width: 79%;
+          height: 3rem;
+          display: block;
+          float: left;
+          border-radius: 5px;
+          padding-left: 3%;
+          font: 1.2rem 'arial';
+        }
+        .sou {
+          position: absolute;
+          width: 17%;
+          height: 3rem;
+          background-image: linear-gradient(to top, #d04f41, #e15b4c);
+          text-align: center;
+          font: 1.25rem/3rem 'arial';
+          color: #ffffff;
+          border-radius: 5px;
+          border-left: 1px solid #711618;
+          right: 0;
+        }
+      }
+    }
+    .sign_regist_head{
+      width:100%;
+      img{
+        width:100%;
+      }
+    }
+    .back_head{
+      width:100%;
+      .back{
+        width:24%;
+        display: block;
+        img{
+          width:100%;
+        }
+      }
+      background:#f1f1f1;
+      border-bottom: 1px solid #dddddd;
+    }
+    .col-box{
+      padding: 0 4.5%;
+      margin-top:3%;
+    }
+    /*home page footer*/
+    .foot{
+      clear: both;
+      .back_to_top{
+        display: block;
+        span{
+          text-align: center;
+          height:1rem;
+          width:2rem;
+          display: inline-block;
+          background:url("../images/tri-t.png")center bottom no-repeat;
+        }
+        font:1.4rem/3rem 'Arial';
+        text-align: center;
+        margin-top: 3%;
+        width:100%;
+        background:url("../images/tri-t.png")  no-repeat;
+        background-image: linear-gradient(to top,#c2c2c2, #f5f5f5 );
+        height:4rem;
+      }
+      .di {
+        width: 100%;
+        text-align: center;
+        font: 0.7rem/1.4rem "Arial";
+        color: #000000;
+        margin-top: 4%;
+      }
+
+      .di a {
+        color: #000000;
+      }
+
+      .di .ditu{
+        text-align: center;
+        font-size: 0.2rem;
+        color: #bdbdbd;
+        margin: 3% 0;
+      }
+    }
+  }
+}
+
+@media screen and (max-width:2048px){
+  html{
+    font-size:150%
+  }
+}
+@media screen and (max-width:960px){
+  html{
+    font-size:100%
+  }
+}
+@media screen and (max-width:640px){
+  html{
+    font-size:85%
+  }
+}
+@media screen and (max-width:480px) {
+  html {
+    font-size: 75%;
+  }
+}

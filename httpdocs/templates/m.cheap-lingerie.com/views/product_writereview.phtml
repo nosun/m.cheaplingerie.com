@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+	<div class="back_head">
+		<a class="back" href="<?php echo $backurl ?>"><img src="<?php echo $tpldir; ?>/images/back.png"></a>
+	</div>
+	<div class="write_review">
+		<?php echo themeMessages(); ?>
+		<h2 class="classh2">Write a Review</h2>
+		<table class="big" cellpadding="0" cellspacing="0">
+			<tr>
+				<td class="zuo"><img src="<?php echo urlimg('210x320', $product->filepath); ?>" /></td>
+				<td class="you">
+					<p class="aline"><?php echo $product->name; ?></p>
+					<p class="USD">USD <?php echo c($product->sell_price); ?></p>
+					<span class="star">
+						<a><img src="<?php echo $tpldir; ?>/images/star.png"></a>
+						<a><img src="<?php echo $tpldir; ?>/images/star.png"></a>
+						<a><img src="<?php echo $tpldir; ?>/images/star.png"></a>
+						<a><img src="<?php echo $tpldir; ?>/images/star.png"></a>
+						<a><img src="<?php echo $tpldir; ?>/images/star.png"></a>
+						<div class="clear"></div>
+					</span>
+				</td>
+			</tr>
+		</table>
+		<script type="text/javascript">
+			function changestarpic(rating){
+				$('.star a').each(function(i){
+					if(i<rating){
+						$(this).find('img').attr('src','<?php echo $tpldir; ?>/images/starfill.png');
+					}else{
+						$(this).find('img').attr('src','<?php echo $tpldir; ?>/images/star.png');
+					}
+				});
+			}
+	
+			$('.star a').each(function(i){
+				$(this).click(function(){
+					var rating = i+1;
+					$('#ratingvalue').val(i+1);
+					changestarpic(i+1);
+				});
+			});
+		</script>
+		<form enctype="multipart/form-data" name="reviewform" action="<?php echo url('comment/insert')?>" method="POST" id="commentform">
+			<input type="hidden" name="comment_token" value="<?php echo isset($comment_token) ? $comment_token : null; ?>" />
+			<input type="hidden" name="pid" value="<?php echo $product->pid; ?>" />
+			<input type="hidden" name="rating" value="0" id="ratingvalue" />
+			<div class="view">
+				<textarea name="subject" class="ss" id="title"
+					onfocus="if(this.value=='Review title:'){this.value='';$('#title').css({'color':'black'})}"
+					onblur="if(this.value==''){this.value='Review title:';$('#title').css({'color':'#c9c7c5'})}">Review title:</textarea>
+				<span id="top"><img src="<?php echo $tpldir; ?>/images/jiao.png" ></span>
+			</div>
+			<div class="view2">
+				<textarea name="comment" class="ss" id="ss"
+					onfocus="if(this.value=='Review content:'){this.value='';$('#ss').css({'color':'black'})}"
+					onblur="if(this.value==''){this.value='Review content:';$('#ss').css({'color':'#c9c7c5'})}">Review content:</textarea>
+				<span class="less">Less than 500 characters</span>
+			</div>
+	
+			<div class="showpic_content">
+				<div class="tianjia">
+					<p class="shan"><img src="<?php echo $tpldir; ?>/images/shan.png" /></p>
+					<img src="">
+				</div>
+				<div class="tianjia">
+					<p class="shan"><img src="<?php echo $tpldir; ?>/images/shan.png" /></p>
+					<img src="">
+				</div>
+				<div class="tianjia">
+					<p class="shan"><img src="<?php echo $tpldir; ?>/images/shan.png" /></p>
+					<img src="">
+				</div>
+			</div>
+			<div class="clear"></div>
+			
+			<div class="col-box" id="file">
+				<input id="tian4" class="sa" type="file" name="file[]"/>
+				<label for="tian4" class="btn-file">Upload Your Photos</label>
+			</div>
+	
+			<div class="col-box" style="margin-top:3%;">
+				<button class="btn-red btn-red-high" type="submit">Submit a Review</button>
+			</div>
+		</form>
+	
+		<script type="text/javascript">
+			var jia=0;
+	        $("#tian4").change(function(){
+	            shuzu = $('.showpic_content').find('img[src=""]');
+	            if(shuzu.length==0){
+	                alert('Most allow three images');
+	            }
+	            var first = shuzu[0];
+	            var reader = new FileReader();
+	
+	            reader.onload = function(evt){
+	                first.src = evt.target.result;
+	            }
+	            reader.readAsDataURL(this.files[0]);
+	            $(first).prev().css({'display':'block'});
+	            if(first.src!=''){
+	                $(first).css({'width':'100%'})
+	            }
+	            //克隆新的input
+	            $('#tian4').clone(true).appendTo('#file');
+	            jia++;
+	            $(this).attr('id',jia).attr('name','file[]');
+	            $(first).prev().attr('uid',jia);
+	
+	        });
+	        $('.shan').click(function(){
+	            event.preventDefault();
+	            var inputid = $(this).attr('uid')
+	            $('#'+inputid).remove();
+	            $(this).next().attr('src', '');
+	            $(this).css({'display':'none'});
+	            $(this).parent().detach().appendTo('.showpic_content');
+	        })
+			function checkform(){
+				var commentcontent = $('#ss').val();
+				var rating = $('#ratingvalue').val();
+				var subject = $('#title').val();
+				if(subject == 'Review title:'){
+					alert('title');
+					return false;
+				}else if(commentcontent == 'Review content:'){
+					alert('content');
+					return false;
+				}else if(rating == '0'){
+					alert('rating');
+					return false;
+				}else{
+					return true;
+				}
+			}
+			$("#commentform").submit(function(){
+				event.preventDefault();
+				if(checkform()){
+			  		reviewform.submit();
+				}
+			});
+			if(!window.FileReader){
+				$("#file").remove();
+			}
+		</script>
+	</div>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

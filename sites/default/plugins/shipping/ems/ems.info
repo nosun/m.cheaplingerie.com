@@ -1,0 +1,4 @@
+name = 邮政特快专递
+version = 1.0
+cashOnDelivery = 1
+description = EMS — 邮政特快专递

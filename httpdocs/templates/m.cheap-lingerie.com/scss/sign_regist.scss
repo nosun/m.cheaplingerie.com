@@ -1,0 +1,70 @@
+.sign_regist{
+  padding:0 4.5%;
+  h1{
+    font: 1.9rem 'arial';
+    font-weight: bold;
+    color:#e55d4e;
+    margin-top:1rem;
+  }
+  .sign_regist_h2{
+    font:1.3rem/2rem 'arial';
+    margin-top: 1rem;
+    span{
+      color:#c01920;
+    }
+  }
+  .sign_regist_input{
+    display: block;
+    padding-left:3%;
+    width:97%;
+    height:2.7rem;
+    border-radius: 5px;
+    border:1px solid #929394;
+    font:1.2rem/2.7rem 'arial';
+    color:#000000;
+    margin-top:0.3rem;
+    background:#ffffff;
+  }
+  .aaa{
+    border:1px solid #c01920;
+  }
+  .regist_button{
+    width:100%;
+    color:#ffffff;
+    font-size:1.5rem;
+    background-image: linear-gradient(to top,#d03a2a, #e85e4c);
+    height:3rem;
+    margin-top:3rem;
+    border-radius: 5px;
+    border-bottom: 3px solid #c12817;
+   // border-right: 3px solid #c12817;
+  }
+  .link{
+    font:1.3rem/2.5rem 'arial';
+    text-decoration:underline;
+    margin-bottom: 50px;
+    .forgot{
+      display:block;
+      float:right;
+      margin-top:3rem;
+    }
+    .notmember{
+      display: inline-block;
+      float: right;
+      margin-right:1rem;
+    }
+    .register{
+      display:block;
+      float:right;
+      color:#e55d4e;
+      text-decoration:underline;
+    }
+  }
+  /*change password*/
+  .h{
+     font: 1.7rem 'arial';
+     color:#000000;
+     margin-top:1rem;
+     margin-left:1.5rem;
+   }
+}

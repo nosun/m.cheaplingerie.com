@@ -1,0 +1,26 @@
+.manage-Addres{
+  .classh2{
+    font-size: 1.4rem;
+    margin-top: 20px;
+  }
+  .manage-left{
+    float: left;
+    padding-left: 8%;
+    p{
+      color: #666;
+      font:1.3rem 'arial';
+      line-height: 1.5  ;
+      span{
+        color:#000;
+        font-weight:bold;
+      }
+    }
+  }
+  .manage-right{
+  float: right;
+    margin-right: 5%;
+    img{
+      margin-top: 40px;
+    }
+  }
+}

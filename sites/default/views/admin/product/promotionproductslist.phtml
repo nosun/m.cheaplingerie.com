@@ -1,0 +1,108 @@
+<?php
+  $this->assign('menuItem', 'product_promotionslist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+  <ul>
+    <li><span class="check"><a href="<?php echo url('admin/product/promotionslist') ?>">促销活动列表</a></span></li>
+    <li><span class="basic"><?php echo plain($promotion->name) ?> - 设置活动商品价格</span></li>
+  </ul>
+</div>
+
+
+
+
+<div class="main_right" style="margin-top:5px; margin-left:5px;">
+  <?php echo themeMessages() ?>
+  <form id="form_productinfo" action="<?php echo url('admin/product/promotionproductlist/'.$promotion->pmid) ?>" method="post"  enctype="multipart/form-data">
+  <table>
+    <tr class="nohover">
+      <td class="bold" colspan="2">修改活动商品价格</td>
+    </tr>
+    <tr class="nohover">
+      <td colspan="2">
+        <input type="submit" value="保存" class="btn1" >
+        <input type="button" value="设置活动商品" class="btn1" style="width:110px;" onclick="location.href='<?php echo url('admin/product/promotionproductset/'.$promotion->pmid);?>'" >
+      </td>
+    </tr>
+
+    <tr>
+      <td class="bold"  width="35%">商品名</td>
+      <td class="bold"  width="*">价格</td>
+    </tr>
+<?php foreach ($productList[User_Model::RANK_MEMBER] as $key => $product):?>
+    <tr class="nohover">
+      <td style="border-right:1px solid #E0E0E0;white-space:normal;" valign="top">
+        <?php echo $product->name;?>
+        <input type="hidden" name="product[<?php echo $product->pid;?>]" value="<?php echo $product->pid;?>">
+      </td>
+      <td style="padding-left:0;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="width:100%;">
+			        <tr style="border-bottom:0;">
+			          <td class="bold" style="border-bottom:0;">活动优惠价 <input name="price[<?php echo $product->pid;?>][<?php echo $product->rid;?>]" value="<?php echo $product->price;?>" class="txt non-empty" title="销售价不能为空" />
+			          </td>
+			          <td style="border-bottom:0;">活动优惠价</td>
+			        </tr>
+							<?php if (count($ranks) > 1): ?>
+							        <tr style="border-bottom:0;border-top:1px solid #E0E0E0;" >
+							          <td class="bold rank_price" style="border-bottom:0;border-top:1px solid #E0E0E0;" width="40%">
+							<?php
+							foreach ($ranks as $key1 => $rank):
+							  if ($rank->rid == User_Model::RANK_MEMBER) {
+							    continue;
+							  }
+							  $setted = false;
+							  if( isset($productList[$rank->rid][$product->pid]) ){
+							  	$rankProduct = $productList[$rank->rid][$product->pid];
+							  	$rankPrice = $rankProduct->price;
+							  	$setted = true;
+							  }else{
+							  	$rankPrice = $product->price;
+							  	$setted = false;
+							  }
+
+							?>
+							            <p>
+							              <input type="checkbox" id="price_check_<?php echo $product->pid.'_'.$rank->rid; ?>" name="price_check[<?php echo $product->pid;?>][<?php echo $rank->rid;?>]" <?php if ($setted) echo ' checked="checked"'?>>
+							              <label for="price_check_<?php echo $product->pid.'_'.$rank->rid; ?>" style="color:#333"><?php echo t($rank->name) ?></label>
+							              <input name="price[<?php echo $product->pid;?>][<?php echo $rank->rid;?>]" value="<?php echo $rankPrice; ?>" class="txt" <?php if (!$setted) echo ' disabled="disabled"' ?>/>
+							            </p>
+							<?php endforeach ?>
+							          </td>
+							          <td style="border-bottom:0;border-top:1px solid #E0E0E0;" width="*">会员活动优惠价</td>
+							        </tr>
+							<?php endif;?>
+
+        </table>
+      </td>
+    </tr>
+<?php endforeach ?>
+
+    <tr class="nohover">
+      <td colspan="2">
+        <input type="submit" value="保存" class="btn1" >
+        <input type="button" value="设置活动商品" class="btn1" style="width:110px;" onclick="location.href='<?php echo url('admin/product/promotionproductset/'.$promotion->pmid);?>'" >
+      </td>
+    </tr>
+
+  </table>
+  </form>
+
+</div>
+
+
+
+<div class="main_right" style="margin-top:5px; margin-left:5px;">
+  <?php echo themeMessages() ?>
+
+</div>
+
+
+
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

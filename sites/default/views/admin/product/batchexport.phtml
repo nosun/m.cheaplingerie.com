@@ -1,0 +1,47 @@
+<?php
+  $this->assign('menuItem', 'product_productslist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/product/list') ?>">商品列表</a></span></li>
+		<li><span class="import_1"><?php echo t('Lead');?></span></li>
+	</ul>
+</div>
+
+<div class="main_right">
+    <?php echo themeMessages() ?>
+    <div class="batch_content" style="margin-left:10px;margin-top:10px;">
+	    <form action = "<?php echo url('admin/batchjobs/post/');?>" method="post" enctype="multipart/form-data">
+	      <div class="main_title">第一步：下载商品CSV文件</div>
+	      <table>
+	        <tr><td width="15%">选择商品类型:</td><td width="70%"><select name="type" class="filter_select">
+	            <option value=""></option>
+	<?php foreach ($typeList as $key => $type): ?>
+	            <option value="<?php echo $key ?>"><?php echo t($type->name) ?></option>
+	<?php endforeach ?>
+	          </select></td></tr>
+	        <tr class="nohover"><td><input type="submit" id="downfileform" name="downfileform" value="下载" class="btn1"/></td><td></td></tr>
+	      </table>
+	      <div  class="main_title top10">第二步：填写CSV文件</div>
+	      <div>打开CSV文件，在里面对应写入上传商品的内容。</div>
+	      <div  class="main_title top10">第三步：上传填写好的CSV文件</div>
+	      <table>
+	        <tr><td width="15%">上传批量CSV文件:</td><td width="70%"><input type="file" class="file" name="filedata"></td></tr>
+	        <tr class="nohover"><td><input type="submit" id="uploadfile" name="uploadfile" value="上传" class="btn1" /></td><td></td></tr>
+	      </table>
+	    </form>
+    </div>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>
+
+
+
+
+
+

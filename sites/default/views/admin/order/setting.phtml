@@ -1,0 +1,37 @@
+<?php
+  $this->assign('menuItem', 'order_orderslist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="basic"><a href="<?php echo url('admin/order/setting') ?>">订单设置</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:10px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="POST">
+
+    <table>
+      <tr class="nohover"><td class="bold" colspan="2">订单前缀设置</td></tr>
+      <tr>
+        <td width="50%">
+          <input type="text" name="order_prefix" value="<?php echo $prefix;?>"/> <label>不设置，默认为空，最多设置4位数字和字母，超过将截取4位。</label>
+         
+        </td>
+        <td width="40%"></td>
+      </tr>
+    </table>
+
+    <div class="main_bottom_deal">
+      <input type="submit" value="保存" class="btn">
+    </div>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

@@ -1,0 +1,143 @@
+<?php
+  $this->assign('menuItem', 'product_batchupload');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+  <ul>
+    <li><span class="basic"><a href="<?php echo url('admin/product/batchupload') ?>">商品批量上传</a></span></li>
+  </ul>
+</div>
+
+<div class="main_right" style="margin-left:10px; margin-top:10px;">
+  <form id="form_productinfo" action="" method="post">
+    <input type="hidden" id="session_id" name="session_id" value="<?php echo session_id(); ?>">
+    <input type="hidden" id="swfupload_id" name="swfupload_id" value="batchuploadproduct">
+    <input type="hidden" id="directory_list" value='<?php echo strtr(json_encode($directoryList), "'", "\'")?>'>
+    <table>
+        <tr>
+          <td class="bold" width="120">商品类型</td>
+          <td width="50%"><select name="type" class="select non-empty"  title="商品类型不能为空">
+            <option value=""></option>
+<?php foreach ($typeList as $key => $type): ?>
+            <option value="<?php echo $key ?>"<?php if (isset($product) && $product->type == $key) echo ' selected="selected"' ?>><?php echo t($type->name) ?></option>
+<?php endforeach ?>
+          </select><span style="color:red;display:inline;font-weight:normal;">*</span></td>
+        <td width="40%">商品类型</td>
+        </tr>
+
+        <tr>
+          <td class="bold" >商品目录</td>
+          <td colspan="2"><p><select name="directory_tid1">
+            <option value="0">-- 请选择一级商品目录 --</option>
+<?php foreach ($directoryList as $tid1 => $term1): ?>
+            <option value="<?php echo $tid1 ?>"><?php echo t($term1->name) ?></option>
+<?php endforeach ?>
+          </select>
+          <select name="directory_tid2">
+            <option value="0">-- 请选择二级商品目录 --</option>
+          </select></p><p>
+          <select name="directory_tid3">
+            <option value="0">-- 请选择三级商品目录 --</option>
+          </select>
+          <select name="directory_tid4">
+            <option value="0">-- 请选择四级商品目录 --</option>
+          </select></p>
+          </td>
+        </tr>
+        <tr>
+          <td class="bold" >品牌</td>
+          <td><select name="brand_tid" class="select">
+          <option value="0">-- 请选择商品品牌 --</option>
+<?php foreach ($brandList as $tid => $brand): ?>
+            <option value="<?php echo $tid ?>"<?php if (isset($product) && $product->brand_tid == $tid) echo ' selected="selected"' ?>><?php echo t($brand->name) ?></option>
+<?php endforeach ?>
+          </select></td>
+          <td>商品所属品牌</td>
+        </tr>
+        <tr>
+          <td class="bold" >货号</td>
+          <td>
+            <input name="sn" value="" class="mediumtxt non-empty"  title="货号不能为空" /><span style="color:red;display:inline;font-weight:normal;">*</span> +
+            <input name="num" value="" class="littletxt" />
+          </td>
+          <td>商品内部货号</td>
+        </tr>
+        <tr>
+          <td class="bold" >商品名称</td>
+          <td><input name="name" value="" class="mediumtxt non-empty"  title="商品名称不能为空" /><span style="color:red;display:inline;font-weight:normal;">*</span> +
+              </td>
+          <td>商品名称</td>
+        </tr>
+        <tr>
+          <td class="bold" >销售价 </td>
+          <td class="bold"><input name="sell_price" value="0.00" class="txt non-empty"  title="销售价不能为空" /><span style="color:red;display:inline;font-weight:normal;">*</span></td>
+          <td>销售价</td>
+        </tr>
+        <tr>
+          <td class="bold" >市场价 </td>
+          <td class="bold"> <input name="list_price" value="0.00" class="txt"/></td>
+          <td>市场价</td>
+        </tr>
+        <tr>
+          <td class="bold" >重量  </td>
+          <td class="bold"><input name="wt" value="0" class="txt non-empty" /></td>
+          <td>商品单位重量 (单位:克)</td>
+        </tr>
+        <tr>
+          <td class="bold" >库存 </td>
+          <td class="bold"> <input name="stock" value="0" class="txt" /></td>
+          <td>商品库存</td>
+        </tr>
+        <tr>
+          <td class="bold" >最小购买数量 </td>
+          <td class="bold"> <input name="sell_min" value="0" class="txt" /></td>
+          <td>最小购买数量</td>
+        </tr>
+        <tr>
+          <td class="bold" >最大购买数量 </td>
+          <td class="bold"> <input name="sell_max" value="0" class="txt" /></td>
+          <td>最大购买数量</td>
+        </tr>
+        <tr>
+          <td class="bold" >简介</td>
+          <td colspan="2"><textarea name="summary" class="txt_xheditor" rows="10"></textarea></td>
+        </tr>
+        <tr>
+          <td class="bold" >详细介绍</td>
+          <td colspan="2"><textarea name="description" class="txt_xheditor" rows="10"></textarea></td>
+        </tr>
+        <tr>
+          <td class="bold" >页面模板</td>
+          <td><input name="template" value="" class="txt" /></td>
+          <td>页面模板</td>
+        </tr>
+        <tr>
+          <td class="bold"><label style="color:#000"><input type="checkbox" name="status" /> 上架</label></td>
+          <td></td><td>批量上传默认为非上架状态</td>
+        </tr>
+        <tr>
+          <td class="bold"><label style="color:#000"><input type="checkbox" name="shippable" /> 可配送</label></td>
+          <td></td><td>是否可配送</td>
+        </tr>
+        <tr>
+          <td class="bold"><label style="color:#000"><input type="checkbox" name="free_shipping" /> 免运费</label></td>
+          <td></td><td>是否免运费</td>
+        </tr>
+    </table>
+    <a href="javascript:;" id="getswfupload" type="submit">开始上传图片</a>
+    <div class="btnarea hidden">
+      <div id="swfupload-control-back">
+        <input type="button" id="button" />
+        <input type="button" value="上传图片并保存商品" id="btnstartupload"  style="margin-left: 2px; font-size: 12px; height: 22px;" />
+        <div id="divStatus"><?php echo t('FileUploads');?><span><?php echo t('FileUploadstxt');?></span></div>
+        <div id="fsUploadProgress"></div>
+      </div>
+    </div>
+  </form>
+</div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

@@ -1,0 +1,68 @@
+<?php
+  $this->assign('menuItem', 'site_shipping');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/site/shippingList') ?>"> 配送管理</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <table>
+      <tr class="subhead">
+        <td width="20%">配送方式名称</td>
+        <td width="40%">配送方式描述</td>
+        <td width="10%">货到付款</td>
+        <td width="10%">插件版本</td>
+        <td width="20%">管理</td>
+      </tr>
+<?php
+if(isset($shippingList)):
+  foreach($shippingList as $key => $shipping):
+    if (!access('super') && !$shipping->status) {
+      continue;
+    }
+?>
+      <tr>
+        <td><?php echo isset($shipping->name) ? $shipping->name : '' ?></td>
+        <td><?php echo isset($shipping->description) && $shipping->description ? $shipping->description : '' ?></td>
+        <td><?php echo isset($shipping->cashOnDelivery) && $shipping->cashOnDelivery ? '是' : '否';  ?></td>
+        <td><?php echo isset($shipping->version) && $shipping->version ? $shipping->version : null;  ?></td>
+        <td>
+<?php if (access('super') && (!isset($shipping->status) || !$shipping->status)) :?>
+          <a href="<?php echo url('admin/site/installshipping/'.$key); ?>">安装</a>
+<?php else: ?>
+<?php if (access('super')): ?>
+          <a href="<?php echo url('admin/site/uninstallshipping/'.$key); ?>">卸载</a>
+<?php endif ?>
+          <a href="<?php echo url('admin/site/editshipping/'.$key); ?>">编辑</a>
+          <a href="<?php echo url('admin/site/listshippingarea/'.$key); ?>">区域管理</a>
+<?php endif;?>
+<?php
+if (access('manage shipping')):
+  if (!isset($shipping->visible) || $shipping->visible):
+?>
+          <a href="<?php echo url('admin/site/hideshipping/' . $key) ?>">隐藏</a>
+<?php else: ?>
+          <a href="<?php echo url('admin/site/showshipping/' . $key) ?>">显示</a>
+<?php
+  endif;
+endif;
+?>
+        </td>
+      </tr>
+<?php
+  endforeach;
+endif;
+?>
+    </table>
+  </div>
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

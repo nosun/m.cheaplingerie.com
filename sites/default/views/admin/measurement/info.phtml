@@ -1,0 +1,31 @@
+<div class="main_right ui-tabs-panel ui-widget-content ui-corner-bottom">
+	<table>
+		<tr style="display:none"><td><input type="hidden" name="id" value="<?php if (isset($measurement)){echo $measurement->id;} else { echo "";} ?>" /></td></tr>
+		<tr class="nohover"><td class="bold" colspan="2">Measurement名称：</td></tr>
+	    <tr>
+	    	<td><input type="text" name="name" value="<?php if(isset($measurement)){echo $measurement->name;} else{ echo "";}?>" /><span style="color:red">*</span></td>
+	    	<td>Measurement名称</td>
+	    </tr>
+	    <tr class="nohover"><td class="bold" colspan="2">商品类型：</td></tr>
+	    <tr>
+	    	<td>
+	    		<select name="product_type" class="non-empty" title="商品类型不能为空">
+            		<option value=""></option>
+            		<?php if (isset($productTypeList)): ?>
+    					<?php foreach ($productTypeList as $key => $type): ?>
+                			<option value="<?php echo $key ?>"<?php if (isset($measurement) && $measurement->product_type == $key) echo ' selected="selected"' ?>><?php echo t($type->name) ?></option>
+    					<?php endforeach ?>
+					<?php endif; ?>
+          		</select> 
+          		<span style="color:red">*</span>
+          	</td>
+          	<td>商品类型</td>
+        </tr>
+        <tr class="nohover"><td class="bold" colspan="2">内容</td></tr>
+        <tr>
+        	<td colspan="2">
+          		<textarea name="content" class="xheditor" rows="15"><?php if (isset($measurement)) echo stripslashes($measurement->content) ?></textarea>
+          	</td>
+        </tr>
+	</table>
+</div>

@@ -1,0 +1,37 @@
+<?php
+  $this->assign('menuItem', 'product_setting');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="basic"><a href="<?php echo url('admin/product/setting') ?>">商品设置</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:10px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="POST">
+
+    <table>
+      <tr class="nohover"><td class="bold" colspan="2">新增商品是否自动上架</td></tr>
+      <tr>
+        <td width="50%">
+          <input id="el-c9631-e855c" type="radio" name="isProductPublishAuto" value="1" <?php if($isProductPublishAuto == 1) echo "checked";  ?>/> <label for="el-c9631-e855c">自动上架</label>
+          <input id="el-c9631-e855b" type="radio" name="isProductPublishAuto" value="0" <?php if($isProductPublishAuto == 0) echo "checked";  ?>/> <label for="el-c9631-e855b">不自动上架</label>
+        </td>
+        <td width="40%"></td>
+      </tr>
+    </table>
+
+    <div class="main_bottom_deal">
+      <input type="submit" value="保存" class="btn">
+    </div>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

@@ -1,0 +1,92 @@
+<form action="<?php echo url('cart/productpost');?>" method="post" name="cartform" id="cartform">
+	<input type="hidden" value="<?php echo isset($product->pid) ? $product->pid : null ?>" name="pid" />
+	<input type="hidden" value="" name="cart" />
+	
+	<?php echo $this->render('contents/p_non_wedding_dress_fields.phtml'); ?>
+	<div id="formtypeflag" data="no-wedding"></div>
+	<input type="hidden" id="dataquantityinput" name="qty" value="<?php echo isset($pcount)? $pcount : 1; ?>" />
+	<div class="col-box" id="QUANTITY">
+		<button class="btn-long" type="button">
+			<div style="float: left">
+				<div class="size">Quantity</div><div class="sele"><?php echo isset($pcount)? $pcount : 1; ?></div>
+			</div>
+			<div class="icon-angle-right" style="font-size:2rem;line-height:3rem;color:#adadad;float:right;font-weight: 200;">
+			</div>
+			<div class="clear"></div>
+		</button>
+	</div>
+	<div class="col-box">
+		<button class="btn-red btn-red-high" type="button" id="cartpost"><i class="icon-shopping-cart" style="font-size: 2rem;color:#ffffff;float: left;margin-right:5%;"></i>Add to Cart</button>
+	</div>
+	<div class="col-box">
+		<button class="btn-grey btn-grey-high" type="button" id="addtowish"><i class="icon-heart-empty" style="font-size: 2rem;color:#000000;float: left;margin-right:5%;"></i>Add to Wish List</button>
+	</div>
+</form>
+
+<script>
+	$("#cartpost").click(function(){
+		if(checkcartform(false)){
+			cartform.submit();
+		}
+	});
+
+	$("#addtowish").click(function(){
+		if(checkcartform(true)){
+			$("#cartform").attr("action", "<?php echo url("product/addtowish"); ?>");
+			$("#cartform").submit();
+		}
+	});
+
+	function checkcartform(addtowish){
+		var typeflag = $('#formtypeflag').attr('data');
+
+		if(!addtowish){
+			var count = $('input#dataquantityinput').val();
+			if(count <= 0){
+				alert("You need to set a Quantity");
+				return false;
+			}
+		}
+		if(typeflag == "wedding"){
+			var color = $('#datacolorinput').val();
+			var size = $('#datasizeinput').val();
+			var beltcolor = $('#databeltcolorinput').val();
+			if(color == ""){
+				alert("You need to choose your color");
+				return false;
+			}
+			if(size == ""){
+				alert("You need to choose your size");
+				return false;
+			}
+			if(beltcolor != undefined){
+				if(beltcolor == ""){
+					alert("You need to choose your belt color");
+					return false;
+				}
+			}
+			return true;
+		}else if(typeflag == "no-wedding"){
+			var fields = $("#cartform").find("input.noweddingfield");
+			var len = fields.length;
+			var flag = false;
+			if(len == 0){
+				flag = true;
+			}else{
+				fields.each(function(i){
+					var select = $(this);
+					var selval = $(this).val();
+					var field = $(this).attr("field-data");
+					if(selval == ""){
+						alert("You need to choose your " + field);
+						return false;
+					}
+					if(i == (len-1)){
+						flag = true;
+					}
+				});
+			}
+			return flag;
+		}
+	}
+</script>

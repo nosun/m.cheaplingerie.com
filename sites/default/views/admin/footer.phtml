@@ -1,0 +1,19 @@
+        </div><!-- DIV box end -->
+        <br>
+    </div><!-- DIV body_right end -->
+    </td><!-- body right td end -->
+    <td width="3px"></td><!-- right bank space -->
+    </tr>
+    </table><!-- Main body Table end -->
+
+</div><!-- DIV bodyer end -->
+<?php if (Bl_Config::get('debug', false)): ?>
+  <!-- <center style="clear:both"><?php echo number_format(timer(), 4) ?> s</center> -->
+  <pre>
+<?php
+  global $db;
+  //echo implode(PHP_EOL, $db->getQueries());
+?>
+  </pre>
+<?php endif ?>
+</body>

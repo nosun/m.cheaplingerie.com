@@ -1,0 +1,37 @@
+<?php
+  $this->assign('menuItem', 'site_blacklist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="basic"><a href="<?php echo url('admin/site/blacklistsetting') ?>">系统更新</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="post">
+    <table>
+      <tr class="nohover"><td class="bold">系统当前更新编号 : <?php echo plain($currentVersion) ?></td></tr>
+<?php
+$countVersions = count($updateVersions);
+$lastVersion = $countVersions ? $updateVersions[$countVersions - 1] : $currentVersion;
+if ($countVersions):
+?>
+      <tr class="nohover"><td class="bold" style="color:red">系统最新更新编号 : <?php echo plain($lastVersion) ?>, 共包含 <?php echo count($updateVersions) ?> 个更新</td></tr>
+<?php else: ?>
+      <tr class="nohover"><td class="bold" style="color:green">您的系统已经是最新的</td></tr>
+<?php endif ?>
+    </table>
+<?php if ($countVersions): ?>
+    <div class="main_bottom_deal">
+      <input type="submit" value="升级" class="btn">
+    </div>
+<?php endif ?>
+    </form>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

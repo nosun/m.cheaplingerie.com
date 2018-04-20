@@ -1,0 +1,74 @@
+<table align="center" cellpadding="0" cellspacing="0" width="100%" style="font-size:12px;">
+	<tbody>
+		<tr>
+			<td style="border-bottom: 1px solid #ccc;padding-bottom:3px;"><strong style="font-weight: bold; ">Image</strong></td>
+			<td style="border-bottom: 1px solid #ccc;padding-bottom:3px;"><strong style="font-weight: bold; ">Desc.</strong></td>
+			<td align="right" style="border-bottom: 1px solid #ccc;padding-bottom:3px;"><strong style="font-weight: bold; ">Quantity</strong></td>
+			<td align="right" style="border-bottom: 1px solid #ccc;padding-bottom:3px;"><strong style="font-weight: bold; ">Price</strong></td>
+			<td align="right" style="border-bottom: 1px solid #ccc;padding-bottom:3px;"><strong style="font-weight: bold; ">Subtotal</strong></td>
+		</tr>
+
+       <?php if(is_array($orderInfo->items)):
+         foreach ($orderInfo->items as $v):?>
+
+        <tr>
+			<td align="center" style="border-bottom: 1px solid #ddd;">
+				<a href="<?php echo url($v->url);?>"><img style="border: medium none;padding:5px 10px 5px 0;" src="<?php echo urlimg('admin_product_album', $v->filepath);?>"/></a></td>
+           <td align="left" style="border-bottom: 1px solid #dddddd;"><a href="<?php echo url($v->url);?>"><?php echo $v->name;?></a>
+           <?php if (!empty($v->data)){echoOrderItemProperties($v->data);}?>
+           </td>
+           <td align="center" style="border-bottom: 1px solid #ccc;"><span><?php echo $v->qty;?></span></td>
+           <td align="right" style="border-bottom: 1px solid #ccc;"><span><?php echo (isset($v->pay_price) ? c($v->pay_price) : null);?></span></td>
+           <td align="right" style="border-bottom: 1px solid #ccc;"><span><?php echo (isset($v->total_amount) ? c($v->total_amount) : null);?></span></td>
+           </tr>
+        <?php endforeach;?>
+      <?php endif;?>
+
+       <?php if(!isset($orderInfo->data['shipping_no']) || $orderInfo->data['shipping_no'] == ''):?>
+       	   <tr>
+		   <td colspan="4" style="text-align:right;padding-top:5px;">Items Total: </td>
+	       <td colspan="2" align="right" style="padding-top:5px;">
+		   <span><?php echo isset($orderInfo->goods_number) ? strval($orderInfo->goods_number): strval(count($orderInfo->items));?></span>
+		   </td>
+		   </tr>
+		   <tr>
+	       <td colspan="4" style="text-align:right;">
+	       Subtotal: 
+		   </td>
+		   <td colspan="2" align="right">
+		   <span><?php echo (isset($orderInfo->total_amount) ? c($orderInfo->total_amount) : null) ?></span>
+		   </td>
+		   </tr>
+		   
+	   <?php if(is_array($orderInfo->fees)):?>
+	   <?php foreach ($orderInfo->fees as $v):?>
+		   <?php if($v->fee_key == "bankfee"){continue;}?>
+		   <tr>
+	       <td colspan="4" style="text-align:right;text-transform:capitalize;">
+		   <?php echo t($v->fee_key) . ":";?>
+		   </td>
+		   <td colspan="2" align="right">
+		   <span><?php echo c($v->fee_value);?></span>
+		   </td>
+		   </tr>
+	   <?php endforeach;endif;?>
+	   <tr>
+		<td colspan="4" style="text-align:right;">
+	   Total Payment:
+	   </td>
+	   <td colspan="2" align="right"><span><strong style="font-weight: bold;"><?php echo (isset($orderInfo->pay_amount) ? c($orderInfo->pay_amount) : null);?></strong></span>
+	   	</td>
+	   </tr>
+	   
+	   <tr>
+       <td colspan="4" style="text-align:right;border-bottom:1px solid #ccc; padding-top:5px;">
+	   </td>
+	   <td colspan="2" align="right" style="text-align:right;border-bottom:1px solid #ccc;padding-top:5px;">
+	   </td>
+	   </tr>
+	   
+       <?php endif;?>
+
+       </tbody>
+       
+       </table>

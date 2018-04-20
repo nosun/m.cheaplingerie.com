@@ -1,0 +1,106 @@
+<table>
+
+	<tr class="nohover">
+		<td class="bold">
+		<input type="hidden" id="directory_list" value='<?php echo isset($directoryList) ? strtr(json_encode($directoryList), "'", "\'") : ''; ?>'> 
+		<input type="hidden" id="is_in_batchedit" value='1'> 
+		<input type="hidden" name="BatchPidList" id="BatchPidList"> 选择商品所在的目录
+		</td>
+	</tr>
+	<tr>
+		<td><select id="batchDirectoryTid1">
+			<option value="0">-- 请选择一级商品目录 --</option>
+			<?php foreach ($directoryList as $tid1 => $term1): ?>
+			<option value="<?php echo $tid1 ?>"><?php echo t($term1->name) ?></option>
+			<?php endforeach ?>
+		</select> <select id="batchDirectoryTid2">
+			<option value="0">-- 请选择二级商品目录 --</option>
+		</select> <select id="batchDirectoryTid3">
+			<option value="0">-- 请选择三级商品目录 --</option>
+		</select>
+		<select id="batchDirectoryTid4">
+      <option value="0">-- 请选择四级商品目录 --</option>
+    </select>
+		</td>
+	</tr>
+
+	<tr class="nohover">
+		<td class="bold">
+		<div>
+		  <div style="float: left; width: 220px; margin-left: 10px;">商品名称：<input class="txt" id="batchProductName" /></div>
+		  <div style="float: left; width: 220px; margin-left: 10px;">货号：<input class="txt" id="batchProductSN" /></div>
+		  <div style="float: left; width: 220px; margin-left: 10px;">ID：&nbsp;&nbsp;<input class="txt" id="batchProductID" /></div>
+		</div>
+		<div style="clear: both;">
+		  <div style="float: left; width: 220px; margin-left: 10px;">商品编号：<input class="txt" id="batchProductNumber" /></div>
+		  <div style="float: left; width: 220px; margin-left: 10px;">状态：<select id="batchProductStatus"><option value=""></option>
+                 <option value="1"><?php echo t('Published');?></option>
+                 <option value="0"><?php echo t('Unpublish');?></option>
+                 </select>
+      </div>
+		  <div style="float: left; width: 220px; margin-left: 10px;">品牌：<select id="batchProductBrandTID">
+                    <option value="">-- 请选择商品品牌 --</option>
+                    <?php if(isset($brandList)) foreach($brandList as $v) :?>
+                    <option value="<?php echo $v->tid?>"><?php echo $v->name?></option>
+                    <?php endforeach;?>
+        </select>
+			</div>
+		</div>
+		<div style="clear: both;">
+		  <div style="float: left; margin-left: 10px;">价格范围：<input class="littletxt" id="batchProductLowprice" width="100"/> - <input id="batchProductHighprice" class="littletxt" width="100"/>
+      </div>
+		</div>
+		</td>
+	</tr>
+	<tr class="nohover">
+		<td>
+		  <input type="button" value="确定" class="btn batchEditFilterButton" style="float:left;">
+		  <span style="color:#FF0000;border:1px solid #FF0000;padding:2px 10px 2px 10px;display:none;float:left;margin-top:8px;" id="batchProductLoading">Loading ...</span>
+		</td>
+	</tr>
+
+	<tr class="nohover">
+		<td class="bold">商品列表</td>
+	</tr>
+
+	<tr class="nohover" style="border-bottom: 0;">
+		<td style="padding-left: 0px; border-bottom: 0;">
+		<table width="100%" cellpadding="0" cellspacing="0" border="0"
+			style="width: 100%;">
+			<tr class="nohover">
+				<td width="45%" align="center">请在下面列表中选择要设置的商品</td>
+				<td width="10%"></td>
+				<td width="45%" align="center">已选定的商品列表</td>
+			</tr>
+
+			<tr class="nohover" align="center">
+				<td><select id="src_select" multiple="multiple" size="20"
+					name="src_select" style="float: left; width: 98%;">
+				</select></td>
+				<td align="center"><input type="button" value="&gt;&gt;"
+					id="batchedit_select_all" name="batchedit_select_all" class="btn1"
+					title="增加全部"><br>
+				<input type="button" value="增加" id="batchedit_add"
+					name="batchedit_add" class="btn1" title="增加选中的"><br>
+				<input type="button" value="移除" id="batchedit_remove"
+					name="batchedit_remove" class="btn1" title="移除选中的"><br>
+				<input type="button" value="&lt;&lt;" id="batchedit_clean_all"
+					name="batchedit_clean_all" class="btn1" title="清除全部"></td>
+				<td align="center"><select id="dest_select" multiple="multiple"
+					size="20" name="dest_select" style="float: left; width: 98%;">
+<?php
+if (isset($productSelecterList) && is_array($productSelecterList) && count($productSelecterList)>0){
+  foreach($productSelecterList as $pid=>$name):
+    echo '<option value="' .$pid. '">' .$name. '</option>';
+    echo "\n";
+  endforeach;
+}
+?>
+				</select></td>
+			</tr>
+
+
+		</table>
+		</td>
+	</tr>
+</table>

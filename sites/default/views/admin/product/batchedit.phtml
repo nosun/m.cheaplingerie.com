@@ -1,0 +1,373 @@
+<?php
+$this->assign('menuItem', 'product_productslist');
+echo $this->render('admin/before_body.phtml');
+echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+<ul>
+	<li><span class="check"><a href="<?php echo url('admin/product/list') ?>">商品列表</a></span></li>
+	<li><span class="basic">批量修改商品</span></li>
+</ul>
+</div>
+
+<div class="main_right" style="margin-top: 5px; margin-left: 5px;"><?php echo themeMessages() ?>
+<form id="form_productinfo" action="<?php echo url('admin/batchjobs/batchEditProducts') ?>" method="post" enctype="multipart/form-data">
+
+  <?php echo $this->render('admin/product/productSelectFilter.phtml');?>
+  <table>
+
+	<tr class="nohover" style="border-bottom: 0;">
+		<td style="padding-left: 0px; border-bottom: 0;">
+
+
+		<div class="clear left_photo" id="tabs">
+
+		<div class="clear tab_ul">
+		<ul>
+			<li style="height: 33px;"><a href="#base"><?php echo t('Base information') ?></a></li>
+			<li style="height: 33px;"><a href="#page_variables">页面信息</a></li>
+		</ul>
+		</div>
+
+
+		<div id="base" class="box_Product">
+		<table width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
+		<?php if (access('delete product')):?>
+			<tr class="nohover">
+				<td class="bold" colspan="3">删除选定的商品</td>
+			</tr>
+			<tr>
+				<td colspan="2">&nbsp;&nbsp;<input type="button" id="batcheditDeleteSelected" value="删除选定的商品" class="btn1" style="width: 110px;" /></td>
+				<td>点击按钮进行删除</td>
+			</tr>
+			<?php endif; ?>
+			<tr class="nohover">
+				<td><input type="checkbox" name="changeDirectory" value="1" title="勾选上这个以修改选定商品的目录"><span style="color: blue">修改</span></td>
+				<td class="bold" colspan="2">修改选定商品的目录</td>
+			</tr>
+			<tr>
+				<td width="50px"></td>
+				<td width="*">
+				<p><select name="directory_tid1">
+					<option value="0">-- 请选择一级商品目录 --</option>
+					<?php foreach ($directoryList as $tid1 => $term1): ?>
+					<option value="<?php echo $tid1 ?>"><?php echo t($term1->name) ?></option>
+					<?php endforeach ?>
+				</select></p>
+				<p><select name="directory_tid2">
+					<option value="0">-- 请选择二级商品目录 --</option>
+				</select></p>
+				<p><select name="directory_tid3">
+					<option value="0">-- 请选择三级商品目录 --</option>
+				</select></p>
+				<p><select name="directory_tid4">
+          <option value="0">-- 请选择四级商品目录 --</option>
+        </select></p>
+				</td>
+				<td width="200px">商品所属品牌</td>
+			</tr>
+			<tr class="nohover">
+				<td><input type="checkbox" name="changeBrand" value="1"><span style="color: blue">修改</span></td>
+				<td class="bold" colspan="2">品牌</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><select name="brand">
+				<?php foreach ($brandList as $tid => $brand): ?>
+					<option value="<?php echo $tid ?>" <?php if (isset($product) && $product->brand_tid == $tid) echo ' selected="selected"' ?>><?php echo t($brand->name) ?></option>
+					<?php endforeach ?>
+				</select></td>
+				<td>商品所属品牌</td>
+			</tr>
+
+
+			<tr>
+				<td><input type="checkbox" name="changeSell_price" value="1"><span style="color: blue">修改</span></td>
+				<td class="bold">销售价 <input name="sell_price" value="<?php echo c(isset($product) ? $product->sell_price : 0, Bl_Config::get('currency'), false) ?>" class="txt non-empty" title="销售价不能为空" /></td>
+				<td>销售价</td>
+			</tr>
+			<?php if (count($ranks) > 1): ?>
+			<tr>
+				<td></td>
+				<td class="bold rank_price"><?php
+				foreach ($ranks as $rid => $rank):
+				if ($rid == User_Model::RANK_MEMBER) {
+				  continue;
+				}
+				?>
+				<p><input type="checkbox" id="rank_price_check_<?php echo $rid ?>" name="rank_price_check[<?php echo $rid ?>]" <?php if (isset($ranksPrice) && isset($ranksPrice[$rid])) echo ' checked="checked"'?>> <label for="rank_price_check_<?php echo $rid ?>" style="color: #333"><?php echo t($rank->name) ?></label> <input name="rank_price[<?php echo $rid ?>]" value="<?php echo c(isset($ranksPrice) && isset($ranksPrice[$rid]) ? $ranksPrice[$rid] : (isset($product) ? $product->sell_price : 0), Bl_Config::get('currency'), false) ?>" class="txt" <?php if (!isset($ranksPrice) || !isset($ranksPrice[$rid])) echo ' disabled="disabled"' ?> /></p>
+				<?php endforeach ?></td>
+				<td>会员销售价</td>
+			</tr>
+			<?php endif;?>
+
+			<tr>
+				<td><input type="checkbox" name="changeSell_pricePercent" value="1"><span style="color: blue">修改</span></td>
+				<td class="bold">销售价, <input name="sell_pricePercent" value="100" class="txt non-empty" size="5" />%</td>
+				<td>销售价改为原来的百分比</td>
+			</tr>
+			<?php if (count($ranks) > 1): ?>
+			<tr>
+				<td></td>
+				<td class="bold rank_price"><?php
+				foreach ($ranks as $rid => $rank):
+				if ($rid == User_Model::RANK_MEMBER) {
+				  continue;
+				}
+				?>
+				<p><input type="checkbox" id="rank_pricePercent_check_<?php echo $rid ?>" name="rank_pricePercent_check[<?php echo $rid ?>]"> <label for="rank_pricePercent_check_<?php echo $rid ?>" style="color: #333"><?php echo t($rank->name) ?>, %</label> <input name="rank_pricePercent[<?php echo $rid ?>]" value="100" class="txt" disabled="disabled" size="5" /></p>
+				<?php endforeach ?></td>
+				<td>会员价改为原来的百分比</td>
+			</tr>
+			<?php endif;?>
+
+			<tr>
+				<td><input type="checkbox" name="changeList_price" value="1"><span style="color: blue">修改</span></td>
+				<td class="bold">市场价 <input name="list_price" value="<?php echo c(isset($product) ? $product->list_price : 0, Bl_Config::get('currency'), false) ?>" class="txt" /></td>
+				<td>市场价</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="changeList_pricePercent" value="1"><span style="color: blue">修改</span></td>
+				<td class="bold">市场价, <input name="list_pricePercent" value="100" class="txt" size="5" />%</td>
+				<td>市场价改为原来的百分比</td>
+			</tr>
+
+			<?php
+			$vocabularyListArray = array();
+			foreach ($vocabularyList as $vid => $vocabulary) {
+			  if ($vid == Taxonomy_Model::TYPE_BRAND || $vid == Taxonomy_Model::TYPE_DIRECTORY || empty($termsList[$vid])) {
+			    continue;
+			  }
+			  $vocabularyListArray[$vid] = $vocabulary;
+			}
+			$vocabularyList = $vocabularyListArray;
+			unset($vocabularyListArray);
+			if (!empty($vocabularyList)):
+			?>
+			<tr class="nohover">
+				<td><input type="checkbox" name="changeTerms_products" value="1"><span style="color: blue">修改</span></td>
+				<td class="bold" colspan="2">所属分类</td>
+			</tr>
+			<tr class="nohover" style="border-bottom: 0;">
+				<td colspan="3" style="padding-left: 0px; border-bottom: 0;">
+				<table width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
+				<?php foreach ($vocabularyList as $vid => $vocabulary): ?>
+					<tr>
+						<td width="200px" align="right" style="border-right: 1px solid #E0E0E0; padding-right: 10px; font-weight: bold"><?php echo plain($vocabulary->name) . (trim($vocabulary->name_cn) !== '' ? (' (' . plain(trim($vocabulary->name_cn)) . ')') : '') ?></td>
+						<td width="*"><?php
+						foreach ($termsList[$vid] as $tid => $term):
+						if ($term->name_cn !== '') {
+						  $term->name .= ' (' . $term->name_cn . ')';
+						}
+						?>
+						<div style="float: left; margin-left: 15px;"><input type="checkbox" value="<?php echo $tid ?>" name="terms_products[]"><?php echo plain($term->name) ?></div>
+						<?php endforeach ?></td>
+					</tr>
+					<?php endforeach ?>
+				</table>
+				</td>
+			</tr>
+			<?php endif ?>
+			<tr>
+				<td><input type="checkbox" name="changeWt" value="1"><span style="color: blue">修改</span></td>
+				<td class="bold">重量 <input name="wt" value="<?php echo isset($product) ? $product->wt : 0 ?>" class="txt" /></td>
+				<td>商品单位重量 (单位:克)</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="changeStock" value="1"><span style="color: blue">修改</span></td>
+				<td class="bold">库存 <input name="stock" value="<?php echo isset($product) ? $product->stock : 0 ?>" class="txt" /></td>
+				<td>商品库存</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="changeSell_min" value="1"><span style="color: blue">修改</span></td>
+				<td class="bold">最小购买数量 <input name="sell_min" value="<?php echo isset($product) ? $product->sell_min : 0 ?>" class="txt" /></td>
+				<td>最小购买数量</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="changeSell_max" value="1"><span style="color: blue">修改</span></td>
+				<td class="bold">最大购买数量 <input name="sell_max" value="<?php echo isset($product) ? $product->sell_max : 0 ?>" class="txt" /></td>
+				<td>最大购买数量</td>
+			</tr>
+			<tr class="nohover">
+				<td><input type="checkbox" name="changeSummary" value="1"><span style="color: blue">修改</span></td>
+				<td class="bold" colspan="2">简介</td>
+			</tr>
+			<tr>
+				<td colspan="2"><textarea name="summary" class="txt_xheditor" rows="10"><?php if (isset($product)) echo plain($product->summary) ?></textarea></td>
+			</tr>
+			<tr class="nohover">
+				<td><input type="checkbox" name="changeDescription" value="1"><span style="color: blue">修改</span></td>
+				<td class="bold" colspan="2">详细介绍</td>
+			</tr>
+			<tr>
+				<td colspan="2"><textarea name="description" class="txt_xheditor" rows="10"><?php if (isset($product)) echo stripslashes($product->description) ?></textarea></td>
+			</tr>
+
+
+			<tr class="nohover">
+				<td><input type="checkbox" name="changeProductURL" value="1"><span style="color: blue">修改</span></td>
+				<td class="bold" colspan="2">商品URL</td>
+			</tr>
+			<tr class="nohover">
+				<td colspan="3">
+				<p><input name="ProductURL" value="{directory2}-{directory3}-cheap-{products.name}" class="txt" size="65" /></p>
+				<p>更新规则</p>
+				<p style="margin-left:50px;">{products.name}为商品名称，{products.id}为商品id</p>
+				<p style="margin-left:50px;">{products.price}为商品价格，{directory1}为一级商品目录名称</p>
+				<p style="margin-left:50px;">{directory2}为二级商品目录名称，{directory3}为三级商品目录名称</p>
+				<p style="margin-left:50px;">{brand}为品牌名</p>
+				</td>
+			</tr>
+
+
+
+			<tr class="nohover">
+				<td><input type="checkbox" name="changeTemplate" value="1"><span style="color: blue">修改</span></td>
+				<td class="bold" colspan="2">页面模板</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input name="template" value="<?php if (isset($product)) echo plain($product->template) ?>" class="txt" /></td>
+				<td>页面模板</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="changeStatus" value="1"><span style="color: blue">修改</span></td>
+				<td class="bold"><label style="color: #000"><input type="checkbox" name="status" <?php if ((!isset($product) && Bl_Config::get('isProductPublishAuto', 1)) || (isset($product) && isset($product->status) && $product->status)) echo ' checked="checked"' ?> /> 上架</label></td>
+				<td>上架状态</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="changeShippable" value="1"><span style="color: blue">修改</span></td>
+				<td class="bold"><label style="color: #000"><input type="checkbox" name="shippable" <?php if (!isset($product) || !isset($product->shippable) || $product->shippable) echo ' checked="checked"' ?> /> 可配送</label></td>
+				<td>是否可配送</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="changeFree_shipping" value="1"><span style="color: blue">修改</span></td>
+				<td class="bold"><label style="color: #000"><input type="checkbox" name="free_shipping" <?php if (isset($product) && isset($product->free_shipping) && $product->free_shipping) echo ' checked="checked"' ?> /> 免运费</label></td>
+				<td>是否免运费</td>
+			</tr>
+
+			<tr class="nohover">
+				<td><input type="checkbox" name="changeSphinxKey" value="1"><span style="color: blue">修改</span></td>
+				<td><input name="sphinx_key" value="<?php if (isset($product->sphinx_key)) echo plain($product->sn) ?>" class="txt" /></td>
+				<td>检索词</td>
+			</tr>
+			
+			<tr class="nohover">
+        <td><input type="checkbox" name="changeType" value="1"><span style="color: blue">修改</span></td>
+        <td class="bold" colspan="2">商品类型</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><select name="type">
+          <option value="0">请选择类型</option>
+        <?php foreach ($typeList as $k => $v): ?>
+          <option value="<?php echo $k ?>" <?php if (isset($product) && $product->type == $k) echo ' selected="selected"' ?>><?php echo t($v->name) ?></option>
+          <?php endforeach ?>
+        </select></td>
+        <td>商品类型</td>
+      </tr>
+      <tr class="nohover">
+        <td><input type="checkbox" name="changefields" value="1"><span style="color: blue">修改</span></td>
+        <td class="bold" colspan="2">商品属性</td>
+      </tr>
+      <tr class="nohover">
+        <td colspan="3">
+          <div id="extra"></div>
+        </td>
+      </tr>
+		</table>
+		</div>
+
+
+
+		<div id="page_variables" class="box_Product">
+    <table style=" margin-bottom:10px;">
+    <tr>
+      <td colspan="2" class="nohover">
+                  更新规则
+        <p style="margin-left:50px;">{products.name}为商品名称，{products.id}为商品id</p>
+        <p style="margin-left:50px;">{products.price}为商品价格，{directory1}为一级商品目录名称</p>
+        <p style="margin-left:50px;">{directory2}为二级商品目录名称，{directory3}为三级商品目录名称</p>
+        <p style="margin-left:50px;">{brand}为品牌名</p>
+      </td>
+    </tr>
+		<tr class="nohover">
+			<td class="bold" colspan="2"><input type="checkbox" name="changePVTitle" value="1"><span style="color: blue;padding-right:10px;">修改</span>页面标题</td>
+		</tr>
+		<tr>
+			<td width="50%"><input size="60" value="{products.name}" name="PVTitle" class="txt pv" title="标题不能为空" /></td>
+			<td width="40%"></td>
+		</tr>
+		<tr class="nohover">
+			<td class="bold" colspan="2"><input type="checkbox" name="changePVKeywords" value="1"><span style="color: blue;padding-right:10px;">修改</span>页面关键字</td>
+		</tr>
+		<tr>
+			<td colspan="2"><textarea name="PVKeywords" rows="6" class="pv" style="width:500px;height:60px;">{products.name}</textarea></td>
+
+		</tr>
+		<tr class="nohover">
+			<td class="bold" colspan="2"><input type="checkbox" name="changePVDescription" value="1"><span style="color: blue;padding-right:10px;">修改</span>页面描述</td>
+		</tr>
+		<tr>
+			<td colspan="2"><textarea name="PVDescription" rows="6" class="pv" style="width:500px;height:60px;">{products.name}</textarea></td>
+
+		</tr>
+		<tr class="nohover">
+			<td class="bold" colspan="2"><input type="checkbox" name="changePVVar1" value="1"><span style="color: blue;padding-right:10px;">修改</span>var1</td>
+		</tr>
+		<tr>
+			<td colspan="2"><textarea name="PVVar1" class="pv" rows="6" style="width:500px;height:60px;"></textarea></td>
+		</tr>
+		<tr class="nohover">
+			<td class="bold" colspan="2"><input type="checkbox" name="changePVVar2" value="1"><span style="color: blue;padding-right:10px;">修改</span>var2</td>
+		</tr>
+		<tr>
+			<td colspan="2"><textarea name="PVVar2" class="pv" rows="6" style="width:500px;height:60px;"></textarea></td>
+		</tr>
+		<tr class="nohover">
+			<td class="bold" colspan="2"><input type="checkbox" name="changePVVar3" value="1"><span style="color: blue;padding-right:10px;">修改</span>var3</td>
+		</tr>
+		<tr>
+			<td colspan="2"><textarea name="PVVar3" class="pv" rows="6" style="width:500px;height:60px;"></textarea></td>
+		</tr>
+		<tr class="nohover">
+			<td class="bold" colspan="2"><input type="checkbox" name="changePVVar4" value="1"><span style="color: blue;padding-right:10px;">修改</span>var4</td>
+		</tr>
+		<tr>
+			<td colspan="2"><textarea name="PVVar4" class="pv" rows="6" style="width:500px;height:60px;"></textarea></td>
+		</tr>
+		<tr class="nohover">
+			<td class="bold" colspan="2"><input type="checkbox" name="changePVVar5" value="1"><span style="color: blue;padding-right:10px;">修改</span>var5</td>
+		</tr>
+		<tr>
+			<td colspan="2"><textarea name="PVVar5" class="pv" rows="6" style="width:500px;height:60px;"></textarea></td>
+		</tr>
+		<tr class="nohover">
+			<td class="bold" colspan="2"><input type="checkbox" name="changePVVar6" value="1"><span style="color: blue;padding-right:10px;">修改</span>var6</td>
+		</tr>
+		<tr>
+			<td colspan="2"><textarea name="PVVar6" class="pv" rows="6" style="width:500px;height:60px;"></textarea></td>
+		</tr>
+    </table>
+		</div>
+
+		</div>
+
+
+		</td>
+	</tr>
+
+
+	<tr class="nohover">
+		<td><input type="submit" value="保存修改" class="btn1"></td>
+	</tr>
+
+</table>
+<br>
+</form>
+</div>
+
+			<?php
+			echo $this->render('admin/footer.phtml');
+			echo $this->render('admin/after_body.phtml');
+			?>

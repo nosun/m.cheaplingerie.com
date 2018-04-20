@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<?php $this->render('parts/before_body.phtml'); ?>
+<body>
+<?php global $user; ?>
+<?php $this->render('parts/top_bar.phtml');?>
+<div class="container">
+<?php $this->render('parts/header.phtml'); ?>
+<div class="main-content">
+<div class="general article">
+
+<div class="main-block2">
+
+<div class="widget">
+<div class="w-head">
+<h2>404 Page Not Found</h2>
+</div>
+<div class="w-content">
+<!--  here comes the contents -->
+    <h3>Woops, The Url: <?php echo url($ex->getUri());?> is no longer existed.</h3>
+    <p>Please visit our <strong><a href="<?php echo $siteInfo['siteurl'];?>">Home Page</a></strong> for the latest available products!</p>
+<?php
+if ($debug):
+  $router = $ex->getRouter();
+?>
+    <p><?php echo $ex->getMessage(); ?></p>
+    <p><label>Uri</label> : /<?php echo plain($ex->getUri()) ?></p>
+    <p><label>Router - folder</label> : <?php echo plain($router['folder']) ?></p>
+    <p><label>Router - controller</label> : <?php echo plain($router['controller']) ?></p>
+    <p><label>Router - action</label> : <?php echo plain($router['action']) ?></p>
+    <p><label>Router - arguments</label> : <?php echo plain(implode(' | ', $router['arguments'])) ?></p>
+<?php endif;?>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<div id="copyright">
+<span class="floatleft">
+           	<?php $siteInfo = Bl_Config::get('siteInfo');echo $siteInfo['copyright'];?>
+        </span>
+</div>
+</div>
+</body>
+<?php echo $this->render('parts/after_body.phtml'); ?>
+</html>

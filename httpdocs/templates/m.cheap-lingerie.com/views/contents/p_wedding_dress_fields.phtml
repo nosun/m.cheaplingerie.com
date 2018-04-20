@@ -1,0 +1,94 @@
+<?php if(isset($color)): ?>
+	<input type="hidden" name="data[Color]" value="<?php echo $color; ?>" id="datacolorinput" />
+<?php else: ?>
+	<input type="hidden" name="data[Color]" value="" id="datacolorinput" />
+<?php endif; ?>
+
+<?php $showcolor = $color; ?>
+<?php if(strstr($showcolor, 'As Picture')): ?>
+	<div class="col-box" id="COLOR">
+		<button class="btn-long" type="button">
+			<div style="float: left">
+				<div class="size">Color</div>
+				<div class="sele"><?php echo substr($showcolor, 0, strpos($showcolor, ':')); ?></div>
+			</div>
+			<div class="aspic" id="colorpic">
+				<img src="<?php echo urlimg('210x320', substr($showcolor, strpos($showcolor, ':') + 1)); ?>">
+			</div>
+			<div class="icon-angle-right" style="font-size:2rem;line-height:3rem;color:#adadad;float:right;">
+			</div>
+			<div class="clear"></div>
+		</button>
+	</div>
+<?php else: ?>
+	<div class="col-box" id="COLOR">
+		<button class="btn-long" type="button">
+			<div style="float: left">
+				<div class="size">Color</div>
+				<div class="sele"><?php echo isset($color)? $color : "Select Color"; ?></div>
+			</div>
+			<div class="aspic" style="display: none" id="colorpic">
+				<img src="">
+			</div>
+			<div class="icon-angle-right" style="font-size:2rem;line-height:3rem;color:#adadad;float:right;">
+			</div>
+			<div class="clear"></div>
+		</button>
+	</div>
+<?php endif; ?>
+
+
+<?php if(isset($custom)): ?>
+	<input type="hidden" name="data[Size]" value="custom" id="datasizeinput" />
+	<input type="hidden" name="data[Bust (Inch)]" value="<?php echo $custom['bust_inch']; ?>" />
+	<input type="hidden" name="data[Waist (Inch)]" value="<?php echo $custom['waist_inch']; ?>" />
+	<input type="hidden" name="data[Hips (Inch)]" value="<?php echo $custom['hips_inch']; ?>" />
+	<input type="hidden" name="data[Hollow to Floor (Inch)]" value="<?php echo $custom['hollow_to_floor_inch']; ?>" />
+	<input type="hidden" name="data[Height (Inch)]" value="<?php echo $custom['height_inch']; ?>" />
+	<div class="col-box" id="SIZE">
+		<button class="btn-long" type="button">
+			<div style="float: left">
+				<div class="size">Size</div>
+				<div class="sele">Custom Size</div>
+			</div>
+			<div class="icon-angle-right" style="font-size:2rem;line-height:3rem;color:#adadad;float:right;">
+			</div>
+			<div class="clear"></div>
+		</button>
+	</div>
+<?php else: ?>
+	<?php if(!empty($size_chart)): ?>
+		<input type="hidden" name="data[Size]" value="<?php echo $size;?>" id="datasizeinput" />
+		<div class="col-box" id="SIZE">
+			<button class="btn-long" type="button">
+				<div style="float: left">
+					<div class="size">Size</div>
+					<div class="sele"><?php echo isset($size)? $size : "Select Size"; ?></div>
+				</div>
+				<div class="icon-angle-right" style="font-size:2rem;line-height:3rem;color:#adadad;float:right;">
+				</div>
+				<div class="clear"></div>
+			</button>
+		</div>
+	<?php endif; ?>
+<?php endif; ?>
+
+
+<?php if(!empty($product->field_beltcolor)): ?>
+	<?php if(isset($beltcolor)): ?>
+		<input type="hidden" name="data[Belt Color]" value="<?php echo $beltcolor; ?>" id="databeltcolorinput" />
+	<?php else: ?>
+		<input type="hidden" name="data[Belt Color]" value="" id="databeltcolorinput" />
+	<?php endif; ?>
+	<div class="col-box" id="BELTCOLOR">
+		<button class="btn-long" type="button">
+			<div style="float: left">
+				<div class="size">Belt Color</div>
+				<div class="sele"><?php echo isset($beltcolor)? $beltcolor : "Select Belt Color"; ?></div>
+			</div>
+			<div class="icon-angle-right" style="font-size:2rem;line-height:3rem;color:#adadad;float:right;">
+			</div>
+			<div class="clear"></div>
+		</button>
+	</div>
+<?php endif; ?>

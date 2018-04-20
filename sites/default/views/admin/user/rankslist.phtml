@@ -1,0 +1,44 @@
+<?php
+  $this->assign('menuItem', 'user_ranks');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/user/ranks') ?>">会员等级管理</a></span></li>
+		<li><span class="new"><a href="<?php echo url('admin/user/rankedit') ?>">新建会员等级</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right">
+    <?php echo themeMessages() ?>
+    <table style="margin-top:10px;margin-left:10px;">
+    <tr class="subhead">
+      <td width="20%">等级名称</td>
+      <td width="20%">折扣</td>
+      <td width="55%">选项</td>
+    </tr>
+<?php
+  foreach($ranks as $rid => $rank):
+?>
+    <tr>
+      <td><a href="<?php echo url('admin/user/rankedit/' . $rid) ?>"><?php echo plain($rank->name) ?></a></td>
+      <td><?php echo plain($rank->discount) ?>%</td>
+      <td>
+        <a href="<?php echo url('admin/user/rankedit/' . $rid) ?>">编辑</a>
+<?php if ($rid != User_Model::RANK_MEMBER): ?>
+        <a href="<?php echo url('admin/user/rankdelete/' . $rid) ?>" class="btn_confirm" rel="确认删除该会员等级吗?">删除</a>
+<?php endif ?>
+      </td>
+    </tr>
+<?php
+  endforeach;
+?>
+    </table>
+    <div></div>
+    <div style="clear:both"></div>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

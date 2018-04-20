@@ -1,0 +1,181 @@
+<?php
+  $this->assign('menuItem', 'product_vocabulary');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+<ul>
+	<li>
+	<span class="check">
+	 <a href="<?php echo url('admin/vocabulary/getList'); ?>">商品分类</a> -
+	 <a href="<?php echo url('admin/terms/getList/' . $vocabularyInfo->vid); ?>">
+	 <?php if ($vocabularyInfo->type == Taxonomy_Model::TYPE_TAG): ?> 标签列表 <?php elseif ($vocabularyInfo->type == Taxonomy_Model::TYPE_BRAND): ?>
+	 品牌列表 <?php else: ?> <?php echo $vocabularyInfo->name; ?> <?php endif;?> 的分类词</a>
+	</span>
+	</li>
+	<li><span class="basic"> <?php if(is_object($termInfo)) echo '编辑分类词'; else echo ' 新增分类词信息'; ?></span></li>
+</ul>
+</div>
+
+
+
+<div id="taxonomy">
+    <?php echo themeMessages() ?>
+    <form action="<?php  echo url('admin/terms/save/'.$vid); ?>" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="vid" value="<?php echo $vid; ?>"/>
+    <input type="hidden" name="tid" value="<?php echo isset($termInfo) && isset($termInfo->tid) ? $termInfo->tid : 0 ?>"/>
+    <input type="hidden" name="terms_json" id="terms_json" value='<?php echo isset($termsList) ? strtr(json_encode($termsList), "'", "\'") : '{}'; ?>'>
+    <input type="hidden" name="sid1" id="sid1" value="<?php echo isset($termsList) && isset($termInfo->ptid1) ? $termInfo->ptid1 : 0 ?>">
+    <input type="hidden" name="sid2" id="sid2" value="<?php echo isset($termsList) && isset($termInfo->ptid2) ? $termInfo->ptid2 : 0 ?>">
+    <input type="hidden" name="sid3" id="sid3" value="<?php echo isset($termsList) && isset($termInfo->ptid3) ? $termInfo->ptid3 : 0 ?>">
+    <input type="hidden" name="pvid" id="pvid" value="<?php echo isset($termInfo->pvid) ? $termInfo->pvid : 0; ?>">
+    <input type="hidden" name="stype" id="stype" value="<?php echo $stype; ?>">
+    <input type="hidden" name="ajaxurl" id="ajaxurl" value='admin/terms/getAlias/'>
+    <input type="hidden" id="pvThemeType" value="term" />
+    <input type="hidden" id="dataid" value="<?php echo isset($termInfo->tid) ? $termInfo->tid : null?>" />
+    <div class="clear left_photo" id="tabs">
+      <div class="clear tab_ul">
+	      <ul>
+	        <li><a href="#base">基本信息</a></li>
+	        <li><a href="#pagevariables">页面信息</a></li>
+	      </ul>
+      </div>
+
+	    <div id="base" class="box_Product main_right">
+	    <table class="noborder" style="margin-bottom:10px">
+
+	      <tr class="nohover"><td class="bold" colspan="2">分类名称</td></tr>
+	      <tr><td width="50%"><input value="<?php if (isset($termInfo) && isset($termInfo->name)) echo $termInfo->name; ?>" class="txt non-empty"  title="分类名称不能为空" name="name" id="termName" maxlength="128"/> <span style="color:red">*</span></td>
+	      <td width="40%">最大长度128个字符</td></tr>
+
+	       <tr class="nohover"><td class="bold" colspan="2">中文名称</td></tr>
+      <tr>
+        <td width="50%"><input value="<?php echo isset($termInfo->name_cn) ? $termInfo->name_cn : null; ?>" class="txt" name="name_cn"/></td>
+        <td width="40%">中文名称</td>
+      </tr>
+
+	      <tr class="nohover"><td class="bold" colspan="2">页面别名</td></tr>
+	      <tr>
+	        <td width="50%"><input name="path_alias" value="<?php if (isset($termInfo) && isset($termInfo->path_alias)) echo $termInfo->path_alias; ?>" class="txt" id="path_alias" title="别名不能为空" style="width:200px;" />.html</td>
+	        <td width="40%">地址栏中展示的URL别名</td>
+	      </tr>
+
+<?php if ($vid == Taxonomy_Model::TYPE_DIRECTORY): ?>
+	      <tr class="nohover"><td class="bold" colspan="2">所属分类</td></tr>
+	      <tr>
+	        <td width="50%" id="sc1">
+
+	        </td>
+	        <td width="40%">为空表示为一级分类</td>
+	      </tr>
+	      <tr>
+	        <td width="50%" id="sc2">
+
+	        </td>
+	        <td width="40%">为空表示为二级分类</td>
+	      </tr>
+	      <tr>
+          <td width="50%" id="sc3">
+
+          </td>
+          <td width="40%">为空表示为三级分类</td>
+        </tr>
+<?php endif; ?>
+          <tr class="nohover"><td class="bold" colspan="2">过滤选项组</td></tr>
+          <tr>
+            <td>
+                <select name="term_filter_group" id="term_filter_group">
+                    <option value="0"></option>
+                    <?php if (isset($filterGroupList)): ?>
+                    <?php foreach ($filterGroupList as $filterGroup): ?>
+                    <option value="<?php echo $filterGroup->id; ?>" <?php if (isset($termInfo->fid) && $termInfo->fid == $filterGroup->id) echo "selected";?>><?php echo $filterGroup->name; ?></option>
+                    <?php endforeach; ?>
+                    <?php endif;?>
+                </select>
+            </td>
+            <td>过滤选项组(默认为空)</td>
+          </tr>
+	      <tr class="nohover"><td class="bold" colspan="2">分类描述</td></tr>
+	      <tr>
+	        <td width="50%"><textarea class="txtarea" name="description">
+<?php if (isset($termInfo) && isset($termInfo->description)) echo $termInfo->description; ?></textarea></td>
+	        <td width="40%">该分类的描述</td>
+	      </tr>
+
+	      <tr class="nohover"><td class="bold" colspan="2">模板名</td></tr>
+	      <tr>
+	        <td width="50%"><input value="<?php if (isset($termInfo) && isset($termInfo->template)) echo $termInfo->template; ?>"
+	        class="txt" name="template" /></td>
+	        <td width="40%">该分类页面的模板风格</td>
+	      </tr>
+
+	      <tr class="nohover"><td class="bold" colspan="2">是否可见</td></tr>
+	      <tr>
+	        <td width="50%">
+	        <select class="select" name="visible">
+	          <option value="1" <?php if (isset($termInfo) && isset($termInfo->visible) && $termInfo->visible === "1") echo 'selected'; ?>>
+	          是</option>
+	          <option value="0" <?php if (isset($termInfo) && isset($termInfo->visible) && $termInfo->visible === "0") echo 'selected class="red"'; ?>>
+	          否</option>
+	        </select>
+	        </td>
+	        <td width="40%">是否显示该分类以及该分类下的产品</td>
+	      </tr>
+
+	      <tr class="nohover"><td class="bold" colspan="2">排序</td></tr>
+	      <tr>
+	        <td width="50%"><input value="<?php if (isset($termInfo) && isset($termInfo->weight)) echo $termInfo->weight; ?>" class="txt" name="weight" /></td>
+	        <td width="40%">同级分类中的排序</td>
+	      </tr>
+	      <tr class="nohover"><td class="bold" colspan="2">图片</td></tr>
+<?php if(isset($termInfo->filepath)): ?>
+	      <tr>
+	        <td width="50%"><a href="<?php echo url('images/'.$termInfo->filepath); ?>" target="_blank"><img src="<?php echo urlimg('admin_term_album', $termInfo->filepath); ?>"/></a></td>
+	        <td width="40%"></td>
+	      </tr>
+<?php endif;?>
+	      <tr>
+	        <td width="50%"><input name="filedata" type="file" class="file"></td>
+	        <td width="40%"></td>
+	      </tr>
+	    </table>
+	    </div>
+	    <div id="pagevariables" class="box_Product main_right">
+	      <table  style="margin-bottom:10px">
+	      <tr class="nohover"><td class="bold" colspan="2">批量处理</td></tr>
+	      <tr><td colspan="2">
+	        <select name="termPvVolume">
+	          <option value=""></option>
+	          <option value="1">下级分类采用本分类的页面信息</option>
+	          <option value="2">清空该分类以及下级分类的页面信息</option>
+	          <option value="3">把同级分类采用本分类的页面信息</option>
+	          <option value="4">清空该分类以及同级分类的页面信息</option>
+	        </select>
+	      </td></tr>
+<?php echo $this->render('admin/site/page_variables.phtml');?>
+		    </table>
+	    </div>
+    </div>
+		<div class="div_btn_bottom"><!--
+          <input type="submit" value="提交" class="btn" />
+          <input type="button" value="取消" class="btn btn_cancel" />-->
+
+                <table width="100%" align="center" cellpadding="0" cellspacing="0" border="0" class="attribute" style="margin-top:10px;">
+                  <tr>
+                    <td></td>
+                    <td colspan="2">
+                      <input type="submit" class="Buttom_3 btn" value="保 存" />
+                      <input type="button" class="Buttom_4 btn btn_cancel" value="取 销" />
+                    </td>
+                  </tr>
+                </table>
+    </div>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

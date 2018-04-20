@@ -1,0 +1,88 @@
+<?php
+  $this->assign('menuItem', 'site_carouselphoto');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/site/getcarouselphotolist') ?>">轮播图片列表</a></span></li>
+		<li><span class="basic"><?php if ($carouselphotoInfo->sid!='') echo '轮播广告图片 - '.plain($carouselphotoInfo->title); else echo '新增轮播图片'; ?></span></li>
+	</ul>
+</div>
+
+
+<div class="main_right tableonhover" style="margin-left:5px;margin-top:5px;">
+<?php echo themeMessages() ?>
+  <form action="" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="sid" value="<?php if (isset($carouselphotoInfo->sid)) echo plain($carouselphotoInfo->sid) ?>">
+    <input type="hidden" name="fid" value="<?php if (isset($carouselphotoInfo->fid)) echo plain($carouselphotoInfo->fid) ?>">
+
+        <table>
+          <tr class="nohover"><td class="bold" colspan="2">标题</td></tr>
+          <tr>
+            <td><input name="title" value="<?php if (isset($carouselphotoInfo->title)) echo plain($carouselphotoInfo->title) ?>" class="txt non-empty" title="标题必填" /><span style="color:red;">*</span></td>
+            <td width="45%"></td>
+          </tr>
+
+          <tr class="nohover"><td class="bold" colspan="2">图片地址</td></tr>
+          <?php if (isset($carouselphotoInfo->filepath) && $carouselphotoInfo->filepath) :?>
+          <tr>
+            <td>
+              <img src="<?php echo urlimg('admin_product_album', $carouselphotoInfo->filepath) ?>" />
+            </td>
+            <td></td>
+          </tr>
+          <?php endif;?>
+          <tr>
+            <td>
+              <input type="file" class="file non-empty" name="filedata" alt="file_3" title="图片不能为空"> <span style="color:red;">*</span>
+            </td>
+            <td>图片地址只需要填写1个，2个都填写时取网络图片信息</td>
+          </tr>
+          <tr>
+            <td>
+                                      网络图片：<input name="filepath" value="<?php if (isset($carouselphotoInfo->filepath) && !$carouselphotoInfo->fid) echo plain($carouselphotoInfo->filepath) ?>" class="txt non-empty" alt="file_3" title="图片不能为空" name="url" />
+                        <input type="hidden" value="<?php if (isset($carouselphotoInfo->filepath)) echo plain($carouselphotoInfo->filepath) ?>" class="txt non-empty"  alt="file_3" title="图片不能为空" />
+            </td>
+            <td></td>
+          </tr>
+
+          <tr class="nohover"><td class="bold" colspan="2">连接地址</td></tr>
+          <tr>
+            <td><input name="url" value="<?php echo isset($carouselphotoInfo->url)  && $carouselphotoInfo->url ?  plain($carouselphotoInfo->url) : 'http://' ?>" class="txt" /></td>
+            <td></td>
+          </tr>
+
+          <tr class="nohover"><td class="bold" colspan="2">描述</td></tr>
+          <tr>
+            <td><textarea name="description"><?php if (isset($carouselphotoInfo->description)) echo plain($carouselphotoInfo->description) ?></textarea></td>
+            <td width="45%"></td>
+          </tr>
+
+          <tr class="nohover"><td class="bold" colspan="2">是否显示</td></tr>
+          <tr>
+            <td>
+            <input <?php if ((isset($carouselphotoInfo->visible) && $carouselphotoInfo->visible == 1) || !isset($carouselphotoInfo->visible)) {echo 'checked';} ?> type="radio" name="visible" id="r3" value="1"><label for="r3">是</label>
+            <input <?php if ((isset($carouselphotoInfo->visible) && $carouselphotoInfo->visible == 0)) {echo 'checked';} ?> type="radio" name="visible" id="r4"  value="0"><label for="r4">否</label></td>
+            <td></td>
+          </tr>
+          
+          <tr class="nohover"><td class="bold" colspan="2">是否是移动端轮播图</td></tr>
+          <tr>
+            <td>
+            <input <?php if ((isset($carouselphotoInfo->isMobile) && $carouselphotoInfo->isMobile == 1) ) {echo 'checked';} ?> type="radio" name="ismobile" id="r5" value="1"><label for="r5">是</label>
+            <input <?php if ((isset($carouselphotoInfo->isMobile) && $carouselphotoInfo->isMobile == 0) || !isset($carouselphotoInfo->isMobile)) {echo 'checked';} ?> type="radio" name="ismobile" id="r6"  value="0"><label for="r6">否</label></td>
+            <td></td>
+          </tr>
+          
+        </table>
+ <input type="submit" value="提交 " class="btn">
+  </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

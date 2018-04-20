@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+	<head>
+	    <?php $this->render('parts/metaandtitle.phtml'); ?>
+		<?php $this->render('parts/includecss.phtml'); ?>
+		<?php $this->render('parts/includejs.phtml'); ?>
+	</head>
+	<body>
+	<?php if ($cartInfo->product): ?>
+      <?php else: ?>
+      <?php endif; ?>
+		<div class="back_head">
+			<a class="back" href="#" id="backlink"><img src="<?php echo $tpldir; ?>/images/back.png"></a>
+		</div>
+		<script type="text/javascript">
+			$('.back_head').click(function(){
+				if($('.shipping_address').hasClass('active')){
+					window.location.href = "<?php echo url('cart'); ?>";
+				}
+				else if($('#shipping_method').hasClass('active')){
+					$('#shipping_method').removeClass('active').hide();
+					$('.shipping_address').addClass('active').show();
+				}
+				else if($('#pay_method').hasClass('active')){
+					$('#pay_method').removeClass('active').hide();
+					$('#shipping_method').addClass('active').show();
+				}
+			});
+		</script>
+		<form action="<?php echo url('cart/paytransfer/'); ?>" method="post" name="confirmpayform">
+			<input type="hidden" name="pids" id="pids" value="<?php echo $pids; ?>" />
+			<input type="hidden" name="goods_amount" id="goods_amount" value = "<?php echo isset($cartInfo->goods_amount) ? $cartInfo->goods_amount : '0'; ?>" />
+			<input type="hidden" name="goods_number" id="goods_number" value = "<?php echo isset($cartInfo->goods_number) ? $cartInfo->goods_number : '0'; ?>" />
+			<input type="hidden" name="goods_weight" id="goods_weight" value = "<?php echo isset($cartInfo->goods_weight) ? $cartInfo->goods_weight : '0'; ?>" />
+			<input type="hidden" name="fromcart" value="<?php echo isset($fromcart) ? $fromcart : 0; ?>" />
+			<input type="hidden" name="ordertoken" value="<?php echo isset($ordertoken) ? $ordertoken : 0; ?>" />
+			
+			<?php if ($cartInfo->product): ?>
+				<?php foreach ($cartInfo->product as $k => $v): ?>
+					<input type="hidden" name="cart_item_id_checked[]" class="checkitem" value="<?php echo isset($v->cart_item_id) ? $v->cart_item_id : null; ?>" />
+				<?php endforeach; ?>
+			<?php endif; ?>
+			
+			<input type="hidden" name="delivery_cid" id="delivery_cid" value="<?php if (isset($addressList) && count($addressList) > 0){echo $addressList[0]->delivery_cid;} ?>" />
+			<input type="hidden" name="delivery_pid" id="delivery_pid" value="<?php if (isset($addressList) && count($addressList) > 0){echo $addressList[0]->delivery_pid;} ?>" />
+			<input type="hidden" name="delivery_rid" id="delivery_rid" value="<?php if (count($addressList) > 0){echo $addressList[0]->rid;} ?>" />
+			<input type="hidden" name="shipping_method" id="shipmethod" value=""/>
+			<input type="hidden" name="payment_method" id="payment_method" value="" />
+			
+			<div class="shipping_address active">
+				<h2 class="classh2">Shipping Address</h2>
+				<div class="col-box" style="margin-top:3%;">
+					<button class="btn-red btn-red-high btn-shipping-address" type="button">Ship to This Address</button>
+				</div>
+				<?php if(isset($addressList) && $addressList): ?>
+					<?php $isfirst = true; ?>
+					<?php foreach ($addressList as $address): ?>
+						<div class="xiaoming_address<?php if($isfirst){echo ' another';} ?>">
+							<table>
+								<tr>
+									<td class="left_td">
+										<input type="radio" name="rid" class="ming" id="<?php echo $address->rid; ?>" value="<?php echo $address->rid; ?>" <?php if($isfirst){echo 'checked';} ?> />
+										<label class="ming_label" for="<?php echo $address->rid; ?>"></label>
+									</td>
+									<td class="right_td">
+										<p>
+											<label for="<?php echo $address->rid; ?>">
+												<span><?php echo $address->delivery_first_name; ?> <?php echo $address->delivery_last_name; ?></span><br/>
+												<?php echo $address->delivery_address; ?>, <?php echo $address->delivery_city; ?><br/>
+												<?php echo $address->delivery_province; ?>, <?php echo $address->delivery_country; ?><br/>
+												Phone:<?php echo $address->delivery_mobile; ?>
+												<span style="display:none" id="spancid<?php echo $address->rid; ?>" data="<?php echo $address->delivery_cid; ?>"></span>
+												<span style="display:none" id="spanpid<?php echo $address->rid; ?>" data="<?php echo $address->delivery_pid; ?>"></span>
+											</label>
+										</p>
+									</td>
+								</tr>
+							</table>
+							<div class="col-box">
+								<div class="btn-ship">
+									<a class="edit" href="<?php echo url('user/useraddressedit/' . $address->rid); ?>">Edit</a>
+								</div>
+							</div>
+							<div class="col-box">
+								<div class="btn-ship">
+									<a class="edit" href="<?php echo url('user/mobiledeleteAddress/' . $address->rid); ?>">Delete</a>
+								</div>
+							</div>
+						</div>
+						<?php $isfirst = false; ?>
+					<?php endforeach; ?>
+				<?php endif; ?>
+				<div class="col-box">
+					<a href="<?php echo url('user/newaddress'); ?>">
+						<button class="btn-long" type="button">Add a New Shipping Address</button>
+					</a>
+				</div>
+			</div>
+			<script>
+				$('label').click(function(){
+					$('.xiaoming_address').removeClass("another");
+					$(this).closest('.xiaoming_address').addClass("another");
+					var rid = $(this).attr('for');
+					var cid = $('#spancid' + rid).attr('data');
+					var pid = $('#spanpid' + rid).attr('data');
+					$('#delivery_rid').val(rid);
+					$('#delivery_cid').val(cid);
+					$('#delivery_pid').val(pid);
+				});
+				$('.btn-shipping-address').click(function(e){
+					if(!$('#delivery_rid').val()){
+						alert("You need to select one shipping address");
+						return;
+					}else{
+						$('.shipping_address').removeClass('active').hide();
+						$('#shipping_method').addClass('active').show();
+					}
+			    });
+			</script>
+
+			<div id="shipping_method">
+				<p class="shipping_title">Shipping Methods</p>
+				<button class="btn-red btn-red-high btn-shipping-method" type="button">Select this shipping method</button>
+				<ul class="method-list2">
+					<?php foreach ($shippingList as $shippingMethod => $shippingInfo): ?>
+						<?php if($shippingInfo->status && $shippingInfo->visible): ?>
+							<li data="<?php echo $shippingMethod; ?>">
+								<span class="circ"></span>
+								<span class="method-word"><?php echo $shippingInfo->name; ?></span>
+							</li>
+							<?php if(isset($shippingInfo->description)): ?>
+								<div style="display: none">
+									<span>Estimated Shipping Time:<?php echo $shippingInfo->description; ?></span><br/>
+									<span class="through">Cost : $0.0</span>
+								</div>
+							<?php endif; ?>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+			<script>
+				$('.btn-shipping-method').click(function(e){
+					if(!$("#shipmethod").val()){
+						alert("You need to select one shipping method");
+						return;
+					}else{
+						$('#shipping_method').removeClass('active').hide();
+						$('#pay_method').addClass('active').show();
+					}
+				});
+				function url(path) {
+					basePath = "/";
+					var len = path.length;
+					if (path !== '' && path.substr(len - 5) != '.html' && path.substr(len - 1) != '/') {
+						path += '/';
+					}
+					return basePath + path;
+				}
+				function paymentc(obj, value)
+				{
+					var path = url('ajaxpaymentc/' + value);
+					$.get(path, function(data){ 
+						obj.html(data);
+					});
+				}
+				$('.method-list2 li').click(function(){
+					var shipmethod = $(this).attr("data");
+					$("#shipmethod").val(shipmethod);
+					$('.method-list2 li').removeClass('active');
+					$(this).addClass('active');
+
+					var ajaxUrl = 'cart/ajaxgetfees/';
+					var ciids = $('input[name=pids]').val();
+					var shipping_name = $(':input[name=shipping_method]').val(); 
+                    if(shipping_name == undefined) shipping_name = 'not_set';
+                    var payment_name = $(':input[name=payment_method]').val();
+                    if(payment_name == undefined) payment_name = 'not_set';
+
+                    var cid = $('#delivery_cid').val();
+                    var pid = $('#delivery_pid').val();
+                    var rid = $('#delivery_rid').val();
+                    if(cid=='' && pid=='' && rid==''){
+                    	alert("Please choose your shipping address or add a new shipping address.");
+                        $("#shipmethod").val('');
+                        clickevent.preventDefault();
+                     	return;
+                    }
+
+                    if((pid == null || pid == '') && $('input[name="delivery_province"]').val() == '' && shipping_name != 'not_set'){
+                  	  alert("Please complete your state/province/region information first.");
+                  	  $("#shipmethod").val('');
+                  	  clickevent.preventDefault();
+                   	  return;
+                    }
+                    
+                    if(pid == null || pid == ''){
+                    	pid = 0;
+                    }
+                    
+                    if (shipping_name == 'not_set') {
+                  	  paymentc($('#shipping_money'), 0.0);
+                      $('#delivery_cid_select').attr('disabled', false);
+                      $('#delivery_pid_select').attr('disabled', false);
+                      $('input[name="delivery_or_province"]').attr('disabled', false);
+                    };
+                    var li = $(this);
+                    $.ajax( {
+                      type : "GET",
+                      url : url(ajaxUrl + encodeURI(ciids) + '/' + encodeURI(shipping_name + ',' + payment_name) + '/' + encodeURI(cid) + "/" + encodeURI(pid)),
+                      contentType : "application/txt; charset=utf-8",
+                      dataType : "json",
+                      success : function(msg) {
+                    	  if ((typeof msg['shipping_fee'] != undefined) && msg['shipping_fee'] >= 0) {
+                        	  $('.through').html(msg['free_shipping'] ? "<del>" + msg['shipping_fee_c'] + "</del>&nbsp;<br /><span style='color:#e80044;font-weight:bold'>Free Shipping</span>" : 'Cost : ' + msg['shipping_fee_c']);
+                              $('.method-list2').find('div').hide();
+                        	  li.next().addClass('shipping-information').show();
+                        	  li.addClass('active');
+                          }else if(shipping_name != 'not_set' && (msg['shipping_fee'] && msg['shipping_fee'] == -1)){
+                        	  alert('This shipping method is not supported in your location currently.');
+                        	  $("#shipmethod").val('');
+                        	  paymentc($('#shipping_money'), 0.0);
+                        	  li.removeClass('active');
+                          }else{
+                        	  paymentc($('#shipping_money'), 0.0);
+                        	  alert("This shipping method is not supported in your location currently.");
+                          	  $("#shipmethod").val('');
+                          	  li.removeClass('active');
+                          }
+                          if ((typeof msg['payment_amount'] != "undefined") && msg['payment_amount'] >= 0){
+                        	$('#order_amount').html(msg['payment_amount_c']);
+                          }
+                      }
+                    });
+				});
+			</script>
+
+			<div id="pay_method">
+				<p class="pay_title">Payments Methods</p>
+				<button class="btn-red btn-red-high" type="submit">Select this payment method</button>
+				<ul class="method-list">
+					<?php foreach ($paymentList as $name => $payment): ?>
+						<?php if($payment->status && $payment->visible): ?>
+							<li data="<?php echo $name; ?>">
+								<span class="circ"></span>
+								<span class="method-word"><?php echo $payment->name; ?></span>
+							 	<?php echo $payment->description; ?> 
+							</li>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+		</form>
+		<script type="text/javascript">
+			$('.method-list li').click(function(){
+				$('.method-list li').removeClass('active');
+				$(this).addClass('active');
+				var value = $(this).attr("data");
+				$('#payment_method').val(value);
+			})
+		</script>
+		<script src="<?php echo $tpldir; ?>/javascripts/main.js" type="text/javascript"></script>
+	</body>
+	<?php $this->render('parts/after_body.phtml'); ?>
+</html>

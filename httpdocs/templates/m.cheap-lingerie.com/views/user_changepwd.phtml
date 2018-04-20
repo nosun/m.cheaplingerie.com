@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+	<div class="back_head">
+		<a class="back" href="<?php echo url('user/myaccount'); ?>"><img src="<?php echo $tpldir; ?>/images/back.png"></a>
+	</div>
+	<?php echo themeMessages(); ?>
+	<form class="form1" action="<?php echo url('user/mobilechangepwd'); ?>" method="post" name="editinfoform">
+	<div class="sign_regist">
+		<div class="h">Change Password</div>
+		<h2 class="sign_regist_h2">Name<span>*</span>:</h2>
+		<input name="username" value="<?php echo $user->name; ?>" readonly class="sign_regist_input" type="text"/>
+		<h2 class="sign_regist_h2">Old Password<span>*</span></h2>
+		<input type="password" name="oldpwd" class="sign_regist_input" />
+		<h2 class="sign_regist_h2">New Password<span>*</span></h2>
+		<input type="password" name="newpwd" class="sign_regist_input" />
+		<h2 class="sign_regist_h2">Retype New Password<span>*</span>:</h2>
+		<input type="password" name="renewpwd" class="sign_regist_input" />
+	</div>
+	<div class="col-box" style="margin-top:8%;">
+		<button class="btn-red btn-red-high" type="submit">Save Change</button>
+	</div>
+	<div class="col-box">
+		<button class="btn-long" type="reset">Reset Form</button>
+	</div>
+	</form>
+	<div class="foot">
+		<div class="di">
+			<div class="ditu"><img src="<?php echo $tpldir; ?>/images/notice.png"></div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$('.sign_regist_input').click(function(){
+			$('input').removeClass('aaa');
+			$(this).addClass('aaa');
+		});
+	</script>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

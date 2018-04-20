@@ -1,0 +1,112 @@
+<?php
+  echo $this->render('admin/before_body.phtml');
+?>
+  <link rel="stylesheet" type="text/css" href="<?php echo url('styles/print.css') ?>" media="print" />
+  <div class="main_right main_right_iframe tableonhover">
+  <div style="width:800px;margin:0px auto;">
+  <br>
+  <h1 style="text-align:center;">订单信息</h1>
+  <br>
+    <table width="90%" class="nohover">
+      <tr>
+        <td>订单编号</td>
+        <td><?php echo isset($orderInfo->oid) ? $orderInfo->number : ''; ?></td>
+        <td>支付方式</td>
+        <td><?php echo isset($orderInfo->payment_method) ? $orderInfo->payment_method : ''; ?></td>
+        <td>支付状态</td>
+        <td><?php echo $orderInfo->status ? '已支付' : '未支付'; ?></td>
+      </tr>
+      <tr>
+        <td>发货单</td>
+        <td><?php echo isset($orderInfo->data['shipping_no']) ? $orderInfo->data['shipping_no'] : ''; ?></td>
+        <td>订单时间</td>
+        <td><?php echo isset($orderInfo->created) ? date("Y-m-d H:i:s",$orderInfo->created) : ''; ?></td>
+        <td>配送方式</td>
+        <td><?php echo isset($orderInfo->shipping_method) ? $orderInfo->shipping_method : ''; ?></td>
+        
+      </tr>
+      <tr>
+        <td>收货人</td>
+        <td><?php echo isset($orderInfo->delivery_first_name) ? $orderInfo->delivery_first_name : ''; ?> <?php echo isset($orderInfo->delivery_last_name) ? $orderInfo->delivery_last_name : ''; ?></td>
+        <td>收货人电话</td>
+        <td><?php echo isset($orderInfo->delivery_mobile) ? $orderInfo->delivery_mobile : ''; ?></td>
+        <td>收货人邮箱</td>
+        <td><?php echo isset($orderInfo->delivery_email) ? $orderInfo->delivery_email : ''; ?></td>
+      </tr>
+    </table>
+    <br>
+    <table>
+      <tr>
+        <td>地址</td>
+        <td>城市</td>
+        <td>省份</td>
+        <td>邮编</td>
+        <td>国家</td>
+      </tr>
+      <tr>
+        <td><?php echo isset($orderInfo->delivery_address) ? $orderInfo->delivery_address : ''; ?></td>
+        <td><?php echo isset($orderInfo->delivery_city) ? $orderInfo->delivery_city : ''; ?></td>
+        <td><?php echo isset($orderInfo->delivery_province) ? $orderInfo->delivery_province : ''; ?></td>
+        <td><?php echo isset($orderInfo->delivery_postcode) ? $orderInfo->delivery_postcode : ''; ?></td>
+        <td><?php echo isset($orderInfo->delivery_country) ? $orderInfo->delivery_country : ''; ?></td>
+      </tr>
+    </table>
+    <br>
+    <table>
+<tr>
+          <td width="10%">ID</td>
+          <td width="10%">图片</td>
+          <td width="25%">商品名称</td>
+          <td width="20%">属性</td>
+          <td width="8%">购买数量</td>
+          <td width="8%">价格</td>
+          <td width="8%">小计</td>
+        </tr>
+
+<?php
+if(isset($orderInfo->items)):
+  foreach($orderInfo->items as $key => $dl):
+?>
+        <tr>
+         	<td><a href="<?php echo url($dl->url) ?>" target="_blank"><?php echo $dl->number?><input type="hidden" name="oiid[]" value="<?php echo $dl->oiid?>"></a></td>
+          <td><a href="<?php echo url($dl->url) ?>" target="_blank"><img src="<?php echo urlimg('admin_product_album', $dl->filepath) ?>"></a></td>
+          <td><a href="<?php echo url($dl->url) ?>" target="_blank"><?php echo $dl->name?></a></td>
+          <td>
+          <?php if(is_array($dl->data)) : foreach($dl->data as $k => $v) :
+            echo $k . ':' . $v . ',';
+          endforeach;endif;?>
+          </td>
+           <td><?php echo $dl->qty?></td>
+          <td><?php echo c($dl->pay_price)?></td>
+          <td><?php echo c($dl->total_amount)?></td>
+        </tr>
+<?php
+  endforeach;
+endif;
+?>
+      <tr>
+        
+        <td colspan="7" style="text-align:right;">商品总价：<?php echo isset($orderInfo->total_amount) ? c($orderInfo->total_amount) : ''; ?><br>
+          <?php
+          if (isset($orderInfo->fees)) :
+            foreach ($orderInfo->fees as $fee) :
+              if ($fee->fee_value) :
+                echo t($fee->fee_name) . ' : ' . c($fee->fee_value) . '<br>';
+              endif;
+            endforeach;
+          endif;?>
+     应付款金额：<?php echo isset($orderInfo->pay_amount) ? c($orderInfo->pay_amount) : 0?><br>
+        </td>
+         
+      </tr>
+    </table>
+    <div class="noprint center">
+      <input class="btn" type="button" value="打印" onclick="window.print();">
+    </div>
+    </div>
+  </div>
+  
+
+<?php
+  echo $this->render('admin/after_body.phtml');
+?>

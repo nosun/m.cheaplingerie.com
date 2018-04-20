@@ -1,0 +1,96 @@
+<?php
+  $this->assign('menuItem', 'product_promotionslist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/product/promotionslist') ?>">促销活动列表</a></span></li>
+		<li><span class="basic">促销活动管理 - <?php echo $isnew ? t('New') : plain($promotion->name) ?></span></li>
+	</ul>
+</div>
+
+
+<div>
+    <?php echo themeMessages() ?>
+    <div class="clear left_photo" id="tabs">
+      <div class="clear tab_ul">
+        <ul>
+          <li><a href="#base">基本信息</a></li>
+          <li><a href="#pagevariables">页面信息</a></li>
+        </ul>
+      </div>
+
+
+    <form action="" method="post" id="form_promotioninfo">
+    <input type="hidden" name="pid" value="<?php echo isset($promotion->pvid) ? $promotion->pvid : null?>" />
+    <input type="hidden" id="pvThemeType" value="promotion" />
+    <input type="hidden" id="dataid" value="<?php echo isset($promotion->pmid) ? $promotion->pmid : null?>" />
+    <div id="base" class="box_Product main_right">
+    <table style="margin-bottom:10px;">
+      <tr class="nohover"><td class="bold" colspan="2">活动名称</td></tr>
+      <tr>
+        <td width="50%">
+          <input name="name" value="<?php if (isset($promotion)) echo plain($promotion->name) ?>" class="txt" />
+          <span style="color:red">*</span>
+        </td>
+        <td width="45%">类型名称</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">活动开始</td></tr>
+      <tr>
+        <td>
+          <input type="text" name="start_time" class="datepicker" value="<?php if (isset($promotion) && $promotion->start_time) echo date('Y-m-d', $promotion->start_time) ?>">
+          <span style="color:red">*</span>
+        </td>
+        <td>活动开始日期</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">活动结束</td></tr>
+      <tr>
+        <td>
+          <input type="text" name="end_time" class="datepicker" value="<?php if (isset($promotion) && $promotion->end_time) echo date('Y-m-d', $promotion->end_time) ?>">
+          <span style="color:red">*</span>
+        </td>
+        <td>活动结束日期</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">详细介绍</td></tr>
+      <tr>
+        <td colspan="2"><textarea name="description" class="xheditor" rows="10"><?php if (isset($promotion)) echo stripslashes($promotion->description) ?></textarea></td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">路径</td></tr>
+      <tr>
+        <td>promotion/ <input name="path_alias" value="<?php if (isset($promotion) && !$isnew) echo plain($promotion->path_alias) ?>" class="txt" /> .html</td>
+        <td>路径名称</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">页面模板</td></tr>
+      <tr>
+        <td><input name="template" value="<?php if (isset($promotion)) echo plain($promotion->template) ?>" class="txt" /></td>
+        <td>页面模板</td>
+      </tr>
+      <tr>
+        <td class="bold"><label style="color:#000"><input type="checkbox" name="status"<?php if (!isset($promotion) || !isset($promotion->status) || $promotion->status) echo ' checked="checked"' ?> /> 上架</label></td>
+        <td>活动状态</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">排序</td></tr>
+      <tr>
+        <td><input name="weight" value="<?php echo isset($promotion) ? plain($promotion->weight) : '0' ?>" class="txt" /></td>
+        <td>排序权重，数字越小排越前</td>
+      </tr>
+    </table>
+    <div style="color:#999999;padding:5px;">(注：标*号的为必填)</div>
+    </div>
+    <div id="pagevariables" class="box_Product main_right">
+      <table style="margin-bottom:10px;">
+<?php echo $this->render('admin/site/page_variables.phtml');?>
+      </table>
+    </div>
+    <div style="margin-top:10px;margin-left:10px;">
+    <input type="submit" value="提交" class="btn" />
+    <a href="<?php echo url('admin/product/promotionslist') ?>" class="Buttom_4b">返回列表</a>
+    </div>
+    </form>
+    </div>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

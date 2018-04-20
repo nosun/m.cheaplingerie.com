@@ -1,0 +1,39 @@
+<?php
+  $this->assign('menuItem', 'site_display');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+  <ul>
+    <li><span class="basic"><a href="<?php echo url('admin/site/displaysetting') ?>">市场价设置</a></span></li>
+  </ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="POST">
+
+    <table>
+      
+      <tr class="nohover"><td class="bold" colspan="2">市场价比例</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="marketprice" value="<?php echo isset($marketprice['marketprice']) ? $marketprice['marketprice'] : null?>"/>%
+        </td>
+        <td width="40%">例如：130% 表示市场价默认值为商品价格的1.3倍</td>
+      </tr>
+      
+    </table>
+    
+    <div class="main_bottom_deal">
+      <input type="submit" value="保存" class="btn">
+    </div>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

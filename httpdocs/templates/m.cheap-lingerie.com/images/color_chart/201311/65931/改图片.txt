@@ -1,0 +1,1 @@
+数组名字改了； 图片名字改了； color_chart.css的div宽由22%改为43px；

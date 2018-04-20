@@ -1,0 +1,71 @@
+<?php
+  $this->assign('menuItem', 'comment_commonlist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/comment/getList') ?>">商品评论管理</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right">
+  <?php echo themeMessages() ?>
+  <form id="form" name="form" action="<?php  echo url('admin/comment/post'); ?>" method="post">
+  <input name="page" type="hidden" value="<?php echo $page;?>">
+  <input name="action" id="action" type="hidden" value="audit">
+  <input name="isall" id="isall" type="hidden" value="0">
+  <input name="count" id="count" type="hidden" value="<?php echo $count;?>">
+      <div class="div_select" >
+      <select class="filter_select" name="status" onchange="javascript:$('#action').val('getListProductComment');document.form.submit();">
+        <option value="0" <?php if ($status==="0") echo "selected"; ?>>未审核</option>
+        <option value="1" <?php if ($status==="1") echo "selected"; ?>>已审核</option>
+        <option value="2" <?php if ($status==="2") echo "selected"; ?>>不显示</option>
+        <option value="all" <?php if ($status==="all" || $status=="") echo "selected"; ?>>全部</option>
+      </select>
+      </div>
+      <div style="margin-top:20px;"></div>
+    <div class="check_top_title" id="check_top_title"><!--您当前选定了 <?php echo $pageRows;?> 条记录，--><a href="javascript:;" id="checkAllPage">点此选择所有</a> 的 <?php echo $count;?> 条记录</div>
+    <table>
+      <tr class="subhead">
+        <td width="5%"><input type="checkbox" id="checkAll" value=1></td>
+        <td width="10%">ID</td>
+        <td width="35%">标题</td>
+        <td width="10%">评论人</td>
+        <td width="15%">评论时间</td>
+        <td width="8%">前台显示</td>
+        <td width="10%">操作</td>
+      </tr>
+<?php
+  if(is_array($commentList)):
+    foreach($commentList as $key => $dl):
+?>
+      <tr <?php if($dl->status == 0){echo 'class="bold"';} ?>>
+        <td><input type="checkbox" value="<?php echo $dl->cid; ?>" class="checkItem" name="checkItem[]"></td>
+        <td><?php echo $dl->cid;?></td>
+        <td><a href="<?php echo url('admin/comment/getInfo/' . $dl->cid .'/' . $dl->status .'/' . $page); ?>"><?php echo $dl->subject; ?></a></td>
+        <td><?php echo $dl->nickname; ?></td>
+        <td><?php echo date("Y-m-d H:i", $dl->timestamp); ?></td>
+        <td><?php if($dl->status ==1 ){echo "是";}else{echo "否";} ?></td>
+        <td><a href="<?php echo url('admin/comment/replay/' . $dl->cid) ?>">回复</a></td>
+      </tr>
+<?php
+    endforeach;
+  endif;
+?>
+    </table>
+  </form>
+
+    <div class="pagination"><?php echo $pagehtml; ?></div>
+      <div class="main_top_deal" style="margin-top:8px;clear:both;">
+        <a href="javascript:$('#action').val('auditProductComment');document.form.submit();" id="audit" name="audit" class="btn1" title="前台显示">审核</a>
+        <a href="javascript:$('#action').val('readProductComment');document.form.submit();" id="audit" name="audit"  class="btn1"title="前台不显示">不显示</a>
+        <a href="javascript:$('#action').val('delProductComment');document.form.submit();" id="del" name="del" class="btn_confirm btn1" rel="确认彻底删除选中的评论吗?">删除</a>
+      </div>
+  </div>
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

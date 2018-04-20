@@ -1,0 +1,70 @@
+<?php
+  $this->assign('menuItem', 'site_contactway');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="basic"><a href="<?php echo url('admin/site/contactwaysetting') ?>">联系方式</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="POST">
+
+    <table>
+      <tr class="nohover"><td class="bold" colspan="2">公司名称</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="companyName" value="<?php echo isset($contactWay['companyName']) ? $contactWay['companyName'] : null?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+ 
+      <tr class="nohover"><td class="bold" colspan="2">详细地址</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="companyAddress" value="<?php echo isset($contactWay['companyAddress']) ? $contactWay['companyAddress'] : null?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+      
+      <tr class="nohover"><td class="bold" colspan="2">电话</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="telephone" value="<?php echo isset($contactWay['telephone']) ? $contactWay['telephone'] : null?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+      
+      <tr class="nohover"><td class="bold" colspan="2">邮箱</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="email" value="<?php echo isset($contactWay['email']) ? $contactWay['email'] : null?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+      
+      <tr class="nohover"><td class="bold" colspan="2">即时通讯软件</td></tr>
+      <tr>
+        <td width="50%">
+          <input class="txt" name="im" value="<?php echo isset($contactWay['im']) ? $contactWay['im'] : null?>"/>
+        </td>
+        <td width="40%"></td>
+      </tr>
+      
+    </table>
+    
+    <div class="main_bottom_deal">
+      <input type="submit" value="保存" class="btn">
+    </div>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

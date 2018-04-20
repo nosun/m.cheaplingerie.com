@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+
+<div class="head">
+	<?php echo $this->render("parts/header.phtml"); ?>
+</div>
+<div id="cat2">
+	<div class="catalogue">
+		<div class="searchbox">
+			<div class="kuang">
+				<form name="searchform" action="<?php echo url("pitems"); ?>" method="post">
+    				<input name="keyword" class="search" type="text" id="keywordinput" placeholder="Search...">
+    			</form>
+				<div class="sou">Go</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<script>
+	    	$('.sou').click(function(){
+			    var key = $("#keywordinput").val();
+			    if(key){searchform.submit();}
+			});
+    	</script>
+	</div>
+	<?php echo themeBreadcrumb(); ?>
+	<div class="classh2" style="padding:0 4.5%;"><?php echo $termInfo->name;?></div>
+	<form id="browse_filter" style="display:none" method="post" action="<?php echo url('browsefilter') ?>">
+		<input type="hidden" name="orderby" value="<?php echo isset($orderby) ? $orderby : 'p.weight DESC, p.pid DESC'; ?>"/>
+		<input type="hidden" name="pageRows" value="6"/>
+		<input type="hidden" name="listMode" value="<?php echo isset($listMode) ? $listMode : 'photo'?>"/>
+	</form>
+	<div class="sort"> Sort : &nbsp;
+		<a href="javascript:filter_option('orderby', 'p.weight DESC, p.pid DESC' )" <?php if($orderby == 'default'){echo 'class="red"'; }?>>Default</a> &nbsp;   |   &nbsp;
+		<a href="javascript:filter_option('orderby', 'sell_price ASC, pid DESC' )" <?php if($orderby == 'low price'){echo 'class="red"'; }?>>Low Price</a> &nbsp;   |    &nbsp;
+		<a href="javascript:filter_option('orderby', 'sell_price DESC, pid DESC' )" <?php if($orderby == 'high price'){echo 'class="red"'; }?>>High Price</a>
+	</div>
+	<div id="home">
+		<div class="product_show" id="product_show">
+			<?php if(isset($productList) && $productList): ?>
+				<?php foreach ($productList as $k => $v): ?>
+					<div>
+						<p class="ppic">
+							<a href="<?php echo url($v->url);?>" title="<?php echo $v->name;?>">
+								<img src="<?php echo urlimg('210x320',$v->filepath)?>" alt="<?php echo $v->name;?>">
+							</a>
+						</p>
+						<span class="newcontent"><?php echo strwidth($v->name,40); ?></span>
+						<span class="priceandgrade">
+							<span class="pricespan"><?php echo c($v->price); ?></span>
+							<?php global $user; ?>
+							<?php $grades = widgetCallFunction('fivestars', 'getStars', $v->pid); ?>
+							<?php $gradesTotal = 0; ?>
+							<?php $sumTotal = 0; ?>
+							<?php $halfflag = false; ?>
+							<?php $left = 0; ?>
+							<?php if(isset($grades)): ?>
+								<?php foreach($grades as $k=> $v): ?>
+									<?php $gradesTotal += $k * $v; ?>
+									<?php $sumTotal += $v; ?>
+								<?php endforeach;?>
+								<?php if($sumTotal > 0): ?>
+									<?php $avggrades = round($gradesTotal/$sumTotal, 2); ?>
+									<?php $fullcount = intval($avggrades); ?>
+									<?php if(strpos($avggrades, '.')): ?>
+										<?php $halftemp = explode(".", $avggrades); ?>
+										<?php if($halftemp[1] >= 0.5): ?>
+											<?php $halfflag = true;?>
+											<?php $left = 5 - $fullcount - 1;?>
+										<?php endif; ?>
+									<?php else: ?>
+										<?php $left = 5 - $fullcount;?>
+									<?php endif;?>
+									<?php for($i = 0; $i < $fullcount; $i++): ?>
+										<span><img src="<?php echo $tpldir; ?>/images/starfill.png"></span>
+									<?php endfor; ?>
+									<?php if($halfflag): ?>
+										<span><img src="<?php echo $tpldir; ?>/images/starhalf.png"></span>
+									<?php endif; ?>
+									<?php for($i=0; $i<$left; $i++): ?>
+										<span><img src="<?php echo $tpldir; ?>/images/star.png"></span>
+									<?php endfor; ?>
+									<span>(<?php echo $sumTotal; ?>)</span>
+								<?php else: ?>
+								<?php endif; ?>
+							<?php endif; ?>
+						</span>
+					</div>
+				<?php endforeach; ?>
+			<?php endif; ?>
+		</div>
+	</div>
+	<div class="col-box">
+		<button class="btn-long ajax-trigger" next="<?php echo $page + 1 ?>" id="showmore" max="<?php echo $pageCount; ?>" <?php if($pageCount == $page){echo 'style="visibility:hidden;height:0px"';} ?>>Show More</button>
+	</div>
+	<a class="back_to_top" href="#">
+		<span></span><br>
+		TOP OF PAGE
+	</a>
+	<?php if(isset($lists) && $lists): ?>
+		<div class="col-box">
+			<div class="collapse-btn-grp">
+				<div class="collapse-parent">
+					<ul class="collapse-inner" style="display: block;border: 0">
+						<?php foreach ($lists as $item): ?>
+							<li class="collapse-child">
+								<a href="<?php echo url(categoryURL($item->path_alias)); ?>"><?php echo isset($item->name)? $item->name : null;?></a>
+								<span class="p-arrow-inner"></span>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			</div>
+		</div>
+	<?php endif; ?>
+	<div class="foot">
+    	<?php echo $this->render('parts/footer.phtml'); ?>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function filter_option(name,condition){
+		$('#browse_filter input[name="'+ name+'"]').val(condition);
+		$('#browse_filter').submit();
+	}
+	$('.ajax-trigger').click(function () {
+		var nextoffset = $("#showmore").attr("next");
+		var pageCount = $("#showmore").attr("max");
+		$.ajax({
+			type:"POST",
+			url:"<?php echo url('product/ajaxsshowmore/'); ?>" + window.location.pathname,
+			data:{ offset : nextoffset},
+			success: function(data){
+				$("#product_show").append(data);
+				nextoffset = parseInt(nextoffset) + 1;
+				$("#showmore").attr("next", nextoffset );
+				if (parseInt(pageCount) < nextoffset) {
+					$("#showmore").css({'visibility':'hidden', 'height':'0px'});
+				}
+	        }
+	    });
+	});
+</script>
+<script src="<?php echo $tpldir; ?>/javascripts/main.js" type="text/javascript"></script>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

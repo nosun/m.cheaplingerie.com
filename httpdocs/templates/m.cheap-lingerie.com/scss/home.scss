@@ -1,0 +1,61 @@
+#home{
+
+  /*home page slide*/
+  .slide_home {
+    position: relative;
+    margin-top: 2.5%;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #dddddd;
+  }
+  /*home page product show*/
+  .product_show{
+    div {
+      float: left;
+      width: 45%;
+      margin-left: 3.3%;
+      margin-top: 3%;
+      padding-bottom: 200px;
+      margin-bottom: -200px;
+      .ppic{
+        width:100%;
+        a{
+          width:100%;
+          display: block;
+        }
+      }
+      .ppic img{
+        width:100%;
+      }
+      .newcontent{
+        font: 1.1rem/1.5rem "Arial";
+        display: block;
+        background: #fcfbfc;
+        width: 100%;
+        text-align: center;
+        height: 3rem;
+        overflow: hidden;
+      }
+      .priceandgrade{
+        font: 0.7rem/1.5rem "Arial";
+        display: block;
+        background: #fcfbfc;
+        width: 100%;
+        text-align: center;
+        height: 1.5rem;
+        img{
+          height: 1rem;
+          vertical-align: text-top;
+        }
+        .pricespan {
+          margin-right: 2%;
+          color: #e55d4e;
+          font-weight: bold;
+        }
+        span{
+          margin: 0 -0.5%;
+        }
+      }
+    }
+  }
+
+}

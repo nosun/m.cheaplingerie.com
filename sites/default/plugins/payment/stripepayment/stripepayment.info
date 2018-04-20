@@ -1,0 +1,4 @@
+name = StripePayment
+version = 1.0
+description = Stripe is a convenient and fast purchasing platform, Credit Card/Debt Card User can currently use this option for your payment.
+online = 1

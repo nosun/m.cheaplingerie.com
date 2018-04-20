@@ -1,0 +1,251 @@
+<?php
+  global $user;
+  $primaryItem = substr($menuItem, 0, strpos($menuItem, '_'));
+  $headerWeekDayIndex = date('w', time());
+  $headerWeekDayList = array('日', '一', '二', '三', '四', '五', '六', );
+
+
+
+  /*
+   * 数组说明：array( A => B, ...)，其中 A为权限名称，B为链接，即A权限对应的链接为B
+   * 用于从权限表里面查找相应的链接，有的权限对应有多个链接，则如果有此权限则返回对应菜单组的第1个链接
+   */
+	$headerPermissionsList = array(
+	  'administrator page' => 'admin',
+    'import product' => 'admin/batchjobs/showBatchExportProduct',
+    'export product' => 'admin/batchjobs/showBatchExportProduct',
+    'batch edit product' => 'admin/batchjobs/batchEditProducts',
+	  'manage comment' => 'admin/comment/getList',
+	  'manage guestbook' => 'admin/comment/messageList',
+	  'list article' => 'admin/content',
+	  'edit article' => 'admin/content',
+	  'delete article' => 'admin/content',
+	  'list articletype' => 'admin/content/getArticleTypeList',
+	  'edit articletype' => 'admin/content/getArticleTypeList',
+	  'delete articletype' => 'admin/content/getArticleTypeList',
+	  'list page' => 'admin/content/getPageList',
+	  'edit page' => 'admin/content/getPageList',
+	  'delete page' => 'admin/content/getPageList',
+	  'administrator page' => 'admin',
+	  'list order' => 'admin/order/getList',
+	  'edit order' => 'admin/order/getList',
+	  'delete order' => 'admin/order/getList',
+		//'order setting' => 'admin/order/setting',
+	  'list product' => 'admin/product/list',
+	  'edit product' => 'admin/product/list',
+	  'delete product' => 'admin/product/list',
+    'batch uplode' => 'admin/product/batchupload',
+    'list promotions' => 'admin/product/promotionslist',
+	  'list type' => 'admin/product/typelist',
+	  'edit type' => 'admin/product/typelist',
+	  'delete type' => 'admin/product/typelist',
+	  'list productrelated' => 'admin/roduct/list',
+	  'templates' => 'admin/site/templates',
+	  'manage currency' => 'admin/site/getCurrencyList',
+	  'manage payment' => 'admin/site/paymentlist',
+	  'manage shipping' => 'admin/site/shippingList',
+    'manage widget' => 'admin/site/widgetlist',
+	  'pagevariablestheme' => 'admin/site/pagevariablestheme',
+	  'manage adphoto' => 'admin/site/getadphotolist',
+	  'manage carousel photo' => 'admin/site/getcarouselphotolist',
+	  'setting' => array( array(
+	                         'admin/site/siteinfosetting',     // 站点设置 [0][x]
+	                         'admin/site/contactwaysetting',
+	                         'admin/site/displaysetting',
+                           'admin/site/integralsetting',
+	                         'admin/site/stockchecksetting',
+	                         'admin/site/blacklistsetting',
+	                         'admin/site/stmpsetting',
+	                         'admin/site/mailsetting', ),
+	                      array(
+	                         'admin/product/setting',          //商品设置 [1][0]
+	                         'admin/comment/setting',          //评论设置
+	                      ),
+	                    ),
+	  'statistics' => array( array(
+	                           'admin/statistics/customers',   //统计 [0][0]
+	                           'admin/statistics/order',
+	                           'admin/statistics/sales',
+	                           'admin/statistics/members',
+	                           'admin/statistics/buybanner',
+	                         ),
+	                       ),
+	  'list term' => 'admin/terms/getList/brand',
+	  'edit term' => 'admin/vocabulary/getList',
+	  'delete term' => 'admin/vocabulary/getList',
+	  'manage user' => 'admin/user/list',
+	  'manage rank' => 'admin/user/ranks',
+	  'manage database' => 'admin/database/index',
+	  'list vocabulary' => 'admin/vocabulary/getList',
+	  'edit vocabulary' => 'admin/vocabulary/getList',
+	  'delete vocabulary' => 'admin/vocabulary/getList',
+	);
+
+  /*
+   * $__menu1_array__ 到 $__menu5_array__ 权限说明，此五个数组对应header顶部五个菜单
+   * 显示某一个菜单所具有的权限，有其中一个就可以显示
+   * 并从权限链接表里面查找菜单的链接
+   */
+  $headerMenu1Array = array('list product',
+                            'list vocabulary',
+                            'list term',
+                            'list type',
+                            'batch edit product',
+                            'batch uplode',
+                            'list promotions',
+                            'manage comment',
+                            'manage guestbook',
+                            'setting',
+                      );
+
+  $headerMenu2Array = array('list order',
+  							'order setting',
+                            'manage user',
+                            'manage rank',
+                      );
+
+  $headerMenu3Array = array('templates',
+                            'manage currency',
+                            'manage payment',
+                            'manage shipping',
+                            'manage widget',
+                            'pagevariablestheme',
+                            'setting',
+                            'manage adphoto',
+                            'manage carousel photo',
+                            'list article',
+                            'list articletype',
+                            'list page',
+  							'manage database',
+                      );
+
+  $headerMenu4Array = array( 'statistics', );
+
+
+
+/**
+ * 根据权限组，从权限链接表里面查找菜单的链接并返回链接
+ * @param $menu，显示菜单所需的权限组
+ * @param $permissionLinkList，权限链接表
+ * @param $showWhich，同一权限有多个链接时用于判断显示哪一组链接
+ */
+function getMenuLinkAddress( $menu , $permissionLinkList, $showWhich = 0)
+{
+  foreach($menu as $key => $value){
+    if(access($value)){
+      if(is_array($permissionLinkList[$value])){
+        return $permissionLinkList[$value][$showWhich][0];
+      }
+
+      return $permissionLinkList[$value];
+    }
+  }
+  return 'admin';
+}
+
+
+?>
+
+<body>
+<div class="header">
+		<table width="100%" cellpadding="0" cellspacing="0" border="0">
+		  <tr>
+		    <td valign="top" width="325px">
+		      <!--  <div class="logo"><a href="<?php echo url('admin') ?>"><img src="<?php echo url('images/logo.png') ?>" alt="" /></a></div>-->
+		    </td>
+
+		    <td width="*" >&nbsp;</td>
+		    <!-- head_right td start  -->
+		    <td valign="top" width="650px">
+
+				    <div class="head_right">
+				        <div class="clear padding">
+				            <div class="Time">欢迎, <?php echo $user->name; ?>. <?php echo date('Y-m-d'); ?> 星期<?php echo $headerWeekDayList[$headerWeekDayIndex]; ?></div>
+				            <div class="Position">
+				                <a href="<?php echo url('') ?>" target="_blank">【网站首页】</a>
+				                <a href="<?php echo url('admin/site/cleancache') ?>">【更新缓存】</a>
+				                <a href="<?php echo url('user/logout') ?>">【安全退出】</a>
+				            </div>
+				        </div>
+				        <div class="clear padding">
+				          <ul class="Management">
+
+				              <?php if( access( $headerMenu1Array, 'or') ): ?>
+				              <li>
+				                <a <?php if ($primaryItem == 'product' || $primaryItem === 'comment') echo ' class="click"' ?>
+				                href="<?php echo url( getMenuLinkAddress( $headerMenu1Array, $headerPermissionsList , 1) ) ?>">
+				                <span class="commodity">商品管理</span></a>
+				              </li>
+				              <?php endif;?>
+
+
+                      <?php if( access( $headerMenu2Array, 'or' ) ): ?>
+				              <li>
+				                <a <?php if ($primaryItem == 'order' || $primaryItem == 'user') echo ' class="click"' ?>
+				                href="<?php echo url( getMenuLinkAddress( $headerMenu2Array, $headerPermissionsList ) ) ?>">
+				                <span class="Orders">会员/订单</span></a>
+				              </li>
+				              <?php endif;?>
+
+
+                      <?php if( access( $headerMenu3Array, 'or' ) ): ?>
+				              <li>
+				                <a <?php if ($primaryItem == 'site'  || $primaryItem === 'content') echo ' class="click"' ?>
+				                href="<?php echo url( getMenuLinkAddress( $headerMenu3Array, $headerPermissionsList , 0) ) ?>">
+				                <span class="site">站点管理</span></a>
+				              </li>
+				              <?php endif;?>
+
+
+                      <?php if( access( $headerMenu4Array, 'or' ) ): ?>
+				              <li>
+				                <a <?php if ($primaryItem == 'statistics') echo ' class="click"' ?>
+				                href="<?php echo url( getMenuLinkAddress( $headerMenu4Array, $headerPermissionsList ) ) ?>">
+				                <span class="Statistics">统计报表</span></a>
+				              </li>
+				              <?php endif;?>
+
+
+				            </ul>
+				        </div>
+				    </div>
+
+
+
+
+
+		    </td><!-- head_right td end  -->
+		  </tr>
+		</table>
+
+
+
+</div>
+
+<div class="bodyer">
+  <div class="clear height"></div>
+
+  <!-- Main body Table start -->
+	<table width="100%" cellpadding="0" cellspacing="0" border="0">
+	  <tr>
+	    <!-- body left td start -->
+	    <td valign="top" width="186px">
+        <div class="body_left">
+
+<?php echo $this->render('admin/sidebar.phtml', array('primaryItem' => $primaryItem)); ?>
+
+
+      </div>
+
+    </td><!-- body left td end -->
+
+    <td width="3px"></td><!-- mid bank space -->
+
+    <!-- body right td start -->
+    <td valign="top">
+    <div class="body_right">
+      <div class="position">
+          <strong></strong> <span><?php /* 您现在的位置：<a href="<?php echo url('admin') ?>">后台首页</a> <?php if(isset($menuWhereBar)) echo $menuWhereBar; */ ?></span>
+        </div>
+
+        <div class="box">

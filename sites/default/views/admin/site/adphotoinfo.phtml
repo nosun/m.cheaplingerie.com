@@ -1,0 +1,147 @@
+<?php
+  $this->assign('menuItem', 'site_adphoto');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/site/getadphotolist') ?>">广告列表</a></span></li>
+		<li><span class="basic"> <?php if ($adphotoInfo->aid!='') echo '编辑广告 - '.plain($adphotoInfo->name); else echo '新增广告'; ?> </span></li>
+	</ul>
+</div>
+
+
+<div class="main_right tableonhover" style="margin-left:5px;margin-top:5px;">
+<?php echo themeMessages() ?>
+  <form action="" method="post" enctype="multipart/form-data" id="form_productinfo">
+    <input type="hidden" name="aid" value="<?php if (isset($adphotoInfo->aid)) echo plain($adphotoInfo->aid) ?>">
+    <input type="hidden" name="fid" value="<?php if (isset($adphotoInfo->fid)) echo plain($adphotoInfo->fid) ?>">
+     <input type="hidden" id="directory_list" value='<?php echo strtr(json_encode($directoryList), "'", "\'") ?>'>
+        <table>
+          <tr class="nohover"><td class="bold" colspan="2">广告名称</td></tr>
+          <tr>
+            <td><input name="name" value="<?php if (isset($adphotoInfo->name)) echo plain($adphotoInfo->name) ?>" class="txt non-empty" title="广告名称必填" /><span style="color:red;">*</span></td>
+            <td width="45%"></td>
+          </tr>
+
+          <tr class="nohover"><td class="bold" colspan="2">广告标识</td></tr>
+          <tr>
+            <td><input name="script_id" value="<?php if (isset($adphotoInfo->script_id)) echo plain($adphotoInfo->script_id) ?>" class="txt non-empty" title="广告标识必填" /><span style="color:red;">*</span></td>
+            <td width="45%">字符型数据，不能全部为数字</td>
+          </tr>
+
+          <tr class="nohover"><td class="bold" colspan="2">分类目录</td></tr>
+            <tr><td colspan="2"><select name="directory_tid1">
+            <option value="0">-- 请选择一级商品目录 --</option>
+<?php foreach ($directoryList as $tid1 => $term1): ?>
+            <option value="<?php echo $tid1 ?>"<?php if (isset($adphotoInfo) && isset($adphotoInfo->directory_tid1) && $adphotoInfo->directory_tid1 == $tid1) echo ' selected="selected"' ?>><?php echo t($term1->name) ?></option>
+<?php endforeach ?>
+          </select>
+          <select name="directory_tid2">
+            <option value="0">-- 请选择二级商品目录 --</option>
+<?php
+  if (isset($adphotoInfo->directory_tid1) && isset($directoryList[$adphotoInfo->directory_tid1]) && isset($directoryList[$adphotoInfo->directory_tid1]->sub)):
+    foreach ($directoryList[$adphotoInfo->directory_tid1]->sub as $tid2 => $term2):
+?>
+            <option value="<?php echo $tid2 ?>"<?php if (isset($adphotoInfo) && isset($adphotoInfo->directory_tid2) && $adphotoInfo->directory_tid2 == $tid2) echo ' selected="selected"' ?>><?php echo t($term2->name) ?></option>
+<?php
+    endforeach;
+  endif;
+?>
+          </select>
+          <select name="directory_tid3">
+            <option value="0">-- 请选择三级商品目录 --</option>
+<?php
+  if (isset($adphotoInfo->directory_tid2) && isset($directoryList[$adphotoInfo->directory_tid1]->sub[$adphotoInfo->directory_tid2]) && isset($directoryList[$adphotoInfo->directory_tid1]->sub[$adphotoInfo->directory_tid2]->sub)):
+    foreach ($directoryList[$adphotoInfo->directory_tid1]->sub[$adphotoInfo->directory_tid2]->sub as $tid3 => $term3):
+?>
+            <option value="<?php echo $tid3 ?>"<?php if (isset($adphotoInfo) && isset($adphotoInfo->directory_tid3) && $adphotoInfo->directory_tid3 == $tid3) echo ' selected="selected"' ?>><?php echo t($term3->name) ?></option>
+<?php
+    endforeach;
+  endif;
+?>
+          </select>
+           <select name="directory_tid4">
+            <option value="0">-- 请选择四级商品目录 --</option>
+<?php
+  if (isset($adphotoInfo->directory_tid3) && isset($directoryList[$adphotoInfo->directory_tid1]->sub[$adphotoInfo->directory_tid2]->sub[$adphotoInfo->directory_tid3]) && isset($directoryList[$adphotoInfo->directory_tid1]->sub[$adphotoInfo->directory_tid2]->sub[$adphotoInfo->directory_tid3]->sub)):
+    foreach ($directoryList[$adphotoInfo->directory_tid1]->sub[$adphotoInfo->directory_tid2]->sub[$adphotoInfo->directory_tid3]->sub as $tid4 => $term4):
+?>
+            <option value="<?php echo $tid4 ?>"<?php if (isset($adphotoInfo) && isset($adphotoInfo->directory_tid4) && $adphotoInfo->directory_tid4 == $tid4) echo ' selected="selected"' ?>><?php echo t($term4->name) ?></option>
+<?php
+    endforeach;
+  endif;
+?>
+          </select>
+          </td></tr>
+
+          <tr class="nohover"><td class="bold" colspan="2">广告大小</td></tr>
+          <tr>
+            <td>长：<input name="width" value="<?php if (isset($adphotoInfo->width)) echo plain($adphotoInfo->width) ?>" class="littletxt non-empty" title="广告长度必填" /><span style="color:red;">*</span></td>
+            <td>请输入大于 0 数字</td>
+          </tr>
+          <tr>
+            <td>宽：<input name="height" value="<?php if (isset($adphotoInfo->height)) echo plain($adphotoInfo->height) ?>" class="littletxt non-empty" title="广告宽度必填" /><span style="color:red;">*</span></td>
+            <td>请输入大于 0 数字</td>
+          </tr>
+
+          <tr class="nohover"><td class="bold" colspan="2">广告类别</td></tr>
+          <tr>
+            <td>
+              <input <?php if ((isset($adphotoInfo->type) && $adphotoInfo->type == 1) || !isset($adphotoInfo->type)) {echo 'checked';} ?> type="radio" name="type" id="r1" value="1"><label for="r1">images</label>
+              <input <?php if ((isset($adphotoInfo->type) && $adphotoInfo->type == 2)) {echo 'checked';} ?> type="radio" name="type" id="r2" value="2"><label for="r2">flash</label>
+              <input <?php if ((isset($adphotoInfo->type) && $adphotoInfo->type == 3)) {echo 'checked';} ?> type="radio" name="type" id="r3" value="3"><label for="r3">video</label>
+            </td>
+            <td></td>
+          </tr>
+
+          <tr class="nohover"><td class="bold">上传附件</td><td style="color:red">以下2个填写一个就行了</td></tr>
+          <?php if (isset($adphotoInfo->filepath) && $adphotoInfo->filepath) :?>
+          <tr>
+            <td>
+              <script src="/script/getadimg/<?php if (isset($adphotoInfo->aid)) echo plain($adphotoInfo->aid) ?>/<?php if (isset($adphotoInfo->tid)) echo plain($adphotoInfo->tid) ?>"></script>
+            </td>
+            <td></td>
+          </tr>
+          <?php endif;?>
+          <tr>
+            <td>
+              <input type="file" class="file non-empty" name="filedata" alt="file_3" title="图片不能为空"> <span style="color:red;">*</span>
+            </td>
+            <td>
+            大于2M的附件建议采用ftp上传，路径为 html/images/
+            </td>
+          </tr>
+          <tr>
+            <td>
+                                      附件路径：<input value="<?php if (isset($adphotoInfo->fid) && !$adphotoInfo->fid) echo plain($adphotoInfo->filepath) ?>" class="medium_txt250 non-empty" name="filepath" alt="file_3" title="图片不能为空" />
+            <input type="hidden" name="filepath_hidden" value="<?php if (isset($adphotoInfo->filepath)) echo plain($adphotoInfo->filepath) ?>" class="medium_txt non-empty" alt="file_3" title="图片不能为空" />
+            </td>
+            <td>可以填写网络地址如 http://163.com/a.jpg<br>或者是服务器上的路径如attachment/videos/a.jpg</td>
+          </tr>
+
+          <tr class="nohover"><td class="bold" colspan="2">连接地址</td></tr>
+          <tr>
+            <td><input name="url" value="<?php echo isset($adphotoInfo->url) && $adphotoInfo->url ? plain($adphotoInfo->url) : 'http://' ?>" class="medium_txt250" /></td>
+            <td></td>
+          </tr>
+
+          <tr class="nohover"><td class="bold" colspan="2">是否显示</td></tr>
+          <tr>
+            <td>
+            <input <?php if ((isset($adphotoInfo->visible) && $adphotoInfo->visible == 1) || !isset($adphotoInfo->visible)) {echo 'checked';} ?> type="radio" name="visible" id="r3" value="1"><label for="r3">是</label>
+            <input <?php if ((isset($adphotoInfo->visible) && $adphotoInfo->visible == 0)) {echo 'checked';} ?> type="radio" name="visible" id="r4"  value="0"><label for="r4">否</label></td>
+            <td></td>
+          </tr>
+        </table>
+ <input type="submit" value="提交 " class="btn">
+  </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>
+
+

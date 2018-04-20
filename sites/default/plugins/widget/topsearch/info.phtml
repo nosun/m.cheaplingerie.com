@@ -1,0 +1,58 @@
+<?php
+  $this->assign('menuItem', 'site_widget');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+
+<div class="import clear">
+  <ul>
+    <li><span class="check"><a href="<?php echo url('admin/site/widgetlist') ?>">插件列表</a></span></li>
+    <li><span class="basic"><a href="<?php echo url('admin/site/widgetedit/topsearch') ?>">热门关键字编辑</a></span></li>
+  </ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+  <?php echo themeMessages() ?>
+  <form action="<?php echo url('admin/site/widgetedit/topsearch') ?>" method="post" enctype="multipart/form-data" id="topsearchForm">
+  <table id="mailSubscribe">
+    <tr class="nohover">
+      <td class="bold">页面热门关键字</td>
+    </tr>
+    <tr>
+      <td><textarea name="topSearchKeyword" cols="100" rows="10"><?php echo $topSearchWord; ?></textarea></td>
+    </tr>
+    <tr class="nohover">
+      <td class="bold">用户搜索关键字</td>
+    </tr>
+    <tr>
+      <td class="nohover"><table>
+        <tr class="nohover"><th>关键字</th><th>频率</th><th>最后搜索时间</th><th>是否存在词库</th><th>选项</th></tr>
+<?php
+foreach ($keywords as $keyword => $row):
+  $tagId = widgetCallFunction('seotags', 'getTagId', $keyword);
+?>
+        <tr>
+          <td><?php echo plain($keyword) ?></td>
+          <td align="center"><?php echo $row->freq ?></td>
+          <td align="center"><?php echo date('Y-m-d G:i', $row->updated) ?></td>
+          <td align="center"><?php if ($tagId) echo t('Yes') ?></td>
+          <td>
+<?php if ($tagId && $tagId->ptag_id): ?>
+            <a href="<?php echo url('admin/site/widgetedit/seotags/editTag/' . $tagId->ptag_id . '/' . $tagId->tag_id) ?>">进入词库</a>
+<?php endif ?>
+          </td>
+        </tr>
+<?php endforeach ?>
+      </table></td>
+    </tr>
+    <tr class="nohover">
+      <td><input type="submit" class="btn1" value="保存"></td>
+    </tr>
+  </table>
+  </form>
+</div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

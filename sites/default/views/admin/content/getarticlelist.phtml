@@ -1,0 +1,95 @@
+<?php
+  $this->assign('menuItem', 'content_article');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/content') ?>"><?php echo t('Article Manage') ?></a></span></li>
+		<?php if (access('edit article')): ?>
+		<li><span class="new"><a href="<?php echo url('admin/content/getArticleInfo/0')?>">新增文章</a></span></li>
+		<?php endif; ?>
+	</ul>
+</div>
+
+<div>
+    <?php echo themeMessages() ?>
+
+
+    <div class="clear left_photo" id="tabs">
+      <div class="clear tab_ul">
+      <ul>
+        <li><a href="#list"><?php echo t('List') ?></a></li>
+        <li><a href="#filter"><?php echo t('Filter') ?></a></li>
+      </ul>
+      </div>
+
+      <div id="list" class="box_Product main_right">
+      <div><?php echo $selectHtml;?></div>
+        <form id="form1" action ="<?php echo url('admin/content/post') ?>" method="post">
+          <table id="products_list">
+	          <tr class="subhead">
+	            <td width="5%"><input type="checkbox" id="checkAll"></td>
+	            <td width="10%">ID</td>
+	            <td width="25%"><?php echo t('Article Title') ?></td>
+	            <td width="15%">所属分类</td>
+	            <td width="10%"><?php echo t('Article Uptime') ?></td>
+	            <td width="8%"><?php echo t('Article Order') ?></td>
+	            <td width="8%"><?php echo t('Article Status') ?></td>
+	            <td width="15%"><?php echo t('Admin') ?></td>
+	          </tr>
+<?php
+  //if (isset($articleList)) ：
+    foreach($articleList as $key => $dl) :
+?>
+	          <tr>
+	            <td><input type="checkbox" value="<?php echo $dl->aid;?>" name="aids[]" class="checkItem"></td>
+	            <td><?php echo $dl->aid;?></td>
+	            <td><?php echo stripslashes($dl->title);?></td>
+	            <td><?php echo isset($articletypes[$dl->atid]->fullname) ? $articletypes[$dl->atid]->fullname : null;?></td>
+	            <td><?php echo date("y-m-d H:i:s",$dl->created);?></td>
+	            <td><?php echo $dl->weight?></td>
+	            <td><?php if($dl->status)echo '√';else echo 'χ'; ?></td>
+	            <td>
+	            <a href="<?php echo url($dl->url)?>" target="_blank">查看</a>&nbsp;
+
+	            <?php if (access('edit article')): ?>
+	            <a href="<?php echo url('admin/content/getArticleInfo/'.$dl->aid)?>"><?php echo t('Edit')?></a>&nbsp;
+	            <?php endif; ?>
+	            <?php if (access('delete article')): ?>
+	            <a href="<?php echo url('admin/content/deleteArticle/'.$dl->aid)?>" class="btn_confirm" rel="确定删除该文章吗"><?php echo t('Delete')?></a></td>
+	            <?php endif; ?>
+	          </tr>
+<?php
+    endforeach;
+  //endif;
+?>
+
+          </table>
+          <div class="pagination"><?php echo $pagination ?></div>
+          <div class="div_btn_bottom">
+            <?php if (access('delete article')): ?><input type="submit" class="btn1" name="btn_delete" value="删除"><?php endif; ?>
+            <?php if (access('edit article')): ?>
+            <input type="submit" class="btn1" name="btn_show" value="显示">
+            <input type="submit" class="btn1" name="btn_hidden" value="隐藏">
+            <select name="new_atid">
+              <option value=""></option>
+<?php foreach ($articletypes as $k => $v):?>
+              <option value="<?php echo isset($v->atid) ? $v->atid : 0?>"><?php echo isset($v->allname) ? $v->allname : null?></option>
+<?php endforeach;?>
+            </select>
+            <input type="submit" class="btn1" name="btn_change_type" value="更改类别">
+             <?php endif; ?>
+          </div>
+        </form>
+      </div>
+      <div id="filter" class="box_Product main_right" >
+<?php echo $this->render('admin/content/articleselect.phtml');?>
+      </div>
+    </div>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

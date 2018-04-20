@@ -1,0 +1,99 @@
+<?php
+  echo $this->render('admin/before_body.phtml');
+?>
+<style>
+<!--
+body{background-color: #FFFFFF;}
+-->
+</style>
+  <div class="main_right main_right_iframe" id="productrelated">
+  <form action="<?php echo url('admin/productrelated/addlist');?>" method="post">
+  <input type="hidden" id="directory_list" value='<?php echo strtr(json_encode($directoryList), "'", "\'")?>'>
+  <table>
+    <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Product Name');?></td></tr>
+    <tr>
+      <td width="50%" id="sc1">
+          <input class="txt" name="name"/>
+      </td>
+      <td width="40%"></td>
+    </tr>
+    <tr class="nohover"><td class="bold" colspan="2"><?php echo t('SN');?></td></tr>
+    <tr>
+      <td width="50%" id="sc1">
+        <input class="txt" name="sn"/>
+      </td>
+      <td width="40%"></td>
+    </tr>
+    <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Product Number');?></td></tr>
+    <tr>
+      <td width="50%" id="sc1">
+        <input class="txt" name="number"/>
+      </td>
+      <td width="40%"></td>
+    </tr>
+    <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Product Type');?></td></tr>
+    <tr>
+      <td width="50%" id="sc1">
+        <select name="type">
+            <option value=""></option>
+<?php foreach ($typeList as $key => $type): ?>
+            <option value="<?php echo $key ?>"><?php echo t($type->name) ?></option>
+<?php endforeach ?>
+          </select>
+      </td>
+      <td width="40%"></td>
+    </tr>
+
+    <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Product Dir');?></td></tr>
+                  <tr>
+                  <td colspan="2"><p><select name="directory_tid1">
+            <option value="0">-- 请选择一级商品目录 --</option>
+<?php foreach ($directoryList as $tid1 => $term1): ?>
+            <option value="<?php echo $tid1 ?>"><?php echo t($term1->name) ?></option>
+<?php endforeach ?>
+          </select><select name="directory_tid2">
+            <option value="0">-- 请选择二级商品目录 --</option>
+          </select><select name="directory_tid3">
+            <option value="0">-- 请选择三级商品目录 --</option>
+          </select><select name="directory_tid4">
+            <option value="0">-- 请选择四级商品目录 --</option>
+          </select></p>
+          </td>
+         </tr>
+
+
+     <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Product Price');?></td></tr>
+     <tr>
+       <td width="50%" id="sc1">
+         <input class="littletxt" name="lowprice" width="100"/> - <input name="highprice" class="littletxt" width="100"/>
+       </td>
+       <td width="40%"></td>
+     </tr>
+
+     <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Product Status');?></td></tr>
+     <tr>
+       <td width="50%" id="sc1">
+         <input name="status" type="checkbox" checked/> <?php echo t('Published');?>
+       </td>
+       <td width="40%"></td>
+     </tr>
+
+     <tr class="nohover"><td class="bold" colspan="2"><input type="submit" value="<?php echo t('Sure');?>" class="btn"/>
+     <input type="submit" value="<?php echo t('Cancel');?>" class="btn btn_cancel"/>
+     </td></tr>
+   </table>
+   </form>
+
+  </div>
+
+
+
+
+<?php
+  echo $this->render('admin/after_body.phtml');
+?>
+
+
+
+
+

@@ -1,0 +1,49 @@
+<?php
+  $this->assign('menuItem', 'site_widget');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+
+<div class="import clear">
+  <ul>
+    <li><span class="check"><a href="<?php echo url('admin/site/widgetlist') ?>">插件列表</a></span></li>
+    <li><span class="check"><a href="<?php echo url('admin/site/widgetedit/randominfo/getrandomlist/') ?>">页面随机信息列表</a></span></li>
+    <li><span class="check">页面随机信息</span></li>
+  </ul>
+</div>
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+  <?php echo themeMessages() ?>
+  <form action="<?php echo url('admin/site/widgetedit/randominfo/editRandomInfo/' . $randomInfo->path);?>" method="post" enctype="multipart/form-data">
+  <table>
+    <tr class="nohover">
+      <td>页面路径</td>
+    </tr>
+    <tr class="nohover">
+      <td><?php echo (isset($randomInfo->uri) && $randomInfo->uri) ? $randomInfo->uri : '首页';?></td>
+    </tr>
+<?php
+if (is_array($randomInfo->data)) :
+  foreach($randomInfo->data as $k => $v) :
+    if (is_array($v)) {
+      foreach($v as $k2 => $v2) {
+        if (is_array($v2)) {
+          $v[$k2] = implode(':', $v2);
+        }
+      }
+    }
+    $v2 = implode(',', $v);
+
+  ?>
+    <tr><td><?php echo $k?></td></tr>
+    <tr><td><textarea name="<?php echo $k?>"><?php echo $v2?></textarea></td></tr>
+<?php endforeach; endif;?>
+    <tr><td><input type="submit" value="保存"></td></tr>
+  </table>
+  </form>
+
+</div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

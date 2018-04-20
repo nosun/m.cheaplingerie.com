@@ -1,0 +1,4 @@
+name = Credit Card
+version = 1.0
+description = We are processing your credit card through paypal.
+online = 1

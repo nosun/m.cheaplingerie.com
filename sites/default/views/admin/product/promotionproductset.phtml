@@ -1,0 +1,43 @@
+<?php
+  $this->assign('menuItem', 'product_promotionslist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+  <ul>
+    <li><span class="check"><a href="<?php echo url('admin/product/promotionslist') ?>">促销活动列表</a></span></li>
+    <li><span class="basic"><?php echo plain($promotion->name) ?> - 设置商品</span></li>
+  </ul>
+</div>
+
+
+
+
+<div class="main_right" style="margin-top:5px; margin-left:5px;">
+  <?php echo themeMessages() ?>
+  <form id="form_productinfo" action="<?php echo url('admin/product/promotionproductset/'.$promotion->pmid) ?>" method="post"  enctype="multipart/form-data">
+	<?php echo $this->render('admin/product/productSelectFilter.phtml');?>
+
+    <table>
+    <tr class="nohover" style="border-bottom:0;"><td style="padding-left:0px;border-bottom:0;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0"  style="width:100%;">
+        <tr class="nohover"><td class="bold" colspan="3">设置商品</td></tr>
+        <tr>
+          <td colspan="2">
+            <input type="button" id="setPromotionProducts" value="设置商品" class="btn1" style="width:80px;" title="点击按钮把选定的商品设置为本促销活动所包含的商品" />
+            <input type="button" value="设置商品价格" class="btn1" style="width:110px;display:none;" onclick="location.href='<?php echo url('admin/product/promotionproductlist/'.$promotion->pmid);?>'">
+          </td>
+          <td width="500px">点击按钮把选定的商品设置为本促销活动所包含的商品</td>
+        </tr>
+      </table>
+    </td></tr>
+
+	</table>
+	</form>
+
+</div>
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

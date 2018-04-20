@@ -1,0 +1,58 @@
+<?php
+  $this->assign('menuItem', 'site_templateedit');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/site/templateedit') ?>"><?php echo t('Edit template') ?></a></span></li>
+    <li><span class="basic"><?php echo t('Template - %s', $template->name) ?></span></li>
+    <li><span class="new"><a href="<?php echo url('admin/site/templateedit/new') ?>"><?php echo t('New template');?></a></span></li>
+	</ul>
+</div>
+
+<div class="main_right">
+    <?php echo themeMessages() ?>
+    <table>
+    <tr class="subhead">
+      <td>模版名称</td>
+      <td width="20%">状态</td>
+      <td width="30%">选项</td>
+    </tr>
+<?php
+foreach($templateFiles as $file => $status):
+  $filekey = base64_encode($file);
+?>
+    <tr>
+      <td><a href="<?php echo url('admin/site/templateedit/' . $filekey) ?>"><?php echo plain($file) ?></a></td>
+      <td>
+<?php
+switch ($status) {
+  case 0:
+    echo '<span style="color:#999">' . t('Default') . '</span>';
+    break;
+  case 1:
+    echo '<span style="color:#00f;font-weight:bold">' . t('Modified') . '</span>';
+    break;
+  case 2:
+    echo '<span style="color:#690;font-weight:bold">' . t('Custom') . '</span>';
+    break;
+}
+?>
+      </td>
+      <td>
+        <a href="<?php echo url('admin/site/templateedit/' . $filekey) ?>">编辑</a>
+<?php if ($status): ?>
+        <a href="<?php echo url('admin/site/templatedel/' . $filekey) ?>" class="btn_confirm" rel="确认删除该模版吗?">删除</a>
+<?php endif ?>
+      </td>
+    </tr>
+<?php endforeach ?>
+    </table>
+    <div></div>
+	</div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

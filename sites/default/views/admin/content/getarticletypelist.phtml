@@ -1,0 +1,66 @@
+<?php
+  $this->assign('menuItem', 'content_article_type');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/content/getArticleTypeList') ?>">文章分类管理</a></span></li>
+		<?php if (access('edit articletype')): ?>
+		<li><span class="new"><a href="<?php echo url('admin/content/editArticleType'); ?>">新增分类词</a></span></li>
+		<?php endif; ?>
+	</ul>
+</div>
+
+
+<div class="main_right" style="margin-left:5px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <table>
+      <tr class="subhead">
+        <td width="8%">编号</td>
+        <td width="40%">分类名称</td>
+        <td width="10%">分类标识</td>
+        <td width="10%">下级分类数量</td>
+        <td width="10%">文章数量</td>
+        <td width="20%">管理</td>
+      </tr>
+<?php
+$i = 1;
+  if(is_array($articleTypeList)):
+    foreach($articleTypeList as $key => $dl):
+?>
+      <tr>
+        <td><?php echo $i++; ?></td>
+        <td>
+<?php if (isset($dl->parent) && $dl->parent!=0): ?>
+        <span class="term_sub2"></span>
+<?php endif;?>
+        <a href="<?php echo url('admin/content/editArticleType/'.$dl->atid); ?>"><?php echo $dl->name; ?></a></td>
+        <td><?php echo isset($dl->type_id) ? $dl->type_id : 0; ?></td>
+        <td><?php echo isset($dl->typecount) ? $dl->typecount : 0; ?></td>
+        <td><?php echo isset($dl->count) ? $dl->count : 0; ?></td>
+        <td>
+          <a href="<?php echo isset($dl->url) ? url($dl->url) : 0; ?>" target="_blank">查看</a>&nbsp;
+<?php if (isset($dl->parent) && $dl->parent==0): ?>
+          <?php if (access('edit articletype')): ?><a href="<?php echo url('admin/content/editArticleType/0/'.$dl->atid); ?>">新增子分类</a>&nbsp;<?php endif;?>
+<?php endif;?>
+          <?php if (access('edit articletype')): ?>
+          <a href="<?php echo url('admin/content/editArticleType/'.$dl->atid); ?>">编辑</a>&nbsp;
+          <?php endif;?>
+          <?php if (access('delete articletype')): ?>
+          <a href="<?php echo url('admin/content/deleteAriticleType/'.$dl->atid) ?>" class="btn_confirm" rel="确认删除该分类、子类及分类下的文章吗?">删除</a>&nbsp;
+          <?php endif;?>
+          <?php if (!access(array('edit articletype', 'delete articletype'), 'or')) echo '&nbsp;&nbsp;-';?>
+        </td>
+      </tr>
+<?php
+    endforeach;
+  endif;
+?>
+    </table>
+  </div>
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

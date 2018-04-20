@@ -1,0 +1,75 @@
+<?php
+  $this->assign('menuItem', 'site_payment');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/site/paymentlist') ?>">支付方式列表</a></span></li>
+		<li><span class="basic">支付方式配置 - <?php echo $payment->name ?></span></li>
+	</ul>
+</div>
+
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="post">
+    <table>
+<?php
+if (!empty($settingFields)):
+foreach ($settingFields as $field => $row):
+  if (is_array($row)) {
+    $name = $row['name'];
+    if (isset($row['type'])) {
+      $type = $row['type'];
+    } else {
+      $type = 'text';
+    }
+  } else {
+    $name = $row;
+    $type = 'text';
+  }
+?>
+      <tr class="nohover"><td class="bold"><?php echo plain($name) ?></td></tr>
+      <tr>
+        <td>
+<?php if ($type == 'text'): ?>
+          <input name="<?php echo $field ?>" value="<?php if (isset($payment->{$field})) echo plain($payment->{$field}) ?>" class="txt" />
+<?php elseif ($type == 'textarea'): ?>
+          <textarea name="<?php echo $field ?>" class="normalXheditor"><?php if (isset($payment->{$field})) echo stripslashes($payment->{$field}) ?></textarea>
+<?php elseif ($type == 'select'): ?>
+          <select name="<?php echo $field ?>">
+<?php
+if (isset($row['options'])):
+  foreach ($row['options'] as $key => $value):
+?>
+            <option value="<?php echo $key ?>"<?php if (isset($payment->{$field}) && $payment->{$field} == $key) echo ' selected="selected"' ?>><?php echo plain($value) ?></option>
+<?php
+  endforeach;
+endif;
+?>
+          </select>
+<?php endif ?>
+        </td>
+      </tr>
+<?php
+endforeach;
+else:
+?>
+      <tr class="nohover"><td>该支付方式没有配置项</td></tr>
+<?php endif ?>
+      <tr class="noborder nohover" style="border-bottom:0px solid red;">
+        <td>
+          <input type="submit" value="提交" class="but" />
+          <a href="<?php echo url('admin/site/paymentlist') ?>" style="text-decoration:none;">
+          <input type="button" value="返回列表" class="Buttom_4b" style="padding-left:18px;" /></a>
+        </td>
+      </tr>
+    </table>
+    </form>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

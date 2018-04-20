@@ -1,0 +1,44 @@
+<?php
+  $this->assign('menuItem', 'product_typelist');
+  echo $this->render('admin/before_body.phtml');
+?>
+<style>
+<!--
+body{background-color: #FFFFFF;}
+-->
+</style>
+  <div class="main_right main_right_iframe" id="relatedaddlist">
+    <div><?php echo $selectHtml;?></div>
+    <table>
+            <tr class="subhead">
+              <td width="8%"><?php echo t('SN') ?></td>
+              <td width="70%"><?php echo t('Product Name') ?></td>
+
+            </tr>
+<?php
+  foreach($productsList as $key => $product):
+?>
+          <tr class="i<?php echo $key ?>">
+            <td><input type="checkbox" class="checkItem" name="checkItem" value="<?php echo $product->pid;?>" title="<?php echo $product->name;?>"></td>
+            <td><?php echo plain($product->name) ?></td>
+
+          </tr>
+<?php
+  endforeach;
+?>
+      </table>
+      <div class="pagination"><?php echo $pagination ?></div>
+      <div class="div_btn_bottom" style="clear:both;">
+        <input type="checkbox" id="checkAll" > ？<?php echo t('All') ?>
+        <input type="submit" id="prosceniumaddrelated" name="submit" value="<?php echo t('Sure') ?>" class="btn"/>
+      </div>
+
+  </div>
+<?php
+  echo $this->render('admin/after_body.phtml');
+?>
+
+
+
+
+

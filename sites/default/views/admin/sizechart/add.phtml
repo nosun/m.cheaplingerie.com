@@ -1,0 +1,29 @@
+<?php
+  $this->assign('menuItem', 'product_typelist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/sizechart/list') ?>">Size Chart列表</a></span></li>
+		<?php if (access('size chart manage')): ?>
+		<li><span class="new"><a href="<?php echo url('admin/sizechart/add') ?>">新建Size Chart</a></span></li>
+		<?php endif;?>
+	</ul>
+</div>
+
+<div class="body_right">
+    <?php echo themeMessages() ?>
+    <form action="" method="post" id="size_chart_add" enctype="multipart/form-data">
+	    <?php $this->render('admin/sizechart/info.phtml')?>
+	    <div class="attribute" style="margin-top:10px; margin-left:30px; margin-bottom:30px;">
+      	<input type="submit" value="保存" class="Buttom_1 but" />
+      	<input type="submit" value="保存并继续新增" class="Buttom_2 but" id="btn_continue" />
+      	<a href="<?php echo url('admin/sizechart/list') ?>" class="Buttom_back but">返回SizeChart列表</a>
+    </div>
+    </form>
+</div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

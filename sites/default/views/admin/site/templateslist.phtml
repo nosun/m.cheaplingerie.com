@@ -1,0 +1,44 @@
+<?php
+  $this->assign('menuItem', 'site_templates');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="basic"><a href="<?php echo url('admin/site/templates') ?>"><?php echo t('Templates list') ?></a></span></li>
+	</ul>
+</div>
+
+<div class="main_right">
+    <?php echo themeMessages() ?>
+    <dl style="padding:20px 10px">
+<?php
+  foreach($templates as $tpl => $info):
+?>
+      <dd style="float:left;width:180px;height:200px;text-align:center">
+<?php if ($info->screenshot): ?>
+        <p><img src="<?php echo url('templates/' . $tpl . '/screenshot.png') ?>"></p>
+<?php endif ?>
+        <p><b><?php echo plain($info->name) ?></b></p>
+<?php if (isset($info->version)): ?>
+        <p><?php echo t('Version')?>: <?php echo plain($info->version) ?></p>
+<?php endif ?>
+        <div>
+<?php if ($tpl == $template->template): ?>
+          <b><?php echo t('Current') ?></b>
+<?php else: ?>
+          <a href="<?php echo url('admin/site/preview/' . $tpl) ?>" target="_blank"><?php echo t('Preview') ?></a>
+          <a href="<?php echo url('admin/site/settemplate/' . $tpl) ?>" class="btn_confirm" rel="确认设置为默认模板吗?">设置为默认模板</a>
+<?php endif ?>
+        </div>
+      </dd>
+<?php
+  endforeach;
+?>
+    </dl>
+    <div style="clear:both"></div>
+	</div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

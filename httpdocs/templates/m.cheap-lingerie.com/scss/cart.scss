@@ -1,0 +1,180 @@
+#cart-area{
+	font-family: 'arial';
+	.subtotal{
+		margin: 15px 0;
+		text-align: center;
+		.total-price{
+			font-size: 1.8rem;
+			span{
+				color: #c01920;
+			}
+		}
+		.free-word{
+			margin: 8px;
+			font-size: 1.4rem;
+			color: #007600;
+		}
+		.btn-mom{
+			padding: 0 4.5%;
+			margin: 18px 0;
+		}
+	}
+	.buy-list{
+		padding: 0 4.5%;
+		li{
+			background:transparent url('../images/arrow-r.png') right center no-repeat;
+			margin-bottom: 20px;
+			.img-box{
+				float: left;
+				width: 27%;
+				margin: 0 2%;
+				img{
+					border: 1px solid #989999;
+					width: 100%;
+				}
+			}
+			.info{
+				display: block;
+				float: left;
+				width: 67%;
+				margin-left: 2%;
+				.info-common{
+					font-size: 1.4rem;
+					line-height: 1.8rem;
+					color: #333;
+				}
+				.info-grey{
+					font-size: 1.3rem;
+					line-height: 1.6rem;
+					color: #666666;
+					text-indent: 1rem;
+				}
+				.info-price{
+					color: #c01920;
+				}
+				.info-img{
+					text-indent: 1rem;
+					img{
+						width: 25%;
+						border: 1px solid #989999;
+					}
+				}
+			}
+			.btn-grp{
+				padding-top: 10px;
+				.text-default{
+					display: none;
+				}
+				button{
+					margin-right: 3%;
+					position: relative;
+					span{
+						margin-left: -10px;
+					}
+					img{
+						display: block;
+						position: absolute;
+						right: 7px;
+						top: 10px;
+					}
+				}
+			}
+		}
+	}
+	.recommend{
+		overflow: hidden;
+		.title{
+			font-size: 1.4rem;
+			text-indent: 1rem;
+		}
+		// .recommend-list{
+		// 	width: 10000px;
+		// 	margin-top: 0.3rem;
+		// 	margin-bottom: 1rem;
+		// 	overflow: auto;
+		// 	li{
+		// 		margin-right: 0.5rem;
+		// 		float: left;
+		// 	}
+		// }
+		.flexslidertwo{
+			margin-top: 0.3rem;
+		 	margin-bottom: 1rem;
+		 	.flex-control-nav,.flex-direction-nav{
+		 		display: none;
+		 	}
+		}
+		.btn-mom{
+			padding: 0 4.5%;
+			.btn-long{
+				font-size: 1.6rem;
+			}
+		}
+	}
+	.btn-to-top{
+		margin: 1rem 0;
+	}
+	.other-option{
+		padding: 0 4.5%;
+		.change{
+			margin-top:1rem;
+		}
+		.no-collapse-btn-grp{
+			margin-top: 1rem;
+			a{
+				font-size: 1.6rem;
+			}
+		}
+	}
+	.clearfix: after{
+	    content:".";
+	    height:0;
+	    visibility:hidden;
+	    display:block;
+	    clear:both;
+	}
+
+    //payment_success
+    .pay-success-word{
+      font-size: 1.5rem;
+      color:#007600;
+      text-align: center;
+      margin: 1.5rem 0;
+      span{
+        display: inline-block;
+        height: 20px;
+        width: 15px;
+        background: url("../images/payment-success.png");
+        background-size: cover;
+        vertical-align: middle;
+        margin-right: 0.5rem;
+      }
+    }
+    .view-detail{
+      padding: 5% 4.5%;
+      border-bottom: 1px solid #dddddd;
+      border-top: 1px solid #dddddd;
+    }
+
+    //payment_fail
+    .pay-fail-area{
+      padding: 5% 0;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 1.2rem;
+      .pay-failure-word{
+        //text-indent: 0.5rem;
+        font-size: 1rem;
+        line-height: 1.5rem;
+        color: #c01920;
+        margin:0;
+      }
+      .contact-word{
+        line-height: 1.5rem;
+        padding:0 4.5%;
+        a{
+          color: #b2b2b2;
+          text-decoration: underline;
+        }
+      }
+    }
+}

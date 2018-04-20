@@ -1,0 +1,39 @@
+<?php
+  $this->assign('menuItem', 'product_typelist');
+  echo $this->render('admin/before_body.phtml');
+?>
+
+  <div class="main_right main_right_iframe" id="articleRelated">
+     <div><?php echo $selectHtml;?></div>
+     <table>
+            <tr class="subhead">
+              <td width="8%">ID</td>
+              <td width="50%">标题</td>
+              
+            </tr>
+<?php
+  foreach($articleList as $key => $v):
+?>
+          <tr class="i<?php echo $key ?>">
+            <td><input type="checkbox" class="checkItem" name="checkItem" value="<?php echo $v->aid;?>" title="<?php echo $v->title;?>"><?php echo $v->aid;?></td>
+            <td><?php echo plain($v->title) ?></td>
+            
+          </tr>
+<?php
+  endforeach;
+?>
+      </table>
+      <div class="pagination"><?php echo $pagination ?></div>
+      <div class="div_btn_bottom" style="clear:both;">
+        <input type="checkbox" id="checkAll" > ？<?php echo t('All') ?>&nbsp;<input type="submit" id="articleproductrelated" name="submit" value="<?php echo t('Sure') ?>" class="btn"/> &nbsp;
+      </div>
+        
+  </div>
+<?php
+  echo $this->render('admin/after_body.phtml');
+?>
+
+
+
+
+

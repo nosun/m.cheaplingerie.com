@@ -1,0 +1,40 @@
+<?php
+  $this->assign('menuItem', 'site_stmp');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+  <ul>
+    <li><span class="check"><a href="<?php echo url('admin/site/pagevariablestheme') ?>">页面信息模板管理</a></span></li>
+  </ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="POST">
+    <input type="hidden" name="pvid" value="<?php echo isset($pv->pvid) ? $pv->pvid : null?>">
+    <table>
+      <tr class="nohover"><td class="bold" colspan="2">页面信息模板KEY</td></tr>
+      <tr>
+        <td width="50%">
+          <input size="60" name="key" value="<?php echo isset($pv->key) ? $pv->key : null?>" <?php if(isset($pv->pvid) && $pv->pvid) echo 'readonly'; ?> class="non-empty" title="key 不能为空"/> <span style="color:red;">*</span>
+        </td>
+        <td width="40%"></td>
+      </tr>
+    
+    <?php echo $this->render('admin/site/page_variables.phtml');?>
+      
+    </table>
+    
+    <div class="main_bottom_deal">
+      <input type="submit" value="保存" class="btn">
+    </div>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

@@ -1,0 +1,63 @@
+<?php
+  $this->assign('menuItem', 'product_productslist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/product/list') ?>">商品列表</a></span></li>
+		<li><span class="basic"><?php echo t('Batch Add Tag') ?></span></li>
+	</ul>
+</div>
+
+<div>
+    <?php echo themeMessages() ?>
+    <form action="" method="post" id="form_batch_add_tag">
+    <input
+			type="hidden" id="directory_list"
+			value='<?php echo isset($directoryList) ? strtr(json_encode($directoryList), "'", "\'") : '{}'; ?>'>
+    <div class="clear left_photo" id="tabs">
+    	<div class="clear tab_ul">
+	      	<ul>
+	        	<li><a href="#base"><?php echo t('Base information') ?></a></li>
+	      	</ul>
+      	</div>
+      	<div id="base" class="box_Product main_right">
+	      	<table>
+	        	<tr class="nohover"><td class="bold" colspan="2">产品url(一行一个产品):</td></tr>
+	        	<tr>
+	          		<td colspan="2"><textarea name="product_url_list" rows="20" cols="10"></textarea></td>
+	        	</tr>
+			<tr>
+				<td width="*">
+				<p><select class="directory_tid1" onchange="selectChange(this)" name="directory_tid[]">
+					<option value="0">-- 请选择一级商品目录 --</option>
+					<?php foreach ($directoryList as $tid1 => $term1): ?>
+					<option value="<?php echo $tid1 ?>"><?php echo t($term1->name) ?></option>
+					<?php endforeach ?>
+				</select></p>
+				<p><select class="directory_tid2" onchange="selectChange(this)" name="directory_tid[]">
+					<option value="0">-- 请选择二级商品目录 --</option>
+				</select></p>
+				<p><select class="directory_tid3" onchange="selectChange(this)" name="directory_tid[]">
+					<option value="0">-- 请选择三级商品目录 --</option>
+				</select></p>
+				<p><select class="directory_tid4" onchange="selectChange(this)" name="directory_tid[]">
+          <option value="0">-- 请选择四级商品目录 --</option>
+        </select></p>
+        </td>
+        <td></td>
+        </tr>
+	      	</table>
+		</div> 
+    	<div class="attribute" style="margin-top:10px; margin-left:30px; margin-bottom:30px;">
+      		<input type="submit" value="保存" class="Buttom_1 but" />
+      		<a href="<?php echo url('admin/product/list') ?>" class="Buttom_back but">返回商品列表</a>
+    	</div>
+    </div>
+    </form>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

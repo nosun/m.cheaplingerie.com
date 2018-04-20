@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+<div>
+    <div class="back_head">
+        <a class="back" href="<?php echo url('user/myaccount'); ?>"><img src="<?php echo $tpldir; ?>/images/back.png"></a>
+    </div>
+
+    <div id="personal_information">
+    	<?php echo themeMessages(); ?>
+    	<?php if($changeflag): ?>
+    		<p class="pay-success-word">
+	            <span></span>
+	            You have successfully modified your
+	            personal information!
+	        </p>
+    	<?php endif; ?>
+        <h2 class="classh2">Personal Information</h2>
+        <form action="<?php echo url('user/userinfoedit'); ?>" method="post" name="editinfoform">
+	        <div class="sign_regist">
+	            <h2 class="sign_regist_h2">User Name:<span>*</span></h2>
+	            <input name="username" class="sign_regist_input" type="text" value="<?php echo $user->name; ?>" readonly />
+	            <h2 class="sign_regist_h2">E-mail<span>*</span></h2>
+	            <input class="sign_regist_input email" type="text" name="email" value="<?php echo $user->email; ?>" />
+	            <h2 class="sign_regist_h2">Mobile<span>*</span></h2>
+	            <input class="sign_regist_input" type="text" name="mobile" value="<?php echo $user->mobile; ?>" />
+	        </div>
+	        <div class="col-box" style="margin-top: 5%">
+	            <button class="btn-red btn-red-high submit" type="submit">Submit</button>
+	        </div>
+	        <div class="col-box">
+	            <button class="btn-long" type="reset">Reset Form</button>
+	        </div>
+        </form>
+        <script>
+	        $('.sign_regist_input').click(function(){
+				$('input').removeClass('aaa');
+				$(this).addClass('aaa');
+			});
+			
+        	function checkform(){
+        		if($('.email').val()==''){
+    	            $('input').removeClass('aaa');
+    	            $('.email').addClass('aaa');
+    	            alert('Please enter your email');
+    	            return false;
+    	        }
+    	        return true;
+        	}
+        	
+			$(".submit").click(function(){
+				event.preventDefault();
+				if(checkform()){
+					editinfoform.submit();
+				}
+			});
+        </script>
+    </div>
+</div>
+
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

@@ -1,0 +1,61 @@
+<?php
+  $this->assign('menuItem', 'site_payment');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/site/paymentlist') ?>">支付方式管理</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <table>
+      <tr class="subhead">
+        <td width="15%">支付方式名称</td>
+        <td>支付方式描述</td>
+        <td align="center" width="15%">插件版本</td>
+        <td width="20%">选项</td>
+      </tr>
+<?php
+foreach($paymentsList as $key => $payment):
+  if (!access('super') && !$payment->status) {
+    continue;
+  }
+?>
+      <tr>
+        <td><?php if (isset($payment->name)) echo plain($payment->name) ?></td>
+        <td style="word-wrap:break-word;"><?php if (isset($payment->description)) echo stripslashes($payment->description) ?></td>
+        <td align="center"><?php if (isset($payment->version)) echo plain($payment->version) ?></td>
+        <td>
+<?php if (access('super') && (!isset($payment->status) || !$payment->status)): ?>
+          <a href="<?php echo url('admin/site/paymentinstall/' . $key) ?>">安装</a>
+<?php else: ?>
+<?php if (access('super')): ?>
+          <a href="<?php echo url('admin/site/paymentuninstall/' . $key) ?>">卸载</a>
+<?php endif ?>
+          <a href="<?php echo url('admin/site/paymentedit/' . $key) ?>">编辑</a>
+<?php endif ?>
+<?php
+if (access('manage payment')):
+  if (!isset($payment->visible) || $payment->visible):
+?>
+          <a href="<?php echo url('admin/site/paymenthide/' . $key) ?>">隐藏</a>
+<?php else: ?>
+          <a href="<?php echo url('admin/site/paymentshow/' . $key) ?>">显示</a>
+<?php
+  endif;
+endif;
+?>
+        </td>
+      </tr>
+<?php endforeach ?>
+    </table>
+  </div>
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

@@ -1,0 +1,141 @@
+<?php
+  $this->assign('menuItem', 'user_list');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/user/list') ?>">用户列表</a></span></li>
+		<li><span class="basic">用户管理 - <?php echo $isnew ? t('New') : plain($account->name) ?></span></li>
+	</ul>
+</div>
+
+<div class="main_right">
+    <?php echo themeMessages() ?>
+    <form action="" method="post" autocomplete="off">
+    <table style="margin-left:10px;margin-top:10px;">
+<?php if ($isnew): ?>
+      <tr class="nohover"><td class="bold" colspan="2">用户名</td></tr>
+      <tr>
+        <td width="50%"><input name="name" value="<?php if (isset($account)) echo plain($account->name) ?>" class="txt" /> <span style="color:red">*</span></td>
+        <td width="45%">用户名，新建后不可修改，由 3-20 位字母或数字组成</td>
+      </tr>
+<?php else: ?>
+      <tr class="nohover"><td class="bold" colspan="2">用户名 : <?php echo plain($account->name) ?></td></tr>
+<?php endif ?>
+      <tr class="nohover"><td class="bold" colspan="2">密码</td></tr>
+      <tr>
+        <td width="50%">
+          <input name="password" type="password" class="txt" />
+<?php if ($isnew): ?>
+          <span style="color:red">*</span>
+<?php endif ?>
+        </td>
+<?php if ($isnew): ?>
+        <td width="45%">新密码，由 5 位以上字符组成</td>
+<?php else: ?>
+        <td width="45%">由 5 位以上字符组成，如果不需要修改密码，此处留空</td>
+<?php endif ?>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">确认密码</td></tr>
+      <tr>
+        <td width="50%">
+          <input name="password_confirm" type="password" class="txt" />
+<?php if ($isnew): ?>
+          <span style="color:red">*</span>
+<?php endif ?>
+        </td>
+        <td width="45%">确认密码</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">会员等级</td></tr>
+      <tr>
+        <td width="50%"><select name="rank">
+<?php foreach ($ranksList as $rid => $rank): ?>
+          <option value="<?php echo $rid ?>"<?php if (isset($account) && $account->rid == $rid) echo ' selected="selected"' ?>><?php echo plain($rank->name . ' - ' . $rank->discount) ?>%</option>
+<?php endforeach ?>
+        </select></td>
+        <td width="45%">会员等级</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">角色设置</td></tr>
+<?php
+if (!empty($rolesList)):
+  foreach ($rolesList as $rid => $role):
+?>
+      <tr>
+        <td colspan="2">
+          <p><label style="color:#333"><input type="checkbox" name="roles[]" value="<?php echo $rid ?>"<?php if (isset($account) && in_array($rid, $account->roles)) echo ' checked="checked"' ?> /> <?php echo t($role->name) ?></label></p>
+        </td>
+      </tr>
+<?php
+  endforeach;
+else:
+?>
+      <tr>
+        <td colspan="2">无附加角色</td>
+      </tr>
+<?php endif ?>
+      <tr class="nohover"><td class="bold" colspan="2">姓名</td></tr>
+      <tr>
+        <td width="50%"><input name="nickname" value="<?php if (isset($account)) echo plain($account->nickname) ?>" class="txt" /></td>
+        <td width="45%">用户姓名</td>
+      </tr>
+      <tr><td class="bold" colspan="2">性别 :
+        <label style="color:#333"><input type="radio" name="gender" value="<?php echo User_Model::GENDER_MALE ?>"<?php if (isset($account) && $account->gender == User_Model::GENDER_MALE) echo ' checked="checked"' ?>> <?php echo t('Male') ?></label>
+        <label style="color:#333"><input type="radio" name="gender" value="<?php echo User_Model::GENDER_FEMALE ?>"<?php if (isset($account) && $account->gender == User_Model::GENDER_FEMALE) echo ' checked="checked"' ?>> <?php echo t('Female') ?></label>
+      </td></tr>
+      <tr class="nohover"><td class="bold" colspan="2">出生日期</td></tr>
+      <tr>
+        <td width="50%"><input name="birthday" value="<?php if (isset($account) && $account->birthday != '') echo plain(substr($account->birthday, 0, 4) . '-' . intval(substr($account->birthday, 4, 2)) . '-' . intval(substr($account->birthday, 6, 2))) ?>" class="txt" /></td>
+        <td width="45%">出生日期，格式 YYYY-MM-DD</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">电子邮箱</td></tr>
+      <tr>
+        <td width="50%"><input name="email" value="<?php if (isset($account)) echo plain($account->email) ?>" class="txt" /></td>
+        <td width="45%">电子邮箱</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">固定电话</td></tr>
+      <tr>
+        <td width="50%"><input name="phone" value="<?php if (isset($account)) echo plain($account->phone) ?>" class="txt" /></td>
+        <td width="45%">固定电话</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">移动电话</td></tr>
+      <tr>
+        <td width="50%"><input name="mobile" value="<?php if (isset($account)) echo plain($account->mobile) ?>" class="txt" /></td>
+        <td width="45%">移动电话</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">地区</td></tr>
+      <tr>
+        <td width="50%"><input name="area" value="<?php if (isset($account)) echo plain($account->area) ?>" class="txt" /></td>
+        <td width="45%">地区</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">邮政编码</td></tr>
+      <tr>
+        <td width="50%"><input name="postcode" value="<?php if (isset($account)) echo plain($account->postcode) ?>" class="txt" /></td>
+        <td width="45%">邮政编码</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">积分</td></tr>
+      <tr>
+        <td width="50%"><input name="points" value="<?php echo isset($account) && isset($account->points) ? plain($account->points) : 0 ?>" class="txt" /></td>
+        <td width="45%">积分</td>
+      </tr>
+      <tr>
+        <td class="bold"><label style="color:#333"><input type="checkbox" name="status"<?php if (!isset($account) || !isset($account->status) || $account->status) echo ' checked="checked"' ?> /> 激活</label></td>
+        <td>用户状态</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">登录次数 : <?php echo isset($account) && isset($account->login_count) ? plain($account->login_count) : 0 ?></td></tr>
+      <tr class="nohover"><td class="bold" colspan="2">最后登录时间: <?php echo isset($account) && isset($account->login_timestamp) && $account->login_timestamp ? date('Y-m-d G:i:s', $account->login_timestamp) : '-' ?></td></tr>
+      <tr class="nohover"><td class="bold" colspan="2">最后登录IP: <?php echo isset($account) && isset($account->login_ip) ? plain($account->login_ip) : '-' ?></td></tr>
+      <tr class="noborder nohover" style="border-bottom:0px solid red;">
+        <td colspan="2">
+          <input type="submit" value="提交" class="but" />
+          <a href="<?php echo url('admin/user/list') ?>" class="Buttom_4b">返回列表</a>
+        </td>
+      </tr>
+    </table>
+    </form>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

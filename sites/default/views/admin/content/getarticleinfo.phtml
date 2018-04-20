@@ -1,0 +1,175 @@
+<?php
+  $this->assign('menuItem', 'content_article');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/content') ?>"><?php echo t('Article Manage') ?></a></span></li>
+		<li><span class="basic"> <?php if (isset($articleInfo->aid)) echo '编辑文章 - '.plain($articleInfo->title); else echo '新增文章'; ?> </span></li>
+	</ul>
+</div>
+
+
+<div class="tableonhover" id="article_type">
+<?php echo themeMessages() ?>
+  <form id="form_productinfo" action="<?php echo url('admin/content/editArticle'); ?>" method="post">
+    <input type="hidden" name="articleRelatedData" id="articleRelatedData" value='<?php echo strtr(json_encode($articleRelatedData), "'", "\'")?>'>
+    <input type="hidden" name="related_info" id="related_info" value='<?php echo strtr(json_encode($articleProductRelatedData), "'", "\'")?>'>
+    <input type="hidden" name="aid" value="<?php echo isset($articleInfo->aid) ? $articleInfo->aid : null;?>">
+    <input type="hidden" name="pvid" value="<?php echo isset($articleInfo->pvid) ? $articleInfo->pvid : null;?>">
+    <input type="hidden" name="isbothway" id="isbothway" value="no">
+    <input type="hidden" id="pvThemeType" value="article" />
+    <input type="hidden" id="dataid" value="<?php echo isset($articleInfo->aid) ? $articleInfo->aid : null?>" />
+    <input type="hidden" id="directory_list" value='<?php echo strtr(json_encode($directoryList), "'", "\'")?>'>
+    <div class="clear left_photo" id="tabs">
+      <div class="clear tab_ul">
+      <ul>
+        <li><a href="#base">基本信息</a></li>
+        <li><a href="#pagevariables">页面信息</a></li>
+        <li><a href="#article_related">相关文章</a></li>
+        <li><a href="#article_product">相关商品</a></li>
+      </ul>
+      </div>
+
+
+      <div id="base" class="box_Product main_right">
+	      <table style="margin-bottom:10px;">
+	        <tr class="nohover"><td class="bold" colspan="2">文章标题</td></tr>
+	        <tr>
+	          <td><input name="article_title" id="page_title" value="<?php if (isset($articleInfo)) echo plain($articleInfo->title) ?>" class="medium_txt non-empty"  title="文章标题不能为空" /> <span style="color:red;">*</span></td>
+	          <td width="25%"></td>
+	        </tr>
+
+	        <tr class="nohover"><td class="bold" colspan="2">页面别名</td></tr>
+	        <tr>
+	          <td><input name="path_alias" id="path_alias" value="<?php if (isset($articleInfo)) echo plain($articleInfo->path_alias) ?>" class="medium_txt non-empty" title="别名不能为空"/> <span style="color:red;">*</span></td>
+	          <td></td>
+	        </tr>
+
+	        <tr class="nohover"><td class="bold" colspan="2">文章分类</td></tr>
+	        <tr>
+	          <td>
+	            <select name="atid" class="filter_select non-empty" title="文章分类不能为空" >
+                <option value=""></option>
+<?php foreach ($articletypes as $k => $v):?>
+                <option value="<?php echo isset($v->atid) ? $v->atid : 0?>"
+                <?php if (isset($articleInfo) && $articleInfo->atid == $v->atid) echo 'selected'?>
+                ><?php echo isset($v->allname) ? $v->allname : null?></option>
+<?php endforeach;?>
+              </select> <span style="color:red;">*</span>
+            </td>
+	          <td></td>
+	        </tr>
+	        
+	        <tr class="nohover"><td class="bold" colspan="2"><?php echo t('Product Dir');?></td></tr>
+            <tr><td colspan="2"><select name="directory_tid1">
+            <option value="0">-- 请选择一级商品目录 --</option>
+<?php foreach ($directoryList as $tid1 => $term1): ?>
+            <option value="<?php echo $tid1 ?>"<?php if (isset($articleInfo) && isset($articleInfo->directory_tid1) && $articleInfo->directory_tid1 == $tid1) echo ' selected="selected"' ?>><?php echo t($term1->name) ?></option>
+<?php endforeach ?>
+          </select>
+          <select name="directory_tid2">
+            <option value="0">-- 请选择二级商品目录 --</option>
+<?php
+  if (isset($articleInfo->directory_tid1) && isset($directoryList[$articleInfo->directory_tid1]) && isset($directoryList[$articleInfo->directory_tid1]->sub)):
+    foreach ($directoryList[$articleInfo->directory_tid1]->sub as $tid2 => $term2):
+?>
+            <option value="<?php echo $tid2 ?>"<?php if (isset($articleInfo) && isset($articleInfo->directory_tid2) && $articleInfo->directory_tid2 == $tid2) echo ' selected="selected"' ?>><?php echo t($term2->name) ?></option>
+<?php
+    endforeach;
+  endif;
+?>
+          </select>
+          <select name="directory_tid3">
+            <option value="0">-- 请选择三级商品目录 --</option>
+<?php
+  if (isset($articleInfo->directory_tid2) && isset($directoryList[$articleInfo->directory_tid1]->sub[$articleInfo->directory_tid2]) && isset($directoryList[$articleInfo->directory_tid1]->sub[$articleInfo->directory_tid2]->sub)):
+    foreach ($directoryList[$articleInfo->directory_tid1]->sub[$articleInfo->directory_tid2]->sub as $tid3 => $term3):
+?>
+            <option value="<?php echo $tid3 ?>"<?php if (isset($articleInfo) && isset($articleInfo->directory_tid3) && $articleInfo->directory_tid3 == $tid3) echo ' selected="selected"' ?>><?php echo t($term3->name) ?></option>
+<?php
+    endforeach;
+  endif;
+?>
+          </select>
+          <select name="directory_tid4">
+            <option value="0">-- 请选择四级商品目录 --</option>
+<?php
+  if (isset($articleInfo->directory_tid2) && isset($directoryList[$articleInfo->directory_tid1]->sub[$articleInfo->directory_tid2]->sub[$articleInfo->directory_tid3]) && isset($directoryList[$articleInfo->directory_tid1]->sub[$articleInfo->directory_tid2]->sub[$articleInfo->directory_tid3]->sub)):
+    foreach ($directoryList[$articleInfo->directory_tid1]->sub[$articleInfo->directory_tid2]->sub[$articleInfo->directory_tid3]->sub as $tid4 => $term4):
+?>
+            <option value="<?php echo $tid4 ?>"<?php if (isset($articleInfo) && isset($articleInfo->directory_tid4) && $articleInfo->directory_tid4 == $tid4) echo ' selected="selected"' ?>><?php echo t($term4->name) ?></option>
+<?php
+    endforeach;
+  endif;
+?>
+          </select>
+          </td></tr>
+          
+          <tr class="nohover"><td class="bold" colspan="2">作者</td></tr>
+	        <tr>
+	          <td><input name="author" value="<?php if (isset($articleInfo)) echo plain($articleInfo->author) ?>" /></td>
+	          <td width="25%"></td>
+	        </tr>
+	        
+	        <tr class="nohover"><td class="bold" colspan="2">来源</td></tr>
+	        <tr>
+	          <td><input name="source" value="<?php if (isset($articleInfo)) echo plain($articleInfo->source) ?>" /></td>
+	          <td width="25%"></td>
+	        </tr>
+
+	        <tr class="nohover"><td class="bold" colspan="2">排序</td></tr>
+          <tr>
+            <td><input value="<?php echo isset($articleInfo->weight) ? $articleInfo->weight : null?>" name="weight" class=file_list_weight_txt /></td>
+            <td></td>
+          </tr>
+
+	        <tr class="nohover"><td class="bold" colspan="2">是否发布</td></tr>
+	        <tr>
+	          <td colspan="2"><input type="checkbox" name="status" id="status"
+	          <?php if(isset($articleInfo->status) && $articleInfo->status==1) echo 'checked'?>
+	          ><label for="status">发布</label></td>
+	          
+	        </tr>
+
+	        <tr class="nohover"><td class="bold" colspan="2">简介</td></tr>
+	        <tr>
+	          <td colspan="2"><textarea name="summary" class="txt_xheditor" rows="10"><?php if (isset($articleInfo->summary)) echo stripslashes($articleInfo->summary) ?></textarea></td>
+	         
+	        </tr>
+
+	        <tr class="nohover"><td class="bold" colspan="2">详细内容</td></tr>
+	        <tr>
+	          <td colspan="2"><textarea name="content" class="txt_xheditor" rows="10"><?php if (isset($articleInfo->content)) echo stripslashes($articleInfo->content) ?></textarea></td>
+	          
+	        </tr>
+	      </table>
+      </div>
+      <div id="pagevariables" class="box_Product main_right">
+		    <table style="margin-bottom:10px;">
+<?php echo $this->render('admin/site/page_variables.phtml');?>
+		    </table>
+	    </div>
+	    <div id="article_related" class="box_Product main_right">
+<?php echo $this->render('admin/content/articlerelated.phtml');?>
+	    </div>
+	    <div id="article_product" class="box_Product main_right">
+<?php echo $this->render('admin/content/articleproductrelated.phtml');?>
+	    </div>
+    </div>
+    <div class="div_btn_bottom" style="margin-left:10px">
+      <input class="btn" type="submit" name="edit" value="<?php echo t('Save'); ?>">&nbsp;
+      <input class="btn btn_cancel" type="button" value="取消">
+    </div>
+  </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>
+
+

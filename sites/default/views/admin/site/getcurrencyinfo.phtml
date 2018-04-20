@@ -1,0 +1,81 @@
+<?php
+  $this->assign('menuItem', 'site_currency');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/site/getCurrencyList') ?>">货币列表</a></span></li>
+		<li><span class="basic"> <?php if (isset($currencyInfo->name)) echo '编辑货币 - '.plain($currencyInfo->fullname); else echo '新增货币'; ?> </span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="POST">
+    <table>
+      <tr class="nohover"><td class="bold" colspan="2">货币代码</td></tr>
+      <tr>
+        <td width="50%">
+          <select id="currencylist" name="name" class="select" title="<?php echo isset($currencyInfo->name) ? $currencyInfo->name : null; ?>"
+          <?php if(isset($currencyInfo->name)) echo 'disabled'?>
+          ><option value="">货币类型</option></select>
+          </td>
+        <td width="40%">不能修改</td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">货币名称</td></tr>
+      <tr>
+        <td width="50%"><input value="<?php echo isset($currencyInfo->fullname) ? $currencyInfo->fullname : null; ?>"
+          class="txt" name="fullname" maxlength="32" /></td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">货币符号</td></tr>
+      <tr>
+        <td width="50%"><input value="<?php echo isset($currencyInfo->symbol) ? $currencyInfo->symbol : null; ?>"
+          class="txt" name="symbol" maxlength="32" /></td>
+        <td width="40%"></td>
+      </tr>
+
+
+
+      <tr class="nohover"><td class="bold" colspan="2">相对汇率</td></tr>
+      <tr>
+        <td width="50%"><input value="<?php echo isset($currencyInfo->exchange) ? $currencyInfo->exchange : null; ?>" <?php if(isset($currencyInfo->default) && $currencyInfo->default==1) echo 'checked disabled'?> class="txt" name="exchange" id="exchange" /></td>
+        <td width="40%">相对于默认货币的汇率</td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">是否默认货币</td></tr>
+          <tr>
+            <td><input type="checkbox" name="default" id="default"
+            <?php if(isset($currencyInfo->default) && $currencyInfo->default==1) echo 'checked disabled'?>
+            onclick = "document.getElementById('exchange').value = '1.00';"> <label for="status">是</label></td>
+            <td></td>
+          </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">是否显示</td></tr>
+
+      <tr>
+            <td><input type="checkbox" name="visible" id="visible"
+            <?php if(!isset($currencyInfo->visible) || $currencyInfo->visible=='1') echo 'checked'?>
+            > <label for="visible">显示</label></td>
+            <td></td>
+          </tr>
+
+      <tr class="noborder nohover" style="border-bottom:0px solid red;">
+        <td class="bold" colspan="2">
+          <input type="submit" value="提交" class="btn" />
+          <input type="button" value="取消" class="btn btn_cancel" />
+        </td>
+      </tr>
+    </table>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

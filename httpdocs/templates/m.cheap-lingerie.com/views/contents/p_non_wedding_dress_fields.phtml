@@ -1,0 +1,21 @@
+<?php foreach ($product->fields as $fieldName => $field): ?>
+	<?php if(!empty($product->{'field_' . $fieldName})): ?>
+		<?php if(count($product->{'field_' . $fieldName}) == 1) {
+			$fieldvalue = $product->{'field_' . $fieldName}[0];
+		} else {
+			$fieldvalue = $fieldName;
+		}?>
+		<input id="data<?php echo $fieldName; ?>input" type="hidden" name="data[<?php echo ucfirst($fieldName);?>]" value="<?php echo $fieldvalue == $fieldName ? '' : $fieldvalue ?>" class="noweddingfield" field-data="<?php echo $fieldName; ?>" />
+		<div class="col-box" id="<?php echo strtoupper($fieldName); ?>">
+			<button class="btn-long" type="button">
+				<div style="float: left">
+					<div class="size"><?php echo ucfirst($fieldName); ?></div>
+					<div class="sele"><?php echo ($fieldvalue == $fieldName) ? 'Select ' . ucfirst($fieldName) : $fieldvalue; ?></div>
+				</div>
+				<div class="icon-angle-right" style="font-size:2rem;line-height:3rem;color:#adadad;float:right;">
+				</div>
+				<div class="clear"></div>
+			</button>
+		</div>
+	<?php endif; ?>
+<?php endforeach; ?>

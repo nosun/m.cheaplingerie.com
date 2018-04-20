@@ -1,0 +1,83 @@
+<?php
+  $this->assign('menuItem', 'content_page');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/content/getPageList') ?>">页面管理</a></span></li>
+		<li><span class="basic"> <?php if (isset($pageInfo->atid)) echo '编辑页面 - '.plain($pageInfo->name); else echo '新增页面'; ?> </span></li>
+	</ul>
+</div>
+
+
+<div class="tableonhover" id="article_page">
+<?php echo themeMessages() ?>
+  <form action="" method="post">
+    <input type="hidden" name="pid" value="<?php echo isset($pageInfo->pid) ? $pageInfo->pid : null;?>">
+    <input type="hidden" name="pvid" value="<?php echo isset($pageInfo->pvid) ? $pageInfo->pvid : null;?>">
+    <input type="hidden" name="path_alias_source" value="<?php echo isset($pageInfo->path_alias) ? $pageInfo->path_alias : null;?>">
+    <input type="hidden" id="pvThemeType" value="page" />
+    <input type="hidden" id="dataid" value="<?php echo isset($pageInfo->pid) ? $pageInfo->pid : null?>" />
+    <div class="clear left_photo" id="tabs">
+      <div class="clear tab_ul">
+      <ul>
+        <li><a href="#base">基本信息</a></li>
+        <li><a href="#pagevariables">页面信息</a></li>
+      </ul>
+      </div>
+
+      <div id="base" class="box_Product main_right">
+        <table style="margin-bottom:10px;">
+          <tr class="nohover"><td class="bold" colspan="2">标题</td></tr>
+          <tr>
+            <td><input name="page_title" id="page_title" value="<?php if (isset($pageInfo)) echo plain($pageInfo->title) ?>" class="txt non-empty" title="标题不能为空" /> <span style="color:red;">*</span></td>
+            <td width="45%">文章标题</td>
+          </tr>
+
+          <tr class="nohover"><td class="bold" colspan="2">页面别名</td></tr>
+          <tr>
+            <td><input name="path_alias" id="path_alias" value="<?php if (isset($pageInfo)) echo plain($pageInfo->path_alias) ?>" class="txt non-empty" title="别名不能为空"/> <span style="color:red;">*</span></td>
+            <td></td>
+          </tr>
+
+          <tr class="nohover"><td class="bold" colspan="2">排序</td></tr>
+          <tr>
+            <td><input value="<?php echo isset($pageInfo->weight) ? $pageInfo->weight : null?>" name="weight" class=file_list_weight_txt /></td>
+            <td></td>
+          </tr>
+
+          <tr class="nohover"><td class="bold" colspan="2">是否发布</td></tr>
+          <tr>
+            <td><input type="checkbox" name="visible" id="visible"
+            <?php if(isset($pageInfo->visible) && $pageInfo->visible) echo 'checked'?>
+            > <label for="visible">发布</label></td>
+            <td></td>
+          </tr>
+
+          <tr class="nohover"><td class="bold" colspan="2">内容</td></tr>
+          <tr>
+            <td colspan="2"><textarea name="content" class="pagevariable_xheditor" rows="10"><?php if (isset($pageInfo->content)) echo stripslashes($pageInfo->content) ?></textarea></td>
+          </tr>
+        </table>
+      </div>
+      <div id="pagevariables" class="box_Product main_right">
+        <table style="margin-bottom:10px;">
+<?php echo $this->render('admin/site/page_variables.phtml');?>
+        </table>
+      </div>
+
+    </div>
+    <div class="div_btn_bottom" style="margin-left:10px;">
+      <input class="btn" type="submit" name="edit" value="<?php echo t('Save'); ?>">
+      <a href="<?php echo url('admin/content/getPageList') ?>" class="Buttom_4b">返回列表</a>
+    </div>
+  </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

@@ -1,0 +1,54 @@
+<?php
+  $this->assign('menuItem', 'site_widget');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/site/widgetlist') ?>">插件管理</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <table>
+      <tr class="subhead">
+        <td width="10%">插件名称</td>
+        <td>插件描述</td>
+        <td width="15%">插件版本</td>
+        <td width="20%">选项</td>
+      </tr>
+<?php
+foreach($widgetsList as $key => $widget):
+  if (!access('super') && !$widget->status) {
+    continue;
+  }
+?>
+      <tr>
+        <td><?php if (isset($widget->name)) echo plain($widget->name) ?></td>
+        <td><?php if (isset($widget->description)) echo plain($widget->description) ?></td>
+        <td><?php if (isset($widget->version)) echo plain($widget->version) ?></td>
+        <td>
+<?php if (access('super') && (!isset($widget->status) || !$widget->status)): ?>
+          <a href="<?php echo url('admin/site/widgetinstall/' . $key) ?>">安装</a>
+<?php else: ?>
+<?php if (access('super')): ?>
+          <a href="<?php echo url('admin/site/widgetuninstall/' . $key) ?>">卸载</a>
+<?php endif ?>
+<?php if (!isset($widget->setting) || $widget->setting == true): ?>
+          <a href="<?php echo url('admin/site/widgetedit/' . $key) ?>">编辑</a>
+<?php
+  endif;
+endif;
+?>
+        </td>
+      </tr>
+<?php endforeach ?>
+    </table>
+  </div>
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

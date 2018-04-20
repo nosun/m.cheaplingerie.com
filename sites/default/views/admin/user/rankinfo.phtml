@@ -1,0 +1,40 @@
+<?php
+  $this->assign('menuItem', 'user_ranks');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/user/ranks') ?>">会员等级列表</a></span></li>
+		<li><span class="basic">会员等级管理 - <?php echo $isnew ? t('New') : plain($rank->name) ?></span></li>
+	</ul>
+</div>
+
+<div class="main_right">
+    <?php echo themeMessages() ?>
+    <form action="" method="post">
+    <table style="margin-top:10px;margin-left:10px;">
+      <tr class="nohover"><td class="bold" colspan="2">等级名称</td></tr>
+      <tr>
+        <td width="50%"><input name="name" value="<?php if (isset($rank)) echo plain($rank->name) ?>" class="txt" /></td>
+        <td width="45%">会员等级名称</td>
+      </tr>
+      <tr class="nohover"><td class="bold" colspan="2">等级折扣</td></tr>
+      <tr>
+        <td width="50%"><input name="discount" value="<?php if (isset($rank)) echo intval($rank->discount) ?>" class="txt" />%</td>
+        <td width="45%">会员等级折扣，有效范围是 0% - 100%</td>
+      </tr>
+      <tr class="noborder nohover" style="border-bottom:0px solid red;">
+        <td colspan="2">
+          <input type="submit" value="提交" class="but" />
+          <a href="<?php echo url('admin/user/ranks') ?>" class="Buttom_4b">返回列表</a>
+        </td>
+      </tr>
+    </table>
+    </form>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

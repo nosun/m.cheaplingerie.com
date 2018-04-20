@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+	<head>
+		<?php $this->render('parts/metaandtitle.phtml'); ?>
+		<?php $this->render('parts/includecss.phtml'); ?>
+		<?php $this->render('parts/includejs.phtml'); ?>
+		<script type="text/javascript" src="<?php echo $tpldir. '/javascripts/jquery.finger.min.js';?>"></script>
+	</head>
+	<body>
+		<div id="product">
+			<div class="back_head">
+				<a class="back" href="<?php echo url($product->url); ?>"><img src="<?php echo $tpldir; ?>/images/back.png"></a>
+			</div>
+			<div class="myslidebox">
+				<div class="goodbay">
+					<ul>
+						<?php if(empty($product->files)): ?>
+							<li><img src="<?php echo urlimg("water_mark",$product->filepath); ?>" /></li>
+							<div class="clear"></div>
+						<?php else: ?>
+							<li><img src="<?php echo urlimg("water_mark",$product->filepath); ?>" /></li>
+							<?php foreach($product->files as $i => $file): ?>
+								<?php if($product->filepath == $file->filepath): ?>
+									<?php continue; ?>
+								<?php endif;?>
+								<li><img src="<?php echo urlimg("water_mark",$file->filepath); ?>" /></li>
+							<?php endforeach; ?>
+							<div class="clear"></div>
+						<?php endif; ?>
+					</ul>
+				</div>
+				<div class="small">
+					<ul>
+						<?php if(empty($product->files)): ?>
+							<li class="selected"><img src="<?php echo urlimg("water_mark",$product->filepath); ?>" /></li>
+							<div class="clear"></div>
+						<?php else: ?>
+							<li class="selected"><img src="<?php echo urlimg("water_mark",$product->filepath); ?>" /></li>
+							<?php foreach($product->files as $i => $file): ?>
+								<?php if($product->filepath == $file->filepath): ?>
+									<?php continue; ?>
+								<?php endif;?>
+								<li><img src="<?php echo urlimg("water_mark", $file->filepath); ?>" /></li>
+							<?php endforeach; ?>
+							<div class="clear"></div>
+						<?php endif; ?>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var showing_img_index = 0;
+	      var nowheight;
+	      var height_array = new Array() ;
+	      //手指滑动，切换大图
+	      $(function() {
+	           picArr=$(".goodbay li");
+	           lilen=$(window).width()-40;
+	           ullen=picArr.length*lilen;
+	          $(".goodbay ul").css("width",ullen);
+	          $('.goodbay ul li').width(lilen);
+	          window.onload = function () {
+	              imgs = $('.goodbay img');
+	              lis = $('.goodbay li');
+	              var originHeight = imgs.eq(0).height();
+	              $('.goodbay').height(originHeight);
+	              for(var tem in imgs){
+	                  height_array.push(imgs.eq(tem).height());
+	              }
+	          };
+	      });
+	      $('.goodbay ul').bind('touchstart',function(e){
+	             starttouch = e.originalEvent.touches[0];
+	             start_x = starttouch.pageX;
+	      });
+
+	      $('.goodbay ul').bind('touchend',function(e){
+	          if($(this).find('img').hasClass('expanded')) return;
+	           //e.preventDefault();
+	           touch = e.originalEvent.changedTouches [0];
+	           left = $(this).css('left');
+	           intleft=parseInt(left);
+	           if(intleft%lilen==0){
+	              end_x = touch.pageX;
+	              if(start_x-end_x>15 && intleft+ullen>lilen) {
+	                  $(this).animate({'left':intleft-lilen},500);
+	                  $('.selected').removeClass('selected').next().addClass('selected');
+	                  showing_img_index++;
+	                  nowheight = height_array[showing_img_index];
+	                  $('.goodbay').height(nowheight);
+	              }
+	              if(end_x-start_x>15 && intleft<0) {
+	                  $(this).animate({'left':intleft+lilen},500);
+	                  $('.selected').removeClass('selected').prev().addClass('selected');
+	                  showing_img_index--;
+	                  nowheight = height_array[showing_img_index];
+	                  $('.goodbay').height(nowheight);
+	              }
+	               resetImg();
+	           }
+	      });
+	      $('.small li').bind('touchstart',function(){
+	          showing_img_index = $(this).index();
+	          $('.goodbay ul').animate({'left':-showing_img_index*lilen},500);
+	          nowheight = height_array[showing_img_index];
+	          $('.goodbay').height(nowheight);
+	          $('li').removeClass('selected');
+	          $(this).addClass('selected');
+	          resetImg();
+	      });
+	      function  resetImg(){
+	          $('.goodbay img').removeClass('expanded')
+	                  .css({height:$('.goodbay').height()+"px",width:$('.goodbay').width()+"px","marginLeft":"0px","marginTop":"0px"});
+	      }
+		</script>
+		<script src="<?php echo $tpldir; ?>/javascripts/main.js"></script>
+	</body>
+	<?php $this->render('parts/after_body.phtml'); ?>
+</html>

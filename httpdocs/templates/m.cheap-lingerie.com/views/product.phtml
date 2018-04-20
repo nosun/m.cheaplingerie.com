@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+	<?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+	<link rel="stylesheet" type="text/css" href="/templates/m.cheap-lingerie.com/font-awesome/3.0/css/font-awesome.css"/>
+</head>
+<body>
+	<div class="MAIN">
+		<div class="head">
+			<?php echo $this->render("parts/header.phtml"); ?>
+		</div>
+		<div id="product">
+			<div id="cat2">
+				<?php echo themeBreadcrumb(); ?>
+			</div>
+			
+			<div class="slidebox">
+				<div class="name"><?php echo $product->name; ?></div>
+				<div class="flexsliderthree">
+					<ul class="slides">
+						<?php if(empty($product->files)): ?>
+							<li><img src="<?php echo urlimg("400x640_water_mark",$product->filepath); ?>" alt="<?php echo isset($product->name)? plain($product->name):null; ?>" /></li>
+						<?php else: ?>
+							<li><img src="<?php echo urlimg("400x640_water_mark",$product->filepath); ?>" alt="<?php echo isset($product->name)? plain($product->name):null; ?>" /></li>
+							<?php $isfirst = true; ?>
+							<?php foreach($product->files as $i => $file): ?>
+								<?php if($product->filepath == $file->filepath): ?>
+									<?php continue; ?>
+								<?php endif;?>
+								<?php if($isfirst): ?>
+									<li><img src="<?php echo urlimg("400x640_water_mark",$file->filepath); ?>" alt="<?php echo isset($file->alt)? plain($file->alt):null; ?>" /></li>
+								<?php else: ?>
+									<li><img src="<?php echo urlimg("400x640_water_mark",$file->filepath); ?>" alt="<?php echo isset($file->alt)? plain($file->alt):null; ?>" /></li>
+								<?php endif; ?>
+								<?php $isfirst = false; ?>
+							<?php endforeach; ?>
+						<?php endif; ?>
+					</ul>
+				</div>
+			</div>
+			<a id="backanchor"></a>
+			<div class="price" id="pos">
+				<span class="list">Market Price: <?php echo c($product->list_price); ?></span>
+				<?php if($showstar): ?>
+					<span class="review_star">
+						<?php for($i = 0; $i < floor($star); $i++ ): ?>
+							<span><img src="<?php echo $tpldir; ?>/images/starfill.png" /></span>
+						<?php endfor; ?>
+						<?php if((ceil($star) - floor($star)) == 1): ?>
+							<span><img src="<?php echo $tpldir; ?>/images/starhalf.png" /></span>
+						<?php endif; ?>
+						<?php for($i = 0; $i < 5 - ceil($star); $i++): ?>
+							<span><img src="<?php echo $tpldir; ?>/images/star.png" /></span>
+						<?php endfor; ?>
+						<span class="shuliang">(<?php echo $count; ?>)</span>
+						<div class="clear"></div>
+					</span>
+				<?php endif; ?>
+			    <span class="new-price">Sale Price:<?php echo c($product->sell_price); ?></span>
+			</div>
+			
+			<?php echo $this->render('contents/p_selectfields.phtml'); ?>
+			
+			<?php echo $this->render('contents/p_cartform.phtml'); ?>
+
+			<h2 class="classh2">About This Item</h2>
+			<div class="review-content" >
+				<?php if($product->summary): ?>
+					<div class="description-ss" id="description">
+						<span class="tit">Description</span>
+						<?php echo strwidth($product->summary, 60); ?>
+					</div>
+				<?php endif; ?>
+				<div class="description-ss" id="specifications">
+					<span class="tit">Specifications</span>
+					<?php if($product->brand):?>
+					&bull; Brand <?php echo isset ($product->brand->name) ? $product->brand->name : null ;?><br/>
+					<?php endif;?>
+					<?php if($product->number):?>
+					&bull; Code: &nbsp;<?php echo  isset($product->number) ? $product->number : null;?><br/>
+					<?php endif; ?>
+					<?php if($product->field_color):?>
+					&bull; Colors: &nbsp;<?php $corlorLists="";
+						foreach ($product->field_color as $c){
+							$corlorLists.=($c.', ');
+						}
+						echo $corlorLists;?><br/>
+					<?php endif;?>
+					<?php if($product->field_size):?>
+					&bull; Sizes: &nbsp;<?php $sizeLists='';
+						foreach ($product->field_size as $s){
+							$sizeLists.=($s.', ');
+						}
+						echo $sizeLists;?><br/>
+					<?php endif;?>
+					&bull; Status: &nbsp;</strong><?php if ($product->status):?>
+					In stock, usually ships in 24 hours<?php else:?>Under the frame<?php endif;?><br/>
+				</div>
+			</div>
+			<?php if($showstar): ?>
+				<h2 class="classh2">Customer Reviews</h2>
+				<div class="review-content">
+					<a href="<?php echo url('product/viewreviews/') . $product->pid; ?>" class="link-review">
+						<p>Reviews</p>
+						<span class="review_star">
+							<?php for($i = 0; $i < floor($star); $i++ ): ?>
+								<span><img src="<?php echo $tpldir; ?>/images/starfill.png" /></span>
+							<?php endfor; ?>
+							<?php if((ceil($star) - floor($star)) == 1): ?>
+								<span><img src="<?php echo $tpldir; ?>/images/starhalf.png" /></span>
+							<?php endif; ?>
+							<?php for($i = 0; $i < 5 - ceil($star); $i++): ?>
+								<span><img src="<?php echo $tpldir; ?>/images/star.png" /></span>
+							<?php endfor; ?>
+							<div class="clear"></div>
+						</span>
+						<span class="shuliang">(<?php echo $count; ?>)</span>
+						<div class="clear"></div>
+					</a>
+					<div class="review">
+						<?php if(isset($comments) && $comments): ?>
+							<?php foreach($comments as $v): ?>
+								<?php $info = widgetCallFunction('fivestars', 'getcommentstarsGrade', $v->cid); ?>
+								<?php $grade = $info->grade; ?>
+								<div class="latest_review">
+									<div>
+										<p>By <?php echo strwidth($v->nickname, 17); ?></p>
+										<span class="review_star">
+											<?php for ($i = 0; $i<$grade; $i++): ?>
+												<a><img src="<?php echo $tpldir; ?>/images/starfill.png"></a>
+											<?php endfor; ?>
+											<?php for ($i = 0; $i<(5-$grade); $i++): ?>
+												<a><img src="<?php echo $tpldir; ?>/images/star.png"></a>
+											<?php endfor; ?>
+											<div class="clear"></div>
+										</span>
+										<?php if(isset($v->subject) && $v->subject): ?>
+											<p class="title">
+												<span>Title:</span>
+												<?php echo strwidth($v->subject, 15); ?>
+											</p>
+										<?php endif; ?>
+										<?php if(isset($v->comment) && $v->comment): ?>
+											<p class="content">
+												<span>Content:</span>
+												<?php echo strwidth($v->comment, 70); ?>
+											</p>
+										<?php endif; ?>
+									</div>
+									<div class="clear"></div>
+									<span class="date"><?php echo date('M d, Y', $v->timestamp); ?></span>
+								</div>
+							<?php endforeach; ?>
+						<?php endif; ?>
+					</div>
+					<a href="<?php echo url('product/viewreviews/') . $product->pid; ?>" class="link-see-all">
+						See All Reviews
+					</a>
+				</div>
+			<?php endif; ?>
+			<?php if($canComment): ?>
+				<div class="col-box">
+					<a href="<?php echo url('product/writereview/'.$product->pid); ?>">
+						<button class="btn-long"style="font-size: 1.6rem;text-align: center;">Write a Review</button>
+					</a>
+				</div>
+			<?php endif; ?>
+
+			<p class="titletwo">Recommended Products</p>
+			<div class="flexslidertwo carousel">
+				<ul class="slides">
+					<?php foreach ($recommandProductList as $v): ?>
+						<?php $path = ''; ?>
+						<?php if($v->filepath): ?>
+							<?php $path = $v->filepath; ?>
+						<?php else: ?>
+							<?php $path = $v->files[0]->filepath; ?>
+						<?php endif; ?>
+						<li>
+							<a href="<?php echo url($v->url); ?>">
+								<img src="<?php echo urlimg('210x320',$path)?>" />
+								<p class="title"><?php echo $v->name; ?></p>
+                                <p class="price"><?php echo c($v->sell_price); ?></p>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+			<div style="border-width: 5px;border-radius: 5px;border-color: red;width:10px;height:10px;"></div>
+		</div>
+		<div class="foot">
+			<a class="back_to_top" href="#">
+				<span></span><br/>
+				TOP OF PAGE
+			</a>
+			<?php echo $this->render('parts/footer.phtml'); ?>
+		</div>
+	</div>
+
+	<?php echo $this->render("contents/p_selectfields.phtml"); ?>
+	<div class="loadding" style="display: none;">
+	    <table>
+	        <tr>
+	            <td>
+	                <img src="<?php echo themeResourceURI('images/load.gif'); ?>">
+	            </td>
+	        </tr>
+	    </table>
+	  </div>
+	
+	<div style="display: none"><img src="<?php echo $tpldir; ?>/images/selected.png"> </div>
+    <script src="<?php echo $tpldir . '/javascripts/main.js?v' . filemtime($_SERVER['DOCUMENT_ROOT'] . $tpldir . '/javascripts/main.js'); ?> type="text/javascript"></script>
+	
+	<script type="text/javascript">
+		
+		select('SIZE');
+		select('COLOR');
+		select('BELTCOLOR');
+		select('QUANTITY');
+		select('specifications');
+		select('description');
+		innerselect('color');
+		innerselect('size');
+		innerselect('beltcolor');
+		innerselect('quantity');
+
+		<?php if(isset($bakctoproperty)): ?>
+			$("#<?php echo strtoupper($bakctoproperty); ?>").click();
+		<?php else: ?>
+			$(function() {
+				$(".flexslidertwo").flexslider({
+					animation: "slide",
+					animationLoop: false,
+					itemWidth: 100,
+					itemMargin: 5
+				});
+			});
+			$(function() {
+				$(".flexsliderthree").flexslider({
+					animation: "slide",
+					slideshow:true,
+					slideshowSpeed:5000,
+					itemMargin: 5
+				});
+			});
+		<?php endif; ?>
+	</script>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

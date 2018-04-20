@@ -1,0 +1,82 @@
+<?php
+  $this->assign('menuItem', 'site_display');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="basic"><a href="<?php echo url('admin/site/attachmentsetting') ?>">附件设置</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="POST">
+
+    <table>
+      <tr class="nohover"><td class="bold" colspan="2">文件名设置</td></tr>
+      <tr>
+        <td width="50%">
+          <input type="radio" value="1" name="attachment[name]"
+          <?php if ($attachment['name'] == '1' || !isset($attachment['name'])) echo 'checked';?>
+          > 随机生成文件名
+        </td>
+        <td width="40%"></td>
+      </tr>
+      
+       <tr>
+        <td width="50%">
+          <input type="radio" value="2" name="attachment[name]"
+          <?php if ($attachment['name'] == '2') echo 'checked';?>
+          > 原文件名（覆盖之前的文件）
+        </td>
+        <td width="40%"></td>
+      </tr>
+			
+      
+      <tr class="nohover"><td class="bold" colspan="2">附件目录设置</td></tr>
+     
+			<tr>
+        <td width="50%">
+          
+          <input type="radio" value="1" name="attachment[directory]"
+          <?php if ($attachment['directory'] == '1') echo 'checked';?>
+          > 按照月份
+        </td>
+        <td width="40%"></td>
+      </tr>
+      
+       <tr>
+        <td width="50%">
+          <input type="radio" value="2" name="attachment[directory]"
+          <?php if ($attachment['directory'] == '2' || !isset($attachment['directory'])) echo 'checked';?>
+          > 按照年份
+          
+        </td>
+        <td width="40%"></td>
+      </tr>
+      
+      <tr>
+        <td width="50%">
+          
+          <input type="radio" value="3" name="attachment[directory]"
+          <?php if ($attachment['directory'] == '3') echo 'checked';?>
+          > 所有附件保存在一个文件夹下
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+    </table>
+
+    <div class="main_bottom_deal">
+      <input type="submit" value="保存" class="btn">
+    </div>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

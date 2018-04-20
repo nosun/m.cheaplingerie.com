@@ -1,0 +1,12 @@
+<?php if(isset($colorchart)): ?>
+	<?php if(!$colorchart): ?>
+		<link href="<?php echo themeResourceURI('css/index.css?v' . filemtime(DOCROOT . $tpldir . '/css/index.css')); ?>" type="text/css" rel="stylesheet" />
+		<link href="<?php echo themeResourceURI('css/flexslider.css?v' . filemtime(DOCROOT . $tpldir . '/css/flexslider.css')); ?>" type="text/css" rel="stylesheet" />
+	<?php else: ?>
+		<link href="<?php echo themeResourceURI('css/color_chart.css'); ?>" rel="stylesheet" type="text/css">
+		<link href="<?php echo themeResourceURI('css/index.css?v' . filemtime(DOCROOT . $tpldir . '/css/index.css')); ?>" type="text/css" rel="stylesheet" />
+	<?php endif; ?>
+<?php else: ?>
+	<link href="<?php echo themeResourceURI('css/index.css?v' . filemtime(DOCROOT . $tpldir . '/css/index.css')); ?>" type="text/css" rel="stylesheet" />
+	<link href="<?php echo themeResourceURI('css/flexslider.css?v' . filemtime(DOCROOT . $tpldir . '/css/flexslider.css')); ?>" type="text/css" rel="stylesheet" />
+<?php endif; ?>

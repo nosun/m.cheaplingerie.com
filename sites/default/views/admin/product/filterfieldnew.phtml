@@ -1,0 +1,29 @@
+<?php
+  $this->assign('menuItem', 'product_typelist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+    <ul>
+    	<li><span class="check"><a href="<?php echo url('admin/product/typelist') ?>">商品类型列表</a></span></li>
+		<li><span class="basic"><a href="<?php echo url('admin/product/typeedit/') . $type; ?>" >商品类型管理 - <?php echo plain($type) ?></a></span></li>
+		<li><span class="new">商品过滤管理 - <?php echo plain($type) . ' - ' . t('New');?></span></li>
+    </ul>
+</div>
+
+<div class="main_right">
+    <?php echo themeMessages(); ?>
+    <?php echo $this->render('admin/product/filterfieldform.phtml'); ?>
+    <table>
+       <tr class="noborder nohover" style="border-bottom:0px solid red;">
+        <td colspan="2">
+          <input type="button" id="add_filter_field_btn" value="提交" class="Buttom_3 but" />
+          <a href="<?php echo url('admin/product/filterfieldlist/' .  $type) ?>" class="Buttom_4b">返回列表</a>
+        </td>
+      </tr>
+    </table>
+</div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

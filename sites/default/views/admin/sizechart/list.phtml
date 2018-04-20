@@ -1,0 +1,48 @@
+<?php
+  $this->assign('menuItem', 'product_typelist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/sizechart/list') ?>">Size Chart列表</a></span></li>
+		<?php if (access('size chart manage')): ?>
+		<li><span class="new"><a href="<?php echo url('admin/sizechart/add') ?>">新建Size Chart</a></span></li>
+		<?php endif;?>
+	</ul>
+</div>
+
+<div class="main_right">
+    <?php echo themeMessages() ?>
+    <table>
+    <tr class="subhead">
+      <td width="30%">Size Chart名称</td>
+      <td width="35%">类型名称</td>
+      <td width="35%"><?php if (access(array('edit size chart', 'delete size chart'), 'or')): ?>选项<?php endif ?></td>
+    </tr>
+    <?php if (isset($sizeChartList)): ?>
+		<?php foreach($sizeChartList as $key => $sizeChart): ?>
+		    <tr>
+		      <td>
+		      		<?php if (access('edit size chart')): ?><a href="<?php echo url('admin/sizechart/update/' . $sizeChart->id) ?>"><?php endif;?>
+		      		<?php echo plain($sizeChart->name) ?><?php if (access('edit size chart')): ?></a><?php endif;?></td>
+		      <td>
+		      		<?php if (access('edit size chart')): ?><a href="<?php echo url('admin/sizechart/update/' . $sizeChart->id) ?>"><?php endif;?>
+		      		<?php echo plain($sizeChart->product_type) ?><?php if (access('edit size chart')): ?></a><?php endif;?></td>
+		      <td>
+		        <?php if (access('edit size chart')): ?>
+		        	<a href="<?php echo url('admin/sizechart/update/' . $sizeChart->id) ?>">编辑</a>
+		        <?php endif;?>
+		        <?php if (access('delete size chart')): ?>
+		        	<a href="<?php echo url('admin/sizechart/delete/' . $sizeChart->id) ?>" class="btn_confirm" rel="确认删除该类型吗?">删除</a>
+		        <?php endif;?>
+		      </td>
+		    </tr>
+		<?php endforeach; ?>
+	<?php endif;?>
+    </table>
+</div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

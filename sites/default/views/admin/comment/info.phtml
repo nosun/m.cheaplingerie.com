@@ -1,0 +1,99 @@
+<?php
+  $this->assign('menuItem', 'comment_commonlist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/comment/getList') ?>">评论管理</a></span></li>
+		<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;评论详细信息&nbsp;&nbsp;</span></li>
+	</ul>
+</div>
+
+
+<div class="main_right" style="margin-left:10px; margin-top:10px;">
+    <?php echo themeMessages() ?>
+    <form action="<?php  echo url('admin/terms/save/'.$vid); ?>" method="POST">
+<!--    <input type="hidden" name="vid" value="<?php echo $vid; ?>"/>-->
+    <table>
+
+      <tr class="nohover"><td class="bold" colspan="2">评论标题</td></tr>
+      <tr>
+        <td width="50%">
+          <?php if(isset($commentInfo->subject)) echo $commentInfo->subject; ?>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">评论内容</td></tr>
+      <tr>
+        <td width="50%">
+          <?php if(isset($commentInfo->comment)) echo $commentInfo->comment; ?>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">评论人</td></tr>
+      <tr>
+        <td width="50%">
+          <?php if(isset($commentInfo->nickname)) echo $commentInfo->nickname; ?>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">发布时间</td></tr>
+      <tr>
+        <td width="50%">
+        <?php if(isset($commentInfo->timestamp)) echo date("Y-m-d H:i:s", $commentInfo->timestamp); ?>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">IP</td></tr>
+      <tr>
+        <td width="50%">
+          <?php if(isset($commentInfo->ip)) echo $commentInfo->ip; ?>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">回复内容</td></tr>
+      <tr>
+        <td width="50%">
+          <?php if(isset($commentInfo->replayComment->comment)) echo $commentInfo->replayComment->comment; else echo '<i>NULL</i>'; ?>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">回复时间</td></tr>
+      <tr>
+        <td width="50%">
+        <?php if(isset($commentInfo->replayComment->timestamp)) echo date("Y-m-d H:i:s", $commentInfo->replayComment->timestamp); else echo '<i>NULL</i>';?>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+
+      <tr class="noborder nohover">
+        <td class="noborder" colspan="2" style="border:0px;">
+        <?php if (isset($commentInfo->cid)) { ?>
+        <?php if (isset($commentInfo->status) && $commentInfo->status == 1) : ?>
+          <a href="<?php echo url('admin/comment/deal/' . $commentInfo->cid . '/2/' . $page . '/' . $status) ?>">[取消前台显示]</a>
+        <?php else : ?>
+          <a href="<?php echo url('admin/comment/deal/' . $commentInfo->cid . '/1/' . $page . '/' . $status) ?>">[前台显示]</a>
+        <?php endif ;?>
+
+          <a href="<?php echo url('admin/comment/delete/' . $commentInfo->cid . '/' . $page . '/' . $status) ?>" class="btn_confirm" rel="确认删除该评论吗?">[删除]</a>
+<?php } ?>
+        </td>
+      </tr>
+
+    </table>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

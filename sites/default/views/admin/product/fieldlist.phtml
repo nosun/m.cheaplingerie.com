@@ -1,0 +1,70 @@
+<?php
+  $this->assign('menuItem', 'product_typelist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+  <div class="main_right">
+    <div class="main_title">商品类型属性管理 - <?php echo $isnew ? t('New') : plain($type->type) ?></div>
+    <?php echo themeMessages() ?>
+    <form action="" method="post">
+    <table>
+      <tr class="nohover"><td class="bold" colspan="2">类型标识 : <?php echo plain($type->type) ?></td></tr>
+      <tr class="nohover"><td class="bold" colspan="2">属性标识 : <?php echo plain($field->field_name) ?></td></tr>
+      <tr class="nohover"><td class="bold" colspan="2">属性类型 : <?php echo t($fieldType[$field->field_type]) ?></td></tr>
+      <tr class="nohover"><td class="bold" colspan="2">多值 : <?php echo $field->multiple ? t('Yes') : t('No') ?></td></tr>
+      <tr>
+        <td width="50%"><input name="name" value="<?php if (isset($field)) echo plain($field->name) ?>" class="txt" /></td>
+        <td width="45%">属性名称</td>
+      </tr>
+      <tr>
+        <td class="bold"><label style="color:#000"><input type="checkbox" name="required"<?php if (isset($field) && isset($field->required) && $field->required) echo ' checked="checked"' ?> /> 必填</label></td>
+        <td>必填属性</td>
+      </tr>
+<?php if (Product_Model::FIELD_TYPE_TEXT == $field->field_type): ?>
+      <tr class="nohover"><td class="bold" colspan="2">文本长度</td></tr>
+      <tr>
+        <td><input name="field_size" value="<?php if (isset($field)) echo plain($field->field_size) ?>" class="txt" /></td>
+        <td>文本长度，当属性类型为文本时有效，0 代表不限长度</td>
+      </tr>
+<?php endif ?>
+      <tr class="nohover"><td class="bold" colspan="2">输入方式</td></tr>
+      <tr>
+        <td><select name="display_type">
+<?php foreach ($displayType as $key => $name): ?>
+          <option value="<?php echo $key ?>"<?php if (isset($field) && $field->display_type == $key) echo ' selected="selected"' ?>><?php echo t($name) ?></option>
+<?php endforeach ?>
+        </select></td>
+        <td>输入方式</td>
+      </tr>
+<?php if (in_array($field->field_type, array(Product_Model::FIELD_TYPE_TEXT, Product_Model::FIELD_TYPE_INTEGER))): ?>
+      <tr class="nohover"><td class="bold" colspan="2">选项</td></tr>
+      <tr>
+        <td><textarea name="options" rows="5"><?php if (isset($field) && isset($field->options)) echo plain($field->options) ?></textarea></td>
+        <td>当有多个选项时，一行表示一个值</td>
+      </tr>
+<?php endif ?>
+<?php if (in_array($field->field_type, array(Product_Model::FIELD_TYPE_TEXT, Product_Model::FIELD_TYPE_INTEGER, Product_Model::FIELD_TYPE_DATETIME))): ?>
+      <tr class="nohover"><td class="bold" colspan="2">默认值</td></tr>
+      <tr>
+        <td><input name="default_value" value="<?php if (isset($field) && isset($field->default_value)) echo plain($field->default_value) ?>" class="txt" /></td>
+        <td>默认值</td>
+      </tr>
+<?php endif ?>
+      <tr class="nohover"><td class="bold" colspan="2">排序</td></tr>
+      <tr>
+        <td><input name="weight" value="<?php echo isset($field) ? plain($field->weight) : '0' ?>" class="txt" /></td>
+        <td>排序权重，数字越小排越前</td>
+      </tr>
+      <tr class="noborder nohover" style="border-bottom:0px solid red;">
+        <td colspan="2">
+          <input type="submit" value="提交" class="but" />
+          <a href="<?php echo url('admin/product/typeedit/' . $type->type) ?>">返回类型管理</a>
+        </td>
+      </tr>
+    </table>
+    </form>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

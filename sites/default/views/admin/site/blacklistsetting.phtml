@@ -1,0 +1,36 @@
+<?php
+  $this->assign('menuItem', 'site_blacklist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="basic"><a href="<?php echo url('admin/site/blacklistsetting') ?>">黑名单设置</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="post">
+    <table>
+      <tr class="nohover"><td class="bold" colspan="2">黑名单列表</td></tr>
+      <tr>
+        <td width="50%">
+          <textarea name="list" rows="20"><?php echo plain(implode("\n", $list)) ?></textarea>
+        </td>
+        <td width="40%">黑名单列表，一行表示一个规则，支持两种格式：<br />1. IP 地址<br />2. CIDR 地址</td>
+      </tr>
+      <tr>
+        <td class="bold"><label style="color:#000"><input type="checkbox" name="import" /> 导入中国大陆IP</label></td>
+        <td><em style="color:red">该功能会严重影响系统性能。</em></td>
+      </tr>
+    </table>
+    <div class="main_bottom_deal">
+      <input type="submit" value="保存" class="btn">
+    </div>
+    </form>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

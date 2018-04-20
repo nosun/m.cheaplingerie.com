@@ -1,0 +1,56 @@
+<?php
+  $this->assign('menuItem', 'product_vocabulary');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+  <ul>
+    <li><span class="check"><a href="<?php echo url('admin/vocabulary/getList'); ?>">查看商品分类</a> - <a href="<?php echo url('admin/terms/getList/' . $vid); ?>">分类词列表</a></span>
+    </li>
+  </ul>
+</div>
+
+<div class="shelves" style="display: none">
+  <span><strong>当前过滤条件(清除)</strong></span>
+  <span>上架:<strong>是</strong></span>
+  <a href="#"><img src="<?php echo url('images/admin_new/delete.gif');?>" alt="" /></a>
+  <span>库存大于:<strong>1</strong></span>
+  <a href="#"><img src="<?php echo url('images/admin_new/delete.gif');?>" alt="" /></a>
+</div>
+
+
+  <div class="main_right">
+  <form action="<?php echo url('admin/terms/delproduct');?>" method="post">
+  <input type="hidden" name="tid" value="<?php echo $tid?>">
+    <?php echo themeMessages() ?>
+    <table>
+      <tr class="subhead">
+        <td width="8%">商品ID</td>
+        <td width="45%">商品名称</td>
+        <td width="10%">管理</td>
+      </tr>
+<?php
+  if(is_array($productList)):
+    foreach($productList as $k => $v):
+?>
+      <tr>
+        <td><input type="checkbox" class="checkItem" name="checkItem[]" value="<?php echo $v->pid; ?>"><?php echo $k; ?></td>
+        <td><a href="<?php echo url($v->url);?>" target="_blank"><?php echo $v->name?></a></td>
+        <td>
+        <a href="<?php echo url('admin/product/edit/' . $v->pid )?>">编辑商品</a>
+        <a href="<?php echo url('admin/terms/delproduct/' . $tid . '/' . $v->pid )?>">删除</a></td>
+      </tr>
+<?php
+    endforeach;
+  endif;
+?>
+    </table>
+    <input type ="checkbox" id="checkAll">全 <input type="submit" value="删除" class="btn1">
+    </form>
+  </div>
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

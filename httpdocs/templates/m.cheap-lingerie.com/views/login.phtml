@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+	<div class="sign_regist_head"><a href="/"><img src="<?php echo $tpldir; ?>/images/ad_head.png" /></a></div>
+	<?php echo themeMessages(); ?>
+	<div class="sign_regist">
+		<form id="sign_form" class="sign_form" action="<?php echo url('user/login');?>" method="post" name="signinform">
+			<h1>Sign In</h1>
+			<h2 class="sign_regist_h2">Email Address:</h2>
+			<input class="sign_regist_input" type="text" name="username" />
+			<h2 class="sign_regist_h2">Password:</h2>
+			<input class="sign_regist_input" type="password" name="password" />
+			<button type="submit" class="regist_button">Sign in</button>
+		</form>
+		<div class="link">
+			<a href="<?php echo url('user/getPassword')?>" class="forgot">Forgot Password?</a><div class="clear"></div>
+			<a href="<?php echo url('user/register');?>" class="register">Register Now</a><span class="notmember">Not a member?</span>
+		</div>
+		<div class="foot">
+        <div class="di"><p class="ditu">CopyRight © Cheap-Lingerie.com</p></div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	    $('.sign_regist_input').click(function(){
+	        $('input').removeClass('aaa');
+	        $(this).addClass('aaa');
+	    });
+	</script>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

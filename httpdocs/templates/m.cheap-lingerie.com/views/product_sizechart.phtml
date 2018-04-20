@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+
+<div class="back_head">
+    <a class="back" href="<?php echo $backurl; ?>"><img src="<?php echo $tpldir; ?>/images/back.png"></a>
+</div>
+  <div id="size_chart_own">
+	<?php echo isset($content) ? $content : ''; ?>
+</div>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

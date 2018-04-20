@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+	<div class="head">
+		<?php echo $this->render("parts/header.phtml"); ?>
+	</div>
+	
+	<h2 class="classh2">My Wish List</h2>
+	<div class="my_wish">
+		<?php foreach($productlist as $product): ?>
+			<?php if ($product->type == "dress" && !empty($product->field_fabric) && (in_array(normalizeFabric($product->field_fabric[0]), array('satin', 'chiffon', 'taffeta', 'organza', 'satin-chiffon', 'stretch-satin', 'charmeuse', 'tulle')))): ?>
+				<?php echo $this->render('contents/wish_wedding.phtml', array('product' => $product)); ?>
+			<?php else: ?>
+				<?php echo $this->render('contents/wish_none_wedding.phtml', array('product' => $product)); ?>
+			<?php endif; ?>
+		<?php endforeach; ?>
+        
+        <h2 class="classh2">Recommended Products</h2>
+        <div class="recommend">
+			<div class="flexslidertwo carousel">
+				<ul class="slides">
+					<?php foreach ($recommandProductList as $v): ?>
+						<?php $path = ''; ?>
+						<?php if($v->filepath): ?>
+							<?php $path = $v->filepath; ?>
+						<?php else: ?>
+							<?php $path = $v->files[0]->filepath; ?>
+						<?php endif; ?>
+						<li>
+							<a href="<?php echo url($v->url); ?>">
+								<img src="<?php echo urlimg('210x320',$path)?>" />
+								<p class="title"><?php echo $v->name; ?></p>
+                                <p class="price"><?php echo c($v->sell_price); ?></p>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+		</div>
+    </div>
+    <div class='backDrop'>
+		<div class="num-box">
+			<p>
+				Count:
+				<span>x</span>
+			</p>
+			<ul>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+				<li>6</li>
+				<li>7</li>
+				<li>8</li>
+				<li>9</li>
+				<li>10+</li>
+			</ul>
+		</div>
+		<div class="backDrop-bg"></div>
+	</div>
+    
+    <div class="col-box">
+    	<a href="<?php echo url(''); ?>">
+        	<button class="btn-long">Continue Shopping</button>
+        </a>
+    </div>
+	<a class="back_to_top" href="#">
+		<span></span><br/>TOP OF PAGE
+	</a>
+    <div class="foot">
+    		<?php echo $this->render('parts/footer.phtml'); ?>
+    	</div>
+    <script type="text/javascript">
+	    var pro_pid, pro_quantity;
+		$('.btn-num').click(function(){
+			pro_pid = $(this).parents('div.lmr').eq(0).attr('item-id');
+		});
+		$('.backDrop ul li').click(function(){
+			var selectNum = $('.backDrop ul li').index($(this)) + 1;
+			if (selectNum !== 10) {
+	            pro_quantity = $(this).html();
+	            $("#qty" + pro_pid).val(pro_quantity);
+			}
+		});
+		$('.text-default').blur(function(){
+			pro_quantity = $(this).val();
+			$("#qty" + pro_pid).val(pro_quantity);
+		});
+        $(function() {
+            $(".flexslidertwo").flexslider({
+                animation: "slide",
+                animationLoop: false,
+                itemWidth: 100,
+                itemMargin: 5,
+                maxItems: 10
+            });
+        });
+    </script>
+    <script src="<?php echo $tpldir; ?>/javascripts/main.js" type="text/javascript"></script>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

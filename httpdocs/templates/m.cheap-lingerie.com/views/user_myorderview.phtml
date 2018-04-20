@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+	<div class="back_head">
+		<a class="back" href="<?php echo url('user/myorders'); ?>"><img src="<?php echo $tpldir; ?>/images/back.png"></a>
+	</div>
+
+	<?php if($orderInfo->status_payment == 0): ?>
+		<div class="col-box" style="margin-top:4%;">
+			<button class="btn-red btn-red-high" method="<?php echo $orderInfo->payment_method; ?>" id="continuetopay">Continue Your Payment</button>
+		</div>
+		<script>
+			$("#continuetopay").click(function(){
+				var method = $(this).attr('method');
+				$("#" + method + " form").submit();
+			});
+		</script>
+	<?php endif; ?>
+	<div class="no_paid">
+		<div class="adr">
+			<div class="adr_head">
+				<span class="adr_num"><?php echo $orderInfo->number;?></span>
+				<?php $status = ""; ?>
+				<?php if($orderInfo->status_payment==0): ?>
+					<?php $status = "Not Paid"; ?>
+				<?php elseif ($orderInfo->status==0): ?>
+					<?php $status = "Pending"; ?>
+				<?php elseif ($orderInfo->status==1): ?>
+					<?php $status = "Processing"; ?>
+				<?php elseif ($orderInfo->status==2): ?>
+					<?php $status = "Completed"; ?>
+				<?php elseif ($orderInfo->status==-1): ?>
+					<?php $status = "Removed"; ?>
+				<?php elseif ($orderInfo->status==-2): ?>
+					<?php $status = "Deleted"; ?>
+				<?php endif; ?>
+				<span class="red_span"><?php echo $status; ?></span>
+			</div>
+			<?php if (isset($orderInfo->items)): ?>
+				<?php foreach ($orderInfo->items as $k => $v): ?>
+					<div class="lmr">
+						<a href="<?php echo url($v->url);?>" style="display: block">
+							<div class="adr_left"><img src="<?php echo urlimg('118x178', $v->filepath) ?>"></div>
+							<div class="adr_middle">
+								<p>
+									<p class="biaoti"><?php echo /*strwidth($v->name, 40); */ $v->name; ?></p>
+									<?php $cusflag = 0;?>
+									<?php foreach($v->data as $kk => $vv): ?>
+										<?php if($kk == 'Bust (Inch)'): ?>
+											Size:Custom Measurements<br/>
+		                            		<p class="cus_mea">
+		                            			<?php echo $kk; ?>:<span><?php echo $vv; ?></span><br/>
+		                            	<?php $cusflag = 1; ?>
+										<?php elseif($kk == 'Height (Inch)'): ?>
+												<?php echo $kk; ?>:<span><?php echo $vv; ?></span><br/>
+											</p>
+										<?php else: ?>
+											<?php if($cusflag): ?>
+												<?php echo $kk; ?>:<span><?php echo $vv; ?></span><br/>
+												<?php continue; ?>
+											<?php endif; ?>
+											<?php if(strstr($vv, 'As Picture')):?>
+												<?php echo $kk . ':' . substr($vv, 0, strpos($vv, ':')); ?>
+												<div class="picture"><img src="<?php echo urlimg('118x178',substr($vv, strpos($vv, ':')+1)); ?>"> </div>
+											<?php else: ?>
+												<?php echo $kk; ?>:<span><?php echo $vv; ?></span><br/>
+											<?php endif; ?>
+										<?php endif; ?>
+									<?php endforeach; ?>
+								</p>
+							</div>
+							<div class="adr_right">
+								<span class="price"><?php echo isset($v->pay_price) ? c($v->pay_price) : null; ?></span><br><br/>
+							<span>×<?php echo isset($v->qty) ? $v->qty : null ?></span>
+		                </div>
+		                <div class="clear"></div>
+	                </a>
+	            </div>
+				<?php endforeach; ?>
+			<?php endif; ?>
+		</div>
+	</div>
+	<h1 class="xian"></h1>
+	<div class="no_paid">
+		<div class="adr">
+			<div class="adr_head">
+				<span class="adr_num">Shipping Address</span>
+			</div>
+			<div class="address_content">
+				<span class="address_name">
+					<?php echo isset($orderInfo->delivery_first_name) ? $orderInfo->delivery_first_name : ' '; ?> <?php echo isset($orderInfo->delivery_last_name) ? $orderInfo->delivery_last_name : ' '; ?>
+				</span><br>
+				<p>
+					<?php echo isset($orderInfo->delivery_address) ? $orderInfo->delivery_address : ' '; ?>,
+					<?php echo isset($orderInfo->delivery_city) ? $orderInfo->delivery_city : '--'; ?>,
+					<?php echo isset($orderInfo->delivery_province) ? $orderInfo->delivery_province : '--'; ?>,
+					<?php echo isset($orderInfo->delivery_postcode) ? $orderInfo->delivery_postcode : '--'; ?>,
+					<?php echo isset($orderInfo->delivery_country) ? $orderInfo->delivery_country : '--'; ?><br />
+					<?php echo isset($orderInfo->delivery_mobile) ? "Phone:" . $orderInfo->delivery_mobile : ' '; ?>
+				</p>
+			</div>
+		</div>
+	</div>
+	<h1 class="xian"></h1>
+	<div class="no_paid">
+		<div class="adr">
+			<div class="adr_head">
+				<span class="adr_num">Payment Methods</span>
+			</div>
+			<div class="address_content">
+				<span class="address_name"><?php echo ucfirst($orderInfo->payment_method); ?></span><br>
+				<?php if($orderInfo->status_payment != 0): ?>
+					<p>
+						At <?php echo date("Y-m-d H:i:s",$orderInfo->payment_time); ?>
+					</p>
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
+	<h1 class="xian"></h1>
+	<?php foreach ($paymentList as $name => $payment): ?>
+		<?php if($payment->status && $payment->visible): ?>
+			<div style="display:none" id="<?php echo $name; ?>"><?php echo $payment->submitform;?></div>
+		<?php endif; ?>
+	<?php endforeach; ?>
+	<div class="cart_shipping_total">
+		Cart subtotal:<?php echo c($orderInfo->total_amount);?><br/>
+		<?php if (isset($orderInfo->fees)): ?>
+			<?php foreach ($orderInfo->fees as $fee) :?>
+				<?php if ($fee->fee_value && $fee->fee_key != "bankfee"): ?>
+					<?php echo ucfirst($fee->fee_key) . ":"; ?><?php echo c($fee->fee_value); ?><br />
+				<?php endif; ?>
+			<?php endforeach; ?>
+		<?php endif; ?>
+		Total price:<span><?php echo c($orderInfo->pay_amount); ?></span><br/>
+	</div>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

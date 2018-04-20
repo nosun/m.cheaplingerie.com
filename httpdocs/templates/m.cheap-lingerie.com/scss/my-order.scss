@@ -1,0 +1,65 @@
+.my_order{
+  width: 91%;
+  padding: 0 4.5%;
+  margin-top: 1rem;
+  .my_adr{
+    border: 1px solid #929394;
+    border-radius: 5px;
+    .my_head{
+      font: 1.2rem/2rem 'arial';
+      color: #333333;
+      padding:1rem 0.5rem;
+      background: #f1f1f1;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      margin-bottom: 1rem;
+      .red_span{
+        color: #c01920;
+        display: inline-block;
+        float: right;
+      }
+    }
+    .lmr {
+      width: 100%;
+      margin-top: 0.5rem;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #dddddd;
+      overflow: hidden;
+      .adr_left {
+        float: left;
+        width: 16%;
+        margin-left: 0.5rem;
+        border: 1px solid #989999;
+        img {
+          width: 100%;
+        }
+      }
+      .my_right{
+        width: 75%;
+        float: right;
+        margin: 8px 0.5rem;
+        font:1.3rem/2rem 'arial';
+        line-height: 1.4;
+        color:#333;
+      }
+      .adr-total{
+        text-align: right;
+        padding-right: 1rem;
+        font:1.2rem/2rem 'arial';
+        color:#333;
+        span{
+          color:#c01920;
+        }
+      }
+    }
+  }
+  .col-box {
+    padding: 0 3.5%;
+    margin: 3% 0;
+    .btn-default{
+      width: 48%;
+      height: 30px;
+      border-radius: 2px;
+    }
+  }
+}

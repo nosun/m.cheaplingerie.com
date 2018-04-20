@@ -1,0 +1,4 @@
+name = DHL快递
+version = 1.0
+cashOnDelivery = 1
+description = DHL快递,最流行的全球快速递送业务服务提供商。

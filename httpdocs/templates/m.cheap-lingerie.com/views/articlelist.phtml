@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <?php $this->render('parts/metaandtitle.phtml'); ?>
+	<?php $this->render('parts/includecss.phtml'); ?>
+	<?php $this->render('parts/includejs.phtml'); ?>
+</head>
+<body>
+	<div class="head">
+		<?php echo $this->render("parts/header.phtml"); ?>
+	</div>
+	
+    <h2 class="classh2"><?php echo $title; ?></h2>
+    <div class="col-box" style="margin-top:0">
+        <h3 class="classh3"></h3>
+        <ul class="no-collapse-btn-grp no-collapse-light">
+        	<?php echo $this->render("articles/" . $template .".phtml"); ?>
+        </ul>
+    </div>
+	<a class="back_to_top" href="#">
+		<span></span><br>
+		TOP OF PAGE
+	</a>
+	<div class="foot">
+		<?php echo $this->render('parts/footer.phtml'); ?>
+	</div>
+</body>
+<?php $this->render('parts/after_body.phtml'); ?>
+</html>

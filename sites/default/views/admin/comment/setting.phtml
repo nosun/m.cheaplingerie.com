@@ -1,0 +1,48 @@
+<?php
+  $this->assign('menuItem', 'comment_common_setting');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+	<ul>
+		<li><span class="basic"><a href="<?php echo url('admin/comment/setting') ?>">评论设置</a></span></li>
+	</ul>
+</div>
+
+<div class="main_right" style="margin-left:10px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+    <form action="" method="POST">
+
+    <table>
+
+      <tr class="nohover"><td class="bold" colspan="2">是否开启评论功能</td></tr>
+      <tr>
+        <td width="50%">
+          <input id="el-c9631-e855c" type="radio" name="isOpen" value="1" <?php if($isOpen == 1) echo "checked";  ?>/> <label for="el-c9631-e855c">开启</label>
+          <input id="el-c9631-e855b" type="radio" name="isOpen" value="0" <?php if($isOpen == 0) echo "checked";  ?>/> <label for="el-c9631-e855b">关闭</label>
+        </td>
+        <td width="40%"></td>
+      </tr>
+
+      <tr class="nohover"><td class="bold" colspan="2">是否需要审核</td></tr>
+      <tr>
+        <td width="50%">
+          <input id="el-c9631-e855e" type="radio" name="isNeedAudit" value="1" <?php if($isNeedAudit == 1) echo "checked";  ?>/> <label for="el-c9631-e855e">管理员回复后显示</label>
+          <input id="el-c9631-e855f" type="radio" name="isNeedAudit" value="0" <?php if($isNeedAudit == 0) echo "checked";  ?>/> <label for="el-c9631-e855f">用户发表后立即显示</label>
+        </td>
+        <td width="40%"></td>
+      </tr>
+    </table>
+
+    <div class="main_bottom_deal">
+      <input type="submit" value="保存" class="btn">
+    </div>
+    </form>
+  </div>
+
+
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

@@ -1,0 +1,117 @@
+<?php
+  $this->assign('menuItem', 'product_typelist');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+<div class="import clear">
+	<ul>
+		<li><span class="check"><a href="<?php echo url('admin/product/typelist') ?>">商品类型列表</a></span></li>
+		<li><span class="basic"><a href="<?php echo url('admin/product/typeedit/' . $type->type); ?>">商品类型管理 - <?php echo plain($type->type) ?></a></span></li>
+		<li><span class="new">商品过滤管理 - <?php echo plain($type->type);?></span></li>
+	</ul>
+</div>
+
+<div class="main_right">
+    <?php echo themeMessages() ?>
+    <form action="" method="post">
+    <table class="attribute">
+      <tr class="nohover"><td class="bold" colspan="2">类型标识 : <?php echo plain($type->type) ?></td></tr>
+      <tr class="nohover"><td class="bold" colspan="2">过滤属性列表</td></tr>
+      <tr class="nohover">
+          <td colspan="2">
+      	      <table>
+      	          <tr class="subhead">
+      	              <td width="10%">属性标识</td>
+                      <td width="15%">属性名称</td>
+                      <td width="15%">属性类型</td>
+                      <td width="15%">属性值类型</td>
+                      <td width="20%">属性值</td>
+                      <td width="25%">选项</td>
+      	          </tr>
+      	          <?php if (isset($type->filter_fields)) :?>
+      	             <?php foreach ($type->filter_fields as $filter_field) :?>
+      	                 <tr>
+      	                     <td><a href="<?php echo url('admin/product/editfilterfield/' . $type->type . '/' . $filter_field->id); ?>"><?php echo plain($filter_field->attr_name); ?></a></td>
+      	                     <td><a href="<?php echo url('admin/product/editfilterfield/' . $type->type . '/' . $filter_field->id); ?>"><?php echo plain($filter_field->name); ?></a></td>
+      	                     <td>
+      	                         <?php
+      	                             /**
+      	                              * @todo 这个将来需要放到数据库里面去管理
+      	                              */
+      	                             switch ($filter_field->attr_type)
+      	                             {
+      	                             	case TypeFilterField_Model::ATTR_TYPE_SELF:
+      	                             		echo "基本属性";
+      	                             		break;
+      	                             	case TypeFilterField_Model::ATTR_TYPE_MULTI:
+      	                             		echo "扩展属性";
+      	                             		break;
+      	                             	case TypeFilterField_Model::ATTR_TYPE_TAG:
+      	                             		echo "Tag Terms";
+      	                             		break;
+      	                             	case TypeFilterField_Model::ATTR_TYPE_RECOMMENED:
+      	                             		echo "Recommend Terms";
+      	                             		break;
+      	                             	case TypeFilterField_Model::ATRR_TYPE_BRAND:
+      	                             	    echo "Brand";
+      	                             	    break;
+      	                             	default:
+      	                             		break;
+      	                             }
+      	                         ?>
+      	                     </td>
+      	                     <td>
+      	                         <?php
+	      	                         switch ($filter_field->value_type)
+	      	                         {
+	      	                         	case TypeFilterField_Model::ATTR_VALUE_TYPE_SCALAR:
+	      	                         		echo "数值";
+	      	                         		break;
+	      	                         	case TypeFilterField_Model::ATTR_VALUE_TYPE_ENUM:
+	      	                         		echo "枚举";
+	      	                         		break;
+	      	                         	default:
+	      	                         		break;
+	      	                         } 
+      	                         ?>
+      	                     </td>
+      	                     <td>
+      	                         <?php
+      	                             $values = unserialize($filter_field->values);
+      	                             foreach ($values as $key => $value)
+      	                             {
+      	                             	if (!is_int($key))
+      	                             	{
+      	                             	   echo $key . ':' . $value . '<br/>';
+      	                             	}
+      	                             	else
+      	                             	{
+      	                             		echo $value . '<br/>';
+      	                             	}
+      	                             } 
+      	                         ?>
+      	                     </td>
+      	                     <td>
+      	                         <a href="<?php echo url('admin/product/editfilterfield/' . $type->type . '/' . $filter_field->id); ?>">编辑属性</a>
+      	                         <a href="<?php echo url('admin/product/deletefilterfield/' . $type->type . '/' . $filter_field->id); ?>" onclick="javascript:return confirm('确定要删除过滤属性<?php echo $filter_field->name?>吗?');">删除属性</a>
+      	                     </td>
+      	                 </tr>
+      	             <?php endforeach; ?>
+      	          <?php endif; ?>
+      	      </table>
+      	      <div><a href="<?php echo url('admin/product/addfilterfield/' . $type->type); ?>">新建过滤属性</a></div>
+      	  </td>
+      </tr>
+      <tr class="noborder nohover" style="border-bottom:0px solid red;">
+        <td colspan="2">
+          <input type="submit" value="提交" class="Buttom_3 but" />
+          <a href="<?php echo url('admin/product/typelist') ?>" class="Buttom_4b">返回列表</a>
+        </td>
+      </tr>
+    </table>
+    </form>
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>

@@ -1,0 +1,52 @@
+<?php
+  $this->assign('menuItem', 'site_adphoto');
+  echo $this->render('admin/before_body.phtml');
+  echo $this->render('admin/header.phtml');
+?>
+
+<div class="import clear">
+  <ul>
+    <li><span class="check"><a href="<?php echo url('admin/site/pagevariablestheme') ?>">页面信息模板管理</a></span></li>
+    <li><span class="new"><a href="<?php echo url('admin/site/editPageVariables')?>">新增页面信息模板</a></span></li>
+  </ul>
+</div>
+
+<div class="main_right" style="margin-left:5px;margin-top:5px;">
+    <?php echo themeMessages() ?>
+      <div id="list">
+        <form id="form" action ="<?php echo url('admin/content/post') ?>" method="post">
+          <table id="products_list">
+            <tr class="subhead">
+              <td width="10%">KEY</td>
+              <td width="20%">页面标题</td>
+              <td width="30%">关键字</td>
+              <td width="30%">描述</td>
+              <td width="10%"><?php echo t('Admin') ?></td>
+            </tr>
+<?php
+    foreach($pageVariablesList as $key => $dl) :
+?>
+            <tr>
+              <td><?php echo $dl->key;?></td>
+              <td><?php echo $dl->title;?></td>
+              <td><?php echo $dl->meta_keywords?></td>
+              <td><?php echo $dl->meta_description?></td>
+              <td>
+              <a href="<?php echo url('admin/site/editPageVariables/'.$dl->pvid)?>"><?php echo t('Edit')?></a>
+              <a href="<?php echo url('admin/site/deletePageVariables/'.$dl->pvid)?>" class="btn_confirm" rel="确定删除该页面信息吗"><?php echo t('Delete')?></a>
+              </td>
+            </tr>
+<?php
+    endforeach;
+?>
+
+          </table>
+        </form>
+      </div>
+
+
+  </div>
+<?php
+  echo $this->render('admin/footer.phtml');
+  echo $this->render('admin/after_body.phtml');
+?>
