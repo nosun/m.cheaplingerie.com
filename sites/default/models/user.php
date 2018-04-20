@@ -151,7 +151,7 @@ class User_Model extends Bl_Model
     global $db;
     static $list = array();
     if (!isset($list[$name])) {
-      $sql = sprintf("select uid from users where name = '%s' and type = 0", $db->escape($name));
+      $sql = sprintf("select uid from users where name = '%s'", $db->escape($name));
       $result = $db->query($sql);
       $list[$name] = $result->one();
     }
